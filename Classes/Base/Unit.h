@@ -80,6 +80,8 @@ namespace TapGun
 		//パラメータ
 		int kind;//Unit種別（_UNIT_KIND_）
 		int hitpoint;//
+		int nowShot;
+		int maxShot;//
 
 		int eState;//敵の状態
 

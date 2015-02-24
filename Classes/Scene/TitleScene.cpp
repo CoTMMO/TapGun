@@ -118,15 +118,16 @@ void TitleScene::update( float delta)
 	switch( menuFlag)
 	{
 	case TeamLogo:
-		//if( modelLoadFlag == false && ( sp = ResourceLoader::getInstance() -> getSprite3D( 15)) != nullptr)
+		//if( modelLoadFlag == false && ( sp = ResourceLoader::getInstance() -> getSprite3D(ResourceLoader::Player)) != nullptr)
 		//{
 		//	modelLoadFlag = true;
-		//	sp -> setPosition3D( Vec3( 640, 200, 0));
+		//	sp -> setPosition3D( Vec3( 640, 400, 0));
 		//	sp -> setScale( 300.0f);
-		//	sp->startAnimation("slide");
+		//	sp->setRotation3D(Vec3(10.0f, 0.0f, 150.0f));
+		//	sp->startAnimationLoop("dei1");
 		//	addChild( sp);
 		//}
-		teamLogoAction();		
+		teamLogoAction();
 		break;
 
 	case TitleLogoIn:
@@ -135,7 +136,7 @@ void TitleScene::update( float delta)
 		if( alphaCount > 180)
 		{
 			menuFlag = TitleLogoOK;
-			sound -> playBGMLoop();
+			//sound -> playBGMLoop();
 		}
 		break;
 
@@ -198,7 +199,7 @@ void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 		menuFlag = MenuIn;
 		sprite[Logo] -> runAction( MoveTo::create( 1, Point( 3000, sprite[Logo] -> getPositionY())));
 		auto action = Blink::create( 0.2, 3);
-		sound -> playSE( "MoveSE.mp3");
+		//sound -> playSE( "MoveSE.mp3");
 		auto func = CallFunc::create( [&](void) -> void { sprite[Menu] -> setVisible( false); menuAction(); });
 		sprite[Menu] -> runAction( Sequence::create( action, func, NULL));
 	}
@@ -299,8 +300,8 @@ void TitleScene::menuAction( void)
 void TitleScene::menuStartCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	//sound -> stopBGM();
+	//sound -> playSE( "MoveSE.mp3");
 	auto scene = GameScene::CreateScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
@@ -309,8 +310,8 @@ void TitleScene::menuStartCallback( Ref* pSender)
 void TitleScene::menuEndCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	//sound -> stopBGM();
+	//sound -> playSE( "MoveSE.mp3");
 	Director::getInstance() -> end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	exit(0);
@@ -320,8 +321,8 @@ void TitleScene::menuEndCallback( Ref* pSender)
 void TitleScene::menuCreditCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	//sound -> stopBGM();
+	//sound -> playSE( "MoveSE.mp3");
 	auto scene = CreditScene::createScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);

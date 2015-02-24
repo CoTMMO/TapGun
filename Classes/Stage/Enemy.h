@@ -69,7 +69,8 @@ namespace TapGun
 		int AIIdle;
 		int AIAtk;
 		int AIappear;//出現パターン
-
+		int nowShot;//現在のショット回数
+		int maxShot;//連射回数
 		float atkFrame;//攻撃間隔（秒）
 		float waitFrame;//出現してから移動し始めるまでの時間
 		float sleepTime;//

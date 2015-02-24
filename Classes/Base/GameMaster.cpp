@@ -12,7 +12,6 @@
 #endif
 
 //#define CN//カメラノードを使用するテスト
-
 USING_NS_CC;
 using namespace TapGun;
 
@@ -134,7 +133,7 @@ void GameMaster::InitParam()
 
 	sPoint = 0;
 	//プレイヤーの移動ポイントを設定する
-	for (int i = 0; i < 100; i++)
+	for(int i = 0; i < 100; i++)
 	{
 		//初期化
 		stagePoint[i].pPos = Vec3(0.0f, 0.0f, 0.0f);
@@ -192,12 +191,10 @@ void GameMaster::InitParam()
 	stagePoint[POINT_W3].playerSide = PSIDE_RIGHT;
 	stagePoint[POINT_W3].hidePoint = setHidePoint(stagePoint[POINT_W3]);//カメラの回避座標をセット
 
-
 	//L
 	//stagePoint[POINT_L2_2a].pPos = Vec3(0.7f, 0.0f, 20.35f);
 	//stagePoint[POINT_L2_2a].pRot = Vec3(0.0f, 130.0f, 0.0f);
 	//stagePoint[POINT_L2_2a].pointType = POINT_CHANGE;
-
 
 	//W
 	stagePoint[POINT_W4].pPos = Vec3(0.807f, -2.0f, -32.287f);//
@@ -207,8 +204,6 @@ void GameMaster::InitParam()
 	stagePoint[POINT_W4].pointType = POINT_BATTLE;
 	stagePoint[POINT_W4].playerSide = PSIDE_RIGHT;
 	stagePoint[POINT_W4].hidePoint = setHidePoint(stagePoint[POINT_W4]);//カメラの回避座標をセット
-
-
 
 	//クリア
 	stagePoint[POINT_FINISH].pPos = Vec3(12.0f, 0.0f, 5.0f);
@@ -273,6 +268,7 @@ void GameMaster::SetCamera3DRot(cocos2d::Vec3 rot)
 {
 	//この関数は基本的に使わず、親ノードの回転で対応する
 	camera3D->setRotation3D(rot);
+
 }
 
 
@@ -432,8 +428,6 @@ void GameMaster::InitCamera3D()
 {
 	//今後、ゲームやプレイヤーの状態などで様々なカメラセットが出来るようにする？
 	//camera3D->createPerspective(20, (GLfloat)s.width / s.height, 1, 1000);
-
-	//
 	CamNode = Node::create();
 	camera3D = Camera::createPerspective(C_PERSE_L, (GLfloat)screenSize.width / screenSize.height, 1, 500);
 
@@ -912,12 +906,12 @@ float GameMaster::GetGameTime(void)
 int GameMaster::setGameTime(float time)
 {
 	gameActionTime += time;
-	if (gameActionTime < 0.0f)
+	if(gameActionTime < 0.0f)
 	{
 		gameActionTime = 0.0f;
 		return FALSE;
 	}
-	else if (TIME_MAXTIME < gameActionTime)
+	else if(TIME_MAXTIME < gameActionTime)
 	{
 		gameActionTime = TIME_MAXTIME;
 		return FALSE;
@@ -937,12 +931,12 @@ int GameMaster::setGameTime(float time)
 int GameMaster::AddGameTime(float time)
 {
 	gameActionTime += time;
-	if (gameActionTime < 0)
+	if(gameActionTime < 0)
 	{
 		gameActionTime = 0.0f;
 		return FALSE;
 	}
-	else if (TIME_MAXTIME < gameActionTime)
+	else if(TIME_MAXTIME < gameActionTime)
 	{
 		gameActionTime = TIME_MAXTIME;
 		return FALSE;
@@ -961,7 +955,7 @@ int GameMaster::AddGameTime(float time)
 */
 void GameMaster::CalcCameraRot()
 {
-	//カメラ座標と注視点座標の位置からカメラ角度を設定
+	//カメラ視点座標と注視点座標の位置からカメラ角度を設定
 	//カメラの向きベクトルを取得
 	Vec3 cVec = GetCameraTarget() - GetCamera3DPos();
 
@@ -972,8 +966,8 @@ void GameMaster::CalcCameraRot()
 	double ry = atan2f(cVec.z, cVec.x);
 	ry = CC_RADIANS_TO_DEGREES(ry);
 
-	double rx = atan2f(cVec.x, cVec.z);
+	double rx = atan2f(cVec.z, cVec.y);
 	rx = CC_RADIANS_TO_DEGREES(rx);
 
-	SetCamera3DRot(Vec3(90.0f - rx, 90.0f - ry, 0.0f));//
+	SetCamera3DRot(Vec3(90.0f - rx, 90.0f - ry + 180.0f, 0.0f));//
 }

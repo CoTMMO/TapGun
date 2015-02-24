@@ -139,7 +139,7 @@ void GameModelsLayer::LoadModels()
 	fileName1 = "enemy/enemy";
 	fileName2 = "Enemy.anime";
 #endif
-	for (int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
+	for(int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
 	{
 		//スプライトとノードのcreate
 		unit[i].sprite3d = _Sprite3D::create(fileName1, fileName2);//1番~20番を敵に割り当て
@@ -162,7 +162,7 @@ void GameModelsLayer::LoadModels()
 	fileName1 = "Bullet/tama";
 #endif
 
-	for (int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
+	for(int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
 	{
 		unit[i].sprite3d = _Sprite3D::create(fileName1);
 		unit[i].wrapper = Node::create();
@@ -174,11 +174,6 @@ void GameModelsLayer::LoadModels()
 		unit[i].wrapper->addChild(unit[i].node1);
 		//		unit[i].sprite3d->addChild(unit[i].colisionNode);//当たり判定の基準ノードを3dスプライトに紐付け
 	}
-
-
-#ifdef DEBUG_CENTER
-	center.sprite3d = TapGun::_Sprite3D::create(fileName1, fileName2);//プレイヤーの回転中心を表す仮ポイント
-#endif
 
 	//座標計算用ノード
 	cNode.gNode = Node::create();
@@ -242,10 +237,6 @@ void GameModelsLayer::InitPlayer(int stage_num)
 
 	GameMasterM->SetPlayerBullets(STS_MAXBULLETS);//
 
-#ifdef DEBUG_CENTER
-	center.sprite3d->setScale(0.1f);
-#endif
-
 	//最初はアイドル状態から始まるので、時間を取得せずともよい
 	player.motStartTime = 0.0f;
 	player.motProcTime = 0.0f;
@@ -295,7 +286,7 @@ void GameModelsLayer::InitBullet()
 {
 	//全てのエネミーユニットを初期化
 	//エネミーのセットはsetEnemyで行う
-	for (int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
+	for(int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
 	{
 		unit[i].Init(i, UKIND_EBULLET);
 		unit[i].sprite3d->setVisible(false);
@@ -323,7 +314,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->finishNumber = 10;//9体の敵が出る
 
 		//敵の初期化
-		for (int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
+		for(int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
 		{
 			unit[i].sprite3d->setVisible(false);//敵モデル非表示
 			unit[i].visible = FALSE;//敵モデル非表示
@@ -331,12 +322,13 @@ void GameModelsLayer::SetEnemy(void)
 			unit[i].eState = ESTATE_SLEEP;
 			unit[i].tableNum = -1;
 			unit[i].hitpoint = 5;
-
+			unit[i].nowShot = 0;
+			unit[i].maxShot = STS_ENEMY_MAXSHOT;
 			unit[i].AIIdle = -1;
 			unit[i].AIAtk = -1;
 			unit[i].AIAppear = -1;//
 
-			for (int j = 0; j < 3; j++)
+			for(int j = 0; j < 3; j++)
 			{
 				unit[i].nextEnemies[j] = -1;
 			}
@@ -1382,7 +1374,7 @@ void GameModelsLayer::ActionRecover(void)
 	//プレイヤーの向きに応じて呼び出すアニメーションを変更する
 	//とりあえずここで文字列作成
 	std::string idle;
-	if (PSIDE_LEFT == GameMasterM->playerSide)
+	if(PSIDE_LEFT == GameMasterM->playerSide)
 	{
 		idle = "idel_l";
 	}
@@ -1393,28 +1385,30 @@ void GameModelsLayer::ActionRecover(void)
 
 
 	//アニメーションの確認
-	if (0 == player.sprite3d->checkAnimationState())
+	if(0 == player.sprite3d->checkAnimationState())
 	{
-		//食らいモーションが終了したら
-		GameMasterM->SetPlayerState(PSTATE_IDLE);//アイドル状態に移行
-		player.sprite3d->stopAllActions();
-		player.sprite3d->startAnimationLoop(idle);
-
-		GameMasterM->playerHitFlag = TRUE;//当たり判定を戻す
-
-		//モーション管理用の時間を初期化
-		player.motProcTime = 0.0f;//モーションを再生してからの経過時間（秒）
-		player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-		player.motStartTime = getNowTime();//StartTimeに現在時刻を代入
-
 		//HPが0になったら
-		if (0 >= GameMasterM->GetPlayerHP())
+		if(0 >= GameMasterM->GetPlayerHP())
+		{
+			//食らいモーションが終了したら
+			GameMasterM->SetPlayerState(PSTATE_IDLE);//アイドル状態に移行
+			player.sprite3d->stopAllActions();
+			player.sprite3d->startAnimationLoop(idle);
+
+			GameMasterM->playerHitFlag = TRUE;//当たり判定を戻す
+
+			//モーション管理用の時間を初期化
+			player.motProcTime = 0.0f;//モーションを再生してからの経過時間（秒）
+			player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
+			player.motStartTime = getNowTime();//StartTimeに現在時刻を代入
+		}
+		else
 		{
 			GameMasterM->SetPlayerState(PSTATE_DEAD);//死亡状態にする
 
 			//必要ならばモーションの停止を行う
 			player.sprite3d->stopAllActions();
-			player.sprite3d->startAnimation("dei2");//
+			player.sprite3d->startAnimation("dei1");//
 
 			//
 			player.motProcTime = 0.0f;//モーションを再生してからの経過時間（秒）
@@ -1507,7 +1501,7 @@ void GameModelsLayer::ShootBullet(int enemy_num)
 		double r = atan2f(unit[num].speedVec.z, unit[num].speedVec.x);
 		r = CC_RADIANS_TO_DEGREES(r);
 
-		unit[num].sprite3d->setRotation3D(Vec3(-90.0f, 90.0f - r, 0.0f));//
+//		unit[num].sprite3d->setRotation3D(Vec3(-90.0f, 90.0f - r, 0.0f));//
 		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
 
 		//正規化が終わったら、速度をかけて方向ベクトルの計算終了
@@ -1536,15 +1530,15 @@ void GameModelsLayer::ShootBullet(int enemy_num)
 void GameModelsLayer::UpdateBullets()
 {
 	//全ての敵弾ユニットを更新
-	for (int num = UNIT2_BULLET; num <= UNIT3_MAX; num++)
+	for(int num = UNIT2_BULLET; num <= UNIT3_MAX; num++)
 	{
 		//画面に出ている弾のみを更新
-		if (TRUE == unit[num].visible)
+		if(TRUE == unit[num].visible)
 		{
 			unit[num].Update(GameMasterM->loopTime);//座標と一緒に当たり判定を移動
 
 			//指定時間が経過したら消去処理
-			if (4.0f <= unit[num].GetTime())
+			if(4.0f <= unit[num].GetTime())
 			{
 				unit[num].speed = 0.0f;
 				unit[num].visible = FALSE;
@@ -1574,7 +1568,7 @@ void  GameModelsLayer::CheckHit(void)
 	const int pstate = GameMasterM->GetPlayerState();
 
 	//攻撃判定フラグがONのときのみ攻撃判定を処理
-	if (TRUE == GameMasterM->flgPlayerATK)
+	if(TRUE == GameMasterM->flgPlayerATK)
 	{
 		//注意：敵が重なって存在する場合に備え、Ｚソートなどの並び替えを行う必要がありそうです
 		auto s = Director::getInstance()->getWinSize();//ウィンドウサイズを取得
@@ -1595,7 +1589,7 @@ void  GameModelsLayer::CheckHit(void)
 		Vec2 tPos = GameMasterM->GetTouchPosInView();//タッチ座標を取得
 
 		tPos.y -= GameMasterM->reticleAjust * s.height;//レティクルの状態を
-		if (tPos.y < 0.0f)
+		if(tPos.y < 0.0f)
 		{
 			tPos.y = 0.0f;
 		}
@@ -1615,7 +1609,7 @@ void  GameModelsLayer::CheckHit(void)
 		//敵とプレイヤーの距離が近い順に当たり判定を処理する
 		int tmpArrayDir[UNIT2_BULLET - UNIT1_ENEMY];
 		int tmpArrayNum[UNIT2_BULLET - UNIT1_ENEMY];
-		for (int i = 0; i < UNIT2_BULLET - UNIT1_ENEMY; i++)
+		for(int i = 0; i < UNIT2_BULLET - UNIT1_ENEMY; i++)
 		{
 			Vec3 pPos = player.wrapper->getPosition3D() + player.sprite3d->getPosition3D() + player.centerNode->getPosition3D();
 			Vec3 dir = pPos - unit[i].sprite3d->getPosition3D();//プレイヤーと敵弾の差のベクトル
@@ -1632,11 +1626,11 @@ void  GameModelsLayer::CheckHit(void)
 		int left = 0;
 		int right = UNIT2_BULLET - UNIT1_ENEMY - 1;
 		int tmp, shift;
-		while (left < right)
+		while(left < right)
 		{
-			for (int i = left; i < right; i++)
+			for(int i = left; i < right; i++)
 			{
-				if (tmpArrayDir[i] >tmpArrayDir[i + 1])
+				if(tmpArrayDir[i] >tmpArrayDir[i + 1])
 				{
 					tmp = tmpArrayDir[i];
 					tmpArrayDir[i] = tmpArrayDir[i + 1];
@@ -1650,9 +1644,9 @@ void  GameModelsLayer::CheckHit(void)
 				}
 			}
 			right = shift;
-			for (int i = right; i > left; i--)
+			for(int i = right; i > left; i--)
 			{
-				if (tmpArrayDir[i] < tmpArrayDir[i - 1])
+				if(tmpArrayDir[i] < tmpArrayDir[i - 1])
 				{
 					tmp = tmpArrayDir[i];
 					tmpArrayDir[i] = tmpArrayDir[i - 1];
@@ -1670,17 +1664,17 @@ void  GameModelsLayer::CheckHit(void)
 
 		//ソート後
 		//レイの当たり判定
-		for (int i = 0; i < UNIT2_BULLET - UNIT1_ENEMY; i++)
+		for(int i = 0; i < UNIT2_BULLET - UNIT1_ENEMY; i++)
 		{
 			int n = tmpArrayNum[i];
 			//敵の
-			if (TRUE == unit[n].visible
+			if(TRUE == unit[n].visible
 				&& UKIND_ENEMY == unit[n].kind
 				&& unit[n].eState != ESTATE_DAMAGED
 				&& unit[n].eState != ESTATE_DEAD
 				&& unit[n].eState != ESTATE_SLEEP)
 			{
-				if (touchRay.intersects(unit[n].obbHead))//タッチ座標の法線と敵の当たり判定が接触したかをチェック
+				if(touchRay.intersects(unit[n].obbHead))//タッチ座標の法線と敵の当たり判定が接触したかをチェック
 				{
 					unit[n].hitpoint -= 1;
 					//１体に攻撃するとその時点でbreakする
@@ -1695,13 +1689,13 @@ void  GameModelsLayer::CheckHit(void)
 
 	//========================================================
 	//敵の攻撃処理（弾とプレイヤーの当たり判定）
-	if (TRUE == GameMasterM->playerHitFlag)
+	if(TRUE == GameMasterM->playerHitFlag)
 	{
 		//プレイヤーの当たり判定が存在する場合
 		//全ての敵弾ユニットを更新
-		for (int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
+		for(int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
 		{
-			if (TRUE == unit[i].visible)
+			if(TRUE == unit[i].visible)
 			{
 				//プレイヤーとの当たり判定を処理
 
@@ -1716,7 +1710,7 @@ void  GameModelsLayer::CheckHit(void)
 
 
 				//弾とプレイヤーの位置を元に当たり判定の処理
-				if (0.4f > d1)
+				if(0.4f > d1)
 				{
 					//接触した場合は_sprite3Dの解放を行う
 					unit[i].sprite3d->setVisible(false);
@@ -1728,7 +1722,7 @@ void  GameModelsLayer::CheckHit(void)
 					GameMasterM->playerHitFlag = FALSE;//食らい判定を無効化
 
 					player.sprite3d->stopALLAnimation();//すべてのアニメーションを中断して
-					switch (GameMasterM->playerSide)
+					switch(GameMasterM->playerSide)
 					{
 					case PSIDE_LEFT:
 						player.sprite3d->startAnimation("hit_l");//食らいモーションを再生
@@ -1761,16 +1755,16 @@ void  GameModelsLayer::CheckHit(void)
 		}
 	}
 
-	if (FALSE == GameMasterM->playerHitFlag && (PSTATE_DAMAGED == GameMasterM->GetPlayerState() || PSTATE_RECOVER == GameMasterM->GetPlayerState())
+	if(FALSE == GameMasterM->playerHitFlag && (PSTATE_DAMAGED == GameMasterM->GetPlayerState() || PSTATE_RECOVER == GameMasterM->GetPlayerState())
 		)
 	{
 		//当たり判定がオフの時も、プレイヤーが食らいモーションを受けているときは弾とプレイヤーの当たり判定を処理する
 		//（演出のための処理）
 		//プレイヤーの当たり判定が存在する場合
 		//全ての敵弾ユニットを更新
-		for (int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
+		for(int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
 		{
-			if (TRUE == unit[i].visible)
+			if(TRUE == unit[i].visible)
 			{
 				//プレイヤーとの当たり判定を処理
 
@@ -1783,7 +1777,7 @@ void  GameModelsLayer::CheckHit(void)
 				float d1 = sqrtf(dir.x * dir.x + dir.y * dir.y);
 				//計算した平面上の距離と高さの距離を求める
 				d1 = sqrtf((dir.z * dir.z) + (d1 * d1));
-				if (0.4f > d1)
+				if(0.4f > d1)
 				{
 					//接触した場合は_sprite3Dの解放を行う
 					unit[i].sprite3d->setVisible(false);
@@ -1807,9 +1801,9 @@ void  GameModelsLayer::CheckHit(void)
 */
 int GameModelsLayer::SearchFreeEnemy()
 {
-	for (int i = UNIT1_ENEMY; i <= UNIT2_BULLET; i++)
+	for(int i = UNIT1_ENEMY; i <= UNIT2_BULLET; i++)
 	{
-		if (FALSE == unit[i].visible)
+		if(FALSE == unit[i].visible)
 		{
 			return i;
 		}
@@ -1838,7 +1832,7 @@ Vec2 GameModelsLayer::calcRot(float pRot, int pSide)
 	cNode.lNode->setPosition(Vec2(0.0f, 0.0f));
 
 	//プレイヤーの向きに応じて処理を変更する
-	if (PSIDE_LEFT == pSide)
+	if(PSIDE_LEFT == pSide)
 	{
 		cNode.lNode->setPositionX(HIDEPOINT_X);//回避座標を代入
 		cNode.lNode->setPositionY(HIDEPOINT_Y);//回避座標を代入
@@ -1882,7 +1876,7 @@ Vec2 GameModelsLayer::calcCamPos(float pRot, int pSide)
 	cNode.lNode2->setPosition(Vec2(0.0f, 0.0f));
 
 	//プレイヤーの向きに応じて処理を変更する
-	if (PSIDE_LEFT == pSide)
+	if(PSIDE_LEFT == pSide)
 	{
 		cNode.lNode->setPositionX(C_SETX_L);//
 		cNode.lNode->setPositionY(C_SETZ_L);//
@@ -1906,7 +1900,6 @@ Vec2 GameModelsLayer::calcCamPos(float pRot, int pSide)
 		ret = cNode.lNode->convertToWorldSpace(cNode.lNode2->getPosition());//回転後のカメラの座標（プレイヤーとの相対位置）
 		ret = cNode.gNode->convertToWorldSpace(ret);//回転後のカメラの座標（プレイヤーとの相対位置）
 	}
-
 	return ret;
 }
 
@@ -1924,8 +1917,6 @@ Vec2 GameModelsLayer::calcCamPos2(float pRot, int pSide)
 {
 	//プレイヤーの先頭位置と角度から、カメラの回避時の座標を計算する
 	//回避時のカメラはプレイヤーに追従せず、この関数で計算した座標へ向かって個別に移動します
-
-	//
 	Vec2 pos = Vec2(0.0f, 0.0f);
 	cNode.gNode->setRotation(0.0f);
 	cNode.gNode->setPosition(Vec2(0.0f, 0.0f));
@@ -1937,7 +1928,7 @@ Vec2 GameModelsLayer::calcCamPos2(float pRot, int pSide)
 	cNode.lNode2->setPosition(Vec2(0.0f, 0.0f));
 
 	//プレイヤーの向きに応じて処理を変更する
-	if (PSIDE_LEFT == pSide)
+	if(PSIDE_LEFT == pSide)
 	{
 		cNode.lNode->setPositionX(HIDEPOINT_X);//カメラの親ノード
 		cNode.lNode->setPositionY(HIDEPOINT_Y);//〃
@@ -1974,7 +1965,6 @@ Vec2 GameModelsLayer::calcCamPos2(float pRot, int pSide)
 */
 Vec2 GameModelsLayer::calcCamPos3(float pRot, int pSide)
 {
-	//
 	Vec2 ret = Vec2(0.0f, 0.0f);
 	cNode.gNode->setRotation(0.0f);
 	cNode.gNode->setPosition(Vec2(0.0f, 0.0f));
@@ -1986,7 +1976,7 @@ Vec2 GameModelsLayer::calcCamPos3(float pRot, int pSide)
 	cNode.lNode2->setPosition(Vec2(0.0f, 0.0f));
 
 	//プレイヤーの向きに応じて処理を変更する
-	if (PSIDE_LEFT == pSide)
+	if(PSIDE_LEFT == pSide)
 	{
 		cNode.lNode->setPositionX(HIDECAMERA_X);//カメラの親ノードの回避後の座標
 		cNode.lNode->setPositionY(HIDECAMERA_Y);//カメラの親ノードの回避後の座標
@@ -2040,7 +2030,6 @@ void GameModelsLayer::UpdateEnemy()
 	{
 		if(TRUE == unit[num].visible)//エネミーが表示されていれば
 		{
-
 			unit[num].Update(GameMasterM->loopTime);//フレーム・座標・当たり判定の更新
 
 			auto director = Director::getInstance();
@@ -2057,9 +2046,9 @@ void GameModelsLayer::UpdateEnemy()
 			switch(unit[num].eState)
 			{
 			case ESTATE_SLEEP://敵が休眠状態
-				
+
 				unit[num].sleepTime -= GameMasterM->loopTime;
-				if (unit[num].sleepTime <= 0.0f)
+				if(unit[num].sleepTime <= 0.0f)
 				{
 					unit[num].eState = ESTATE_STANDBY;
 					unit[num].sprite3d->setVisible(true);
@@ -2134,6 +2123,8 @@ void GameModelsLayer::setNextEnemy(int num)
 			unit[n].AIAtk = enemyTable->enemyData[nextNum].AIAtk;
 			unit[n].AIAppear = enemyTable->enemyData[nextNum].AIappear;
 
+			unit[i].nowShot = 0;
+			unit[i].maxShot = enemyTable->enemyData[nextNum].maxShot;
 			//フレーム
 			unit[n].sleepTime = enemyTable->enemyData[nextNum].sleepTime;
 		}
@@ -2218,7 +2209,7 @@ void GameModelsLayer::KillPlayer()
 
 	//必要ならばモーションの停止を行う
 	player.sprite3d->stopAllActions();
-	player.sprite3d->startAnimation("dei2");//
+	player.sprite3d->startAnimation("dei1");//
 
 
 	//プレイヤーの座標を指定位置に動かす
@@ -2359,10 +2350,12 @@ void GameModelsLayer::ActionEIdle(int num)
 	}
 }
 
+
 void GameModelsLayer::ActionEDodge(int num)
 {
 
 }
+
 
 //
 void GameModelsLayer::ActionEDamaged(int num)
@@ -2406,13 +2399,14 @@ void GameModelsLayer::ActionEDamaged(int num)
 	//        unit[num].eState = ESTATE_STANDBY;
 	//    unit[num].hitpoint = 5;
 	//個別
-
 }
+
 
 void GameModelsLayer::ActionERecover(int num)
 {
 
 }
+
 
 
 void GameModelsLayer::ActionEDead(int num)
@@ -2428,27 +2422,30 @@ void GameModelsLayer::ActionEDead(int num)
 
 
 
-//
+/*
+
+*/
 void GameModelsLayer::ActionEAttack(int num)
 {
-
 	//タイミングを合わせて射撃を行う
 	unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
-	if (0.0f >= unit[num].atkFrame)
+	if(0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
 	{
 		//フレームが0になったら
 		ShootBullet(num);
-		unit[num].atkFrame = 0.33f;//次の弾発射までの時間を設定
+		unit[num].atkFrame = 0.15f;//次の弾発射までの時間を設定
+		unit[num].nowShot++;
 	}
 
 	//アニメーションが終了したら
-	if (0 == unit[num].sprite3d->checkAnimationState())
+	if(0 == unit[num].sprite3d->checkAnimationState())
 	{
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].eState = ESTATE_IDLE;
+		unit[num].nowShot = 0;
 
 		//敵のAIの種類でモーションと移動量を変更する
-		switch (unit[num].AIIdle)
+		switch(unit[num].AIIdle)
 		{
 		case AI_IDLE_FAKE:
 			unit[num].sprite3d->startAnimationLoop("dammy_shot");
@@ -2503,7 +2500,7 @@ int GameModelsLayer::ChangeCamera(int num)
 	//カメラの座標と角度も変更できますが、あくまでカメラの初期位置であり、移動と回転は他で行う必要があります
 	//カメラの動きを注視点管理で統一したら、この関数は使わなくする予定です
 
-	switch (num)
+	switch(num)
 	{
 	case 0://0番はOPデモ用の初期設定
 
@@ -2523,6 +2520,3 @@ int GameModelsLayer::ChangeCamera(int num)
 	}
 	return TRUE;
 }
-
-
-

@@ -115,8 +115,6 @@ bool GameScene::init()
 	sound->loadSE("Damage_04.wav");
 
 	this->scheduleUpdate();
-	//	this->schedule(schedule_selector(GameScene::moveTime), 0.016f);//1秒60Fでゲーム更新
-
 
 	//時間取得のための変数を初期化
 	GameMasterS->nowTV = new timeval;
@@ -144,7 +142,7 @@ int GameScene::InitCamera()
 	auto s = Director::getInstance()->getWinSize();
 
 	//2D用カメラの実装
-	if (NULL != gUILayer)
+	if(NULL != gUILayer)
 	{
 		GameMasterS->InitCamera2D();//カメラを初期化
 		gUILayer->setCameraMask(CAMFLAG_DEFAULT);
@@ -152,7 +150,7 @@ int GameScene::InitCamera()
 	}
 
 	//3D用カメラの実装
-	if (NULL != gGameLayer)
+	if(NULL != gGameLayer)
 	{
 		GameMasterS->InitCamera3D();//カメラを初期化（ノードにaddChildもする）
 		gGameLayer->setCameraMask(CAMFLAG_3D);
@@ -187,6 +185,7 @@ int GameScene::InitCamera()
 */
 void GameScene::moveTime(float delta)
 {
+
 }
 
 
@@ -228,11 +227,13 @@ void GameScene::update(float delta)
 		//ゲームの残り時間はGameModelsLayer内で管理します
 
 	case GSTATE_INIT:
-		if (NULL != gGameLayer)//現在は子レイヤーをクリエイトしたかを確認する
+		if(NULL != gGameLayer)//現在は子レイヤーをクリエイトしたかを確認する
 		{
 			gGameLayer->InitLayer();//
+
+			//
 		}
-		if (NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
+		if(NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
 		{
 			gUILayer->InitLayer();//
 		}
@@ -245,7 +246,16 @@ void GameScene::update(float delta)
 
 	case GSTATE_OP:
 
-		UpdateCamera();//モデルの移動をもとにカメラ移動
+		//シーン切り替え用の変数
+		timeCount += GameMasterS->loopTime;//
+		if(timeCount >= TIME_OP)
+		{
+
+		}
+		else
+		{
+			UpdateCamera();//モデルの移動をもとにカメラ移動
+		}
 
 		break;
 	case GSTATE_WAIT:

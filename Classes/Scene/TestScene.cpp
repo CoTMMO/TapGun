@@ -29,15 +29,20 @@ using namespace std;
 using namespace TapGun;
 using namespace CocosDenshion;
 
+
+
+Camera* camera3D = NULL;
+
 Scene* Test::createScene()
 {
-	SystemValue::windowSize = Director::getInstance() -> getVisibleSize();
-	SystemValue::origin = Director::getInstance() -> getVisibleOrigin();
+	SystemValue::windowSize = Director::getInstance()->getVisibleSize();
+	SystemValue::origin = Director::getInstance()->getVisibleOrigin();
 	auto scene = Scene::create();
 	auto layer = Test::create();
-	scene -> addChild( layer);
+	scene->addChild(layer);
 	return scene;
 }
+
 
 bool Test::init()
 {
@@ -65,6 +70,13 @@ bool Test::init()
 	sprite -> setPosition( 640, 200);
 	sprite -> setScale( 300.0f);
 	addChild( sprite);
+
+	//カメラ
+	camera3D->create();
+	camera3D->setPosition3D(Vec3(0.0f, 0.0f, 0.0f));
+	camera3D->setRotation3D(Vec3(0.0f, 0.0f, 0.0f));
+	addChild(camera3D);
+
 
 	return true;
 }

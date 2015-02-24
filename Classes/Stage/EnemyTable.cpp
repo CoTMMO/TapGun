@@ -17,20 +17,20 @@ using namespace TapGun;
 
 void EnemyTable::InitAll()
 {
-	for (int i = 0; i < 10; i++)
+	for(int i = 0; i < 10; i++)
 	{
 		standbyPos[i] = Vec3(0.0f, 0.0f, 0.0f);
 	}
 
-	for (int i = 0; i < 20; i++)
+	for(int i = 0; i < 20; i++)
 	{
 		targetPos[i] = Vec3(0.0f, 0.0f, 0.0f);
 	}
 
-	for (int i = 0; i < 100; i++)
+	for(int i = 0; i < 100; i++)
 	{
 		enemyData[i].kind = EKIND_TWIN;//“G‚ÍŒ»Ý‚·‚×‚ÄƒcƒCƒ“ƒ}ƒVƒ“ƒKƒ“‚Å‰Šú‰»
-		for (int j = 0; j < 3; j++)
+		for(int j = 0; j < 3; j++)
 		{
 			enemyData[j].nextEnemiesNum[j] = -1;
 		}
@@ -48,5 +48,8 @@ void EnemyTable::InitAll()
 
 		enemyData[i].atkFrame = 0.0f;//UŒ‚ŠÔŠui•bj
 		enemyData[i].waitFrame = 0.0f;//oŒ»‚µ‚Ä‚©‚çˆÚ“®‚µŽn‚ß‚é‚Ü‚Å‚ÌŽžŠÔ
+
+		enemyData[i].nowShot = 0;
+		enemyData[i].maxShot = 0;//
 	}
 }

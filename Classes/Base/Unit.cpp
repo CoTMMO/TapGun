@@ -36,6 +36,11 @@ void Unit::Init( void)
 	collisionPos = Vec3(0, 0, 0);//当たり判定（OBB）の各辺
 	tableNum = -1;
 
+
+	hitpoint = 0;
+	nowShot = 0;
+	maxShot = 0;
+
 //	colisionNode = Node::create();
 	time = 0.0f;//管理フレーム
 }
@@ -76,6 +81,9 @@ int Unit::Init(int num, int utype)
 	eWaitFrame = 0;//出現までの待ちフレーム
 	StandbyPos = Vec3(0, 0, 0);//待機座標
 
+	hitpoint = 0;
+	nowShot = 0;
+	maxShot = 0;
 
 	//モデルの種別によって当たり判定の設定を行う
 	//敵や弾の種類（副種別）によってさらに条件分けする

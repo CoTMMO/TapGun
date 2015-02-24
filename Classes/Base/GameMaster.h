@@ -11,10 +11,10 @@ namespace TapGun
 #define FALSE -1
 #define TRUE 1
 
-//#define FRAME 0.01666f//時間を
+	//#define FRAME 0.01666f//時間を
 
-//プレイヤーのパラメータ定義
-#define STS_MAXPLAYERHP 6//プレイヤーの最大HP
+	//プレイヤーのパラメータ定義
+#define STS_MAXPLAYERHP 1//プレイヤーの最大HP
 #define STS_RAPIDSPEED 8//プレイヤーの連射速度（フレーム）
 #define STS_MAXBULLETS 30//プレイヤーの最大弾数
 #define STS_MUTEKIFRAME (120 / 60.0f) //無敵時間
@@ -30,15 +30,17 @@ namespace TapGun
 
 
 //敵のパラメータ定義
-
 #define STS_ENEMY_HP 6//敵のHP
+#define STS_ENEMY_MAXSHOT 5//敵の連射数
 #define STS_ENEMY_RUNSPEED 5.0f//敵の走り速度
 #define STS_EBULLET_SPEED 19.0f//敵の弾の速度
 
 #define BATTLE_FEILD_X 0.8//タッチで攻撃可能な画面割合
 
+
 //当たり判定系定義
 #define PLAYER_CENTER_Y 1.2f//プレイヤーの当たり判定高さ（敵弾が目標とする高さ）
+
 
 //回避ボタンの当たり判定定義（ボタンのスプライトと当たり判定を分けて実装します）
 #define HIDE_UI_RECT_X 0.18f//当たり判定矩形
@@ -46,7 +48,8 @@ namespace TapGun
 #define HIDE_UI_POS_X 0.09f//当たり判定中心
 #define HIDE_UI_POS_Y 0.2f//当たり判定中心
 
-	//以上のステータスをもとに座標を計算する
+
+//以上のステータスをもとに座標を計算する
 #define HIDE_UI_X0 (HIDE_UI_RECT_X * 0.5f - HIDE_UI_POS_X)
 #define HIDE_UI_Y0 (HIDE_UI_RECT_Y * 0.5f - HIDE_UI_POS_Y)
 #define HIDE_UI_X1 (HIDE_UI_RECT_X * 0.5f + HIDE_UI_POS_X)
@@ -62,6 +65,7 @@ namespace TapGun
 #define C_ROTY_R 10.0f
 #define C_ROTZ_R 0.0f
 
+
 //Action時のカメラの設定(左)
 #define C_PERSE_L 35//カメラ視野角
 #define C_SETX_L 0.52f
@@ -70,6 +74,7 @@ namespace TapGun
 #define C_ROTX_L 0.0f
 #define C_ROTY_L -10.0f
 #define C_ROTZ_L 0.0f
+
 
 //Wait時のカメラの設定
 #define W_PERSE 45//カメラ視野角
@@ -81,10 +86,11 @@ namespace TapGun
 #define W_ROTY 0.0f
 #define W_ROTZ 0.0f
 
+
 //死亡時のカメラの初期設定
 #define KE_POSX 0.0f//Kill Eye Pos
-#define KE_POSY 3.0f
-#define KE_POSZ -3.0f
+#define KE_POSY 2.5f
+#define KE_POSZ -5.0f
 
 #define KT_POSX 0.0f//Kill Target Pos
 #define KT_POSY 0.0f
@@ -94,25 +100,27 @@ namespace TapGun
 //3DSMAXのカメラ角度を通常角度に変換するためのマクロ
 #define MACRO_CROT_X(x) (x - 90)
 #define MACRO_CROT_Y(y) (y + 180)
-//#define MACRO_CROT_Z(a) ()//Zは恐らく使用しない
+	//#define MACRO_CROT_Z(a) ()//Zは恐らく使用しない
 
-//秒をフレームに変換/フレームを秒に変換
+	//秒をフレームに変換/フレームを秒に変換
 #define MACRO_StoF(second) (second * 60.0f)
 #define MACRO_FtoS(frame) (frame * 0.01666f)
 
 
-//プレイヤーが回避する時の軸の座標（プレイヤーから見た相対座標、左側時）
-//プレイヤーは0度基準で配置しているので、X軸Y軸がカメラとそれぞれ反転しています
+	//プレイヤーが回避する時の軸の座標（プレイヤーから見た相対座標、左側時）
+	//プレイヤーは0度基準で配置しているので、X軸Y軸がカメラとそれぞれ反転しています
 #define HIDEPOINT_X 0.35f
 #define HIDEPOINT_Y 0.35f
 
-//回避した時のカメラの移動後の座標（カメラから見た相対座標、左側時）
+	//回避した時のカメラの移動後の座標（カメラから見た相対座標、左側時）
 #define HIDECAMERA_X 1.1f
 #define HIDECAMERA_Y -1.1f
 
-//時間
+	//時間
 #define TIME_MAXTIME 180.0f//ゲーム本編の最大時間
 #define TIME_ACTION_UI 1.8f//ActionのUIを表示する時間（秒）
+#define TIME_OP 6.0f//ActionのUIを表示する時間（秒）
+
 	enum _CAMERA_FLAG_
 	{
 		//CAMFLAG_DEFAULT = CameraFlag::DEFAULT,//
@@ -123,6 +131,7 @@ namespace TapGun
 
 	enum _GAME_STATE_
 	{
+		GSTATE_CREATE,//レイヤー生成時に呼ばれる
 		GSTATE_INIT,//
 		GSTATE_OP,//OP状態
 		GSTATE_WAIT,//ウェイト時
@@ -146,7 +155,7 @@ namespace TapGun
 	{
 		PSTATE_IDLE,
 		PSTATE_SHOT,
-//		PSTATE_PLAY_SET,//アクションの準備中
+		//		PSTATE_PLAY_SET,//アクションの準備中
 		PSTATE_DODGE,//隠れ中
 		PSTATE_HIDE,//隠れている
 		PSTATE_APPEAR,//隠れた状態から出る
@@ -198,11 +207,11 @@ namespace TapGun
 		POINT_START,
 		//POINT_L1_0,は使用しない
 		POINT_W1,
-//		POINT_L1,
+		//		POINT_L1,
 
-//		POINT_L2_1a,
+		//		POINT_L2_1a,
 		POINT_W2,
-//		POINT_L2,
+		//		POINT_L2,
 
 		//POINT_L3_1,
 		POINT_W3,
@@ -253,10 +262,10 @@ namespace TapGun
 
 		int flgPlayerATK;//プレイヤーの攻撃処理判定を行うか（TRUE/FALSE）
 
-//		float hideFrame;//回避フレーム
+		//		float hideFrame;//回避フレーム
 		float mutekiFrame;//無敵時間
-		
-//		float gameTime;//ゲーム全体の時間
+
+		//		float gameTime;//ゲーム全体の時間
 
 		float reticleAjust;//指の位置とレティクルの位置の差（画面に対する割合）
 
@@ -277,7 +286,6 @@ namespace TapGun
 
 		void InitCamera2D(void);
 		void InitCamera3D(void);
-
 
 		//2Dカメラ用
 		void SetCamera2DPos(cocos2d::Vec3 pos);//2Dカメラの位置を変更することはあまりないので必要ない？
