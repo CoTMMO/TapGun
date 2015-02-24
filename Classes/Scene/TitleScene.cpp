@@ -24,6 +24,8 @@
 USING_NS_CC;
 using namespace TapGun;
 
+_Sprite3D* sp;
+
 Scene* TitleScene::createScene()
 {
 	auto scene = Scene::create();
@@ -48,10 +50,16 @@ bool TitleScene::init()
 	cache -> addSpriteFramesWithFile( "Title.plist");
 	cache -> addSpriteFramesWithFile( "P_Hit.plist");
 	cache -> addSpriteFramesWithFile( "E_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Logo.plist");
+	cache -> addSpriteFramesWithFile( "Number.plist");
+	cache -> addSpriteFramesWithFile( "HPGauge.plist");
 #else
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/Title.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/P_Hit.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/E_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Title.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/P_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/E_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Logo.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Number.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/HPGauge.plist");
 #endif
 	menuFlag = TeamLogo;
 
@@ -74,15 +82,13 @@ bool TitleScene::init()
 
 void TitleScene::update( float delta)
 {
-	_Sprite3D* sp;
 	static bool modelLoadFlag = false;
 	auto sound = Sound::getInstance();
-	auto cache = SpriteFrameCache::getInstance();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	if( frame == ResourceLoader::Map)
 	{
-		ResourceLoader::getInstance() -> loadModel( "map507");
+		ResourceLoader::getInstance() -> loadModel( "stage");
 	}
 	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
 	{
@@ -99,11 +105,11 @@ void TitleScene::update( float delta)
 #else
 	if( frame == ResourceLoader::Map)
 	{
-		ResourceLoader::getInstance() -> loadModel( "Stage/map507");
+		ResourceLoader::getInstance() -> loadModel( "Stage/stage");
 	}
 	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
 	{
-		ResourceLoader::getInstance() -> loadModel( "enemy/enemy", "", "Enemy.anime");
+		ResourceLoader::getInstance() -> loadModel( "Enemy/enemy", "", "Enemy.anime");
 	}
 	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
 	{
@@ -111,22 +117,21 @@ void TitleScene::update( float delta)
 	}
 	else if( frame == ResourceLoader::Player)
 	{
-		ResourceLoader::getInstance() -> loadModel( "player/player", "", "Player.anime");
+		ResourceLoader::getInstance() -> loadModel( "Player/player", "", "Player.anime");
 	}
 #endif
 
 	switch( menuFlag)
 	{
 	case TeamLogo:
-		//if( modelLoadFlag == false && ( sp = ResourceLoader::getInstance() -> getSprite3D(ResourceLoader::Player)) != nullptr)
-		//{
-		//	modelLoadFlag = true;
-		//	sp -> setPosition3D( Vec3( 640, 400, 0));
-		//	sp -> setScale( 300.0f);
-		//	sp->setRotation3D(Vec3(10.0f, 0.0f, 150.0f));
-		//	sp->startAnimationLoop("dei1");
-		//	addChild( sp);
-		//}
+//		if( modelLoadFlag == false && ( sp = ResourceLoader::getInstance() -> getSprite3D( 50)) != nullptr)
+//		{
+//			modelLoadFlag = true;
+//			sp -> setPosition3D( Vec3( 640, 400, 50));
+//			sp -> setScale( 300.0f);
+//			sp->startAnimationLoop("dei1");
+//			addChild( sp);
+//		}
 		teamLogoAction();
 		break;
 
@@ -136,7 +141,7 @@ void TitleScene::update( float delta)
 		if( alphaCount > 180)
 		{
 			menuFlag = TitleLogoOK;
-			//sound -> playBGMLoop();
+			sound -> playBGMLoop();
 		}
 		break;
 
@@ -199,7 +204,7 @@ void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 		menuFlag = MenuIn;
 		sprite[Logo] -> runAction( MoveTo::create( 1, Point( 3000, sprite[Logo] -> getPositionY())));
 		auto action = Blink::create( 0.2, 3);
-		//sound -> playSE( "MoveSE.mp3");
+		sound -> playSE( "MoveSE.mp3");
 		auto func = CallFunc::create( [&](void) -> void { sprite[Menu] -> setVisible( false); menuAction(); });
 		sprite[Menu] -> runAction( Sequence::create( action, func, NULL));
 	}
@@ -300,8 +305,8 @@ void TitleScene::menuAction( void)
 void TitleScene::menuStartCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	//sound -> stopBGM();
-	//sound -> playSE( "MoveSE.mp3");
+	sound -> stopBGM();
+	sound -> playSE( "MoveSE.mp3");
 	auto scene = GameScene::CreateScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
@@ -310,8 +315,8 @@ void TitleScene::menuStartCallback( Ref* pSender)
 void TitleScene::menuEndCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	//sound -> stopBGM();
-	//sound -> playSE( "MoveSE.mp3");
+	sound -> stopBGM();
+	sound -> playSE( "MoveSE.mp3");
 	Director::getInstance() -> end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	exit(0);
@@ -321,8 +326,8 @@ void TitleScene::menuEndCallback( Ref* pSender)
 void TitleScene::menuCreditCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	//sound -> stopBGM();
-	//sound -> playSE( "MoveSE.mp3");
+	sound -> stopBGM();
+	sound -> playSE( "MoveSE.mp3");
 	auto scene = CreditScene::createScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
