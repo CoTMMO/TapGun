@@ -12,6 +12,7 @@
 #include "Errorfunc.h"
 #include "Sound.h"
 #include "UI.h"
+#include "Effect.h"
 
 #else
 
@@ -29,7 +30,8 @@ using namespace std;
 using namespace TapGun;
 using namespace CocosDenshion;
 
-Sprite3D* sprite3d;
+_Sprite3D* sprite3d;
+
 
 Scene* Test::createScene()
 {
@@ -50,33 +52,7 @@ bool Test::init()
 	cache -> addSpriteFramesWithFile( "P_Hit.plist");
 	cache -> addSpriteFramesWithFile( "E_Hit.plist");
 	
-	auto billboard =  BillBoard::create();
-	
-	
-	auto sprite = Sprite::createWithSpriteFrameName( "E_Hit01.png");
-//	sprite -> setPosition( Vec2( 640, 500));
-	
-	auto animation = Animation::create();
-	
-	for( int i = 0; i < 8; i++)
-	{
-		char buf[256];
-		sprintf( buf, "E_Hit%02d.png", i + 1);
-		animation -> addSpriteFrame( cache -> getSpriteFrameByName( buf));
-	}
-	
-
-	
-	animation -> setDelayPerUnit( 0.05f);
-	animation -> setRestoreOriginalFrame( true);
-	
-	auto action = Animate::create( animation);
-	sprite -> runAction( RepeatForever::create( action));
-	
-	billboard -> setPosition3D( Vec3( 1, 0.5, 1));
-	billboard -> addChild( sprite);
-
-	sprite->getTexture();
+	billboard = BillBoard::create();
 	
 	//現在はタッチイベントのリスナーをここに用意しています
 	auto dispatcher = Director::getInstance()->getEventDispatcher();
@@ -91,12 +67,10 @@ bool Test::init()
 	scheduleUpdate();
 	schedule( schedule_selector(Test::moveTime), 0.016f);
 
-	sprite3d = Sprite3D::create( "enemy.c3b");
-	sprite3d -> setPosition( 640, 200);
-	sprite3d -> setRotation3D( Vec3( 0.0f, 60.0f, 0.0f));
-	sprite3d -> setScale( 300.0f);
-	sprite -> setScale( 0.003f);
-	sprite3d -> addChild( billboard);
+	sprite3d = _Sprite3D::create( "enemy.c3t", "Enemy.anime");
+	sprite3d -> setPosition( 200, 200);
+	sprite3d -> setRotation3D( Vec3( 0.0f, 0.0f, 0.0f));
+	sprite3d -> setScale( 200.0f);
 	addChild( sprite3d);
 
 	return true;
@@ -106,7 +80,8 @@ void Test::update( float delta)
 {
 //	Manager::getInstance() -> update();
 	static int count = 0;
-	sprite3d -> setRotation3D(( Vec3( 0.0f, count, 0.0f)));
+//	sprite3d -> setRotation3D(( Vec3( 0.0f, count, 0.0f)));
+	Effect::getInstance() -> muzzleUpdate();
 	count++;
 }
 
@@ -117,6 +92,10 @@ void Test::moveTime( float delta)
 
 bool Test::onTouchBegan(cocos2d::Touch *pTouch, cocos2d::Event *pEvent)
 {
+//	setEnemyHitEffect( (Sprite3D*)sprite3d);
+//	Effect::getInstance() -> setEnemyHitEffect( sprite3d);
+	sprite3d -> startAnimation( "shot");
+	Effect::getInstance() -> setEnemyMuzzle( sprite3d, "Po_1", "Po_2");
 	return true;
 }
 
@@ -125,8 +104,39 @@ void Test::onTouchMoved(cocos2d::Touch *pTouch, cocos2d::Event *pEvent)
 {
 }
 
-
-
 void Test::onTouchEnded(cocos2d::Touch *pTouch, cocos2d::Event *pEvent)
 {
+}
+
+void Test::setEnemyHitEffect( Sprite3D* sprite3d)
+{
+	auto cache = SpriteFrameCache::getInstance();
+
+	auto animation = Animation::create();
+	
+	for( int i = 0; i < 8; i++)
+	{
+		char buf[256];
+		sprintf( buf, "E_Hit%02d.png", i + 1);
+		animation -> addSpriteFrame( cache -> getSpriteFrameByName( buf));
+	}
+	
+	animation -> setDelayPerUnit( 0.05f);
+	animation -> setRestoreOriginalFrame( true);
+	
+	auto action = Animate::create( animation);
+	
+	auto callfunc = CallFunc::create( [&](void)->void
+	{
+		billboard -> removeFromParent();
+	});
+	
+	auto sequence = Sequence::create( action, callfunc, NULL);
+	
+	billboard -> runAction( sequence);
+	
+	billboard -> setPosition3D( Vec3( 1, 0.5, 1));
+	
+	billboard -> setScale( 0.003f);
+	sprite3d -> addChild( billboard);
 }
