@@ -304,6 +304,8 @@ void TitleScene::menuAction( void)
 
 void TitleScene::menuStartCallback( Ref* pSender)
 {
+	ResourceLoader::getInstance() -> getSprite3D( 50);
+	
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
 	sound -> playSE( "MoveSE.mp3");
