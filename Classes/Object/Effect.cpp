@@ -232,7 +232,7 @@ void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 		sprintf( buf, "p_muzzle%02d", i + 1);
 #else
-		sprintf( buf, "Muzzle/p_muzzle%02d", i + 1);
+		sprintf( buf, "P_Muzzle/p_muzzle%02d", i + 1);
 #endif
 		playerMuzzle -> sprite3D[i] = _Sprite3D::create( buf);
 		playerMuzzle -> sprite3D[i] -> setVisible( false);
@@ -261,7 +261,7 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 			sprintf( buf, "e_muzzle%02d", j + 1);
 #else
-			sprintf( buf, "Muzzle/e_muzzle%02d", j + 1);
+			sprintf( buf, "E_Muzzle/e_muzzle%02d", j + 1);
 #endif
 			enemyMuzzle[i] -> sprite3DR[j] = _Sprite3D::create( buf);
 			enemyMuzzle[i] -> sprite3DR[j] -> setVisible( false);

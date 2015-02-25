@@ -21,7 +21,7 @@
 #include "System/Directory.h"
 #include "System/Errorfunc.h"
 #include "System/Sound.h"
-
+#include "Object/Effect.h"
 #endif
 
 USING_NS_CC;
@@ -67,8 +67,10 @@ bool Test::init()
 	scheduleUpdate();
 	schedule( schedule_selector(Test::moveTime), 0.016f);
 
-	sprite3d = _Sprite3D::create( "enemy.c3t", "Enemy.anime");
-	sprite3d -> setPosition( 200, 200);
+
+
+	sprite3d = _Sprite3D::create( "Enemy/enemy.c3t", "Enemy.anime");
+	sprite3d -> setPosition( 400, 200);
 	sprite3d -> setRotation3D( Vec3( 0.0f, 0.0f, 0.0f));
 	sprite3d -> setScale( 200.0f);
 	addChild( sprite3d);
@@ -94,7 +96,7 @@ bool Test::onTouchBegan(cocos2d::Touch *pTouch, cocos2d::Event *pEvent)
 {
 //	setEnemyHitEffect( (Sprite3D*)sprite3d);
 //	Effect::getInstance() -> setEnemyHitEffect( sprite3d);
-	sprite3d -> startAnimation( "shot");
+	sprite3d->startAnimation("shot", 0.8f, 0.0f);
 	Effect::getInstance() -> setEnemyMuzzle( sprite3d, "Po_1", "Po_2");
 	return true;
 }
