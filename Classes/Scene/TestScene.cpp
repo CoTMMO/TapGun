@@ -70,9 +70,9 @@ bool Test::init()
 
 
 	sprite3d = _Sprite3D::create( "Enemy/enemy.c3t", "Enemy.anime");
-	sprite3d -> setPosition( 400, 200);
+	sprite3d -> setPosition3D( Vec3( 640, 200, -100));
 	sprite3d -> setRotation3D( Vec3( 0.0f, 0.0f, 0.0f));
-	sprite3d -> setScale( 200.0f);
+	sprite3d -> setScale( 300.0f);
 	addChild( sprite3d);
 
 	return true;

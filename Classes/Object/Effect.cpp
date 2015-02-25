@@ -266,13 +266,13 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 			enemyMuzzle[i] -> sprite3DR[j] = _Sprite3D::create( buf);
 			enemyMuzzle[i] -> sprite3DR[j] -> setVisible( false);
 			enemyMuzzle[i] -> sprite3DR[j] -> setPosition3D( Vec3( 0, 0, 0));
-			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 270, 0, 180));
+			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point1 -> addChild( enemyMuzzle[i] -> sprite3DR[j]);
 			
 			enemyMuzzle[i] -> sprite3DL[j] = _Sprite3D::create( buf);
 			enemyMuzzle[i] -> sprite3DL[j] -> setVisible( false);
 			enemyMuzzle[i] -> sprite3DL[j] -> setPosition3D( Vec3( 0, 0, 0));
-			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 270, 0, 180));
+			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point2 -> addChild( enemyMuzzle[i] -> sprite3DL[j]);
 		}
 		return;
