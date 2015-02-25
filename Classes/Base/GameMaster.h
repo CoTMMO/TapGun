@@ -14,7 +14,7 @@ namespace TapGun
 	//#define FRAME 0.01666f//時間を
 
 	//プレイヤーのパラメータ定義
-#define STS_MAXPLAYERHP 1//プレイヤーの最大HP
+#define STS_MAXPLAYERHP 999//プレイヤーの最大HP
 #define STS_RAPIDSPEED 8//プレイヤーの連射速度（フレーム）
 #define STS_MAXBULLETS 30//プレイヤーの最大弾数
 #define STS_MUTEKIFRAME (120 / 60.0f) //無敵時間
@@ -32,7 +32,13 @@ namespace TapGun
 //敵のパラメータ定義
 #define STS_ENEMY_HP 6//敵のHP
 #define STS_ENEMY_MAXSHOT 5//敵の連射数
+
 #define STS_ENEMY_RUNSPEED 5.0f//敵の走り速度
+#define STS_ENEMY_WALKSPEED 2.0f//敵の歩き速度
+#define STS_ENEMY_SWALKSPEED 2.0f//敵の横歩き速度
+#define STS_ENEMY_SJUMPSPEED 5.0f//敵の横歩き速度
+#define STS_ENEMY_ACROSPEED 5.0f//敵の横歩き速度
+
 #define STS_EBULLET_SPEED 19.0f//敵の弾の速度
 
 #define BATTLE_FEILD_X 0.8//タッチで攻撃可能な画面割合

@@ -124,7 +124,7 @@ void GameMaster::InitParam()
 	playerState = PSTATE_IDLE;
 	gameState = GSTATE_INIT;
 	wave = 0;
-	playerHP = 6;
+	playerHP = 0;
 
 	touchState = TSTATE_OFF;
 	touchFlag = TFLAG_OFF;
@@ -132,6 +132,10 @@ void GameMaster::InitParam()
 	gameActionTime = TIME_MAXTIME;
 
 	sPoint = 0;
+
+
+	//移動ポイント定義は今後外部ファイルからの読み込みにし、ロード時に1度のみ読み込むようにします
+
 	//プレイヤーの移動ポイントを設定する
 	for(int i = 0; i < 100; i++)
 	{

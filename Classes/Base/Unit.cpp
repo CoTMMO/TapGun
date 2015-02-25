@@ -32,7 +32,11 @@ void Unit::Init( void)
 	pos = Vec3(0, 0, 0);//モデル座標
 	speed = 0.0f;//移動速度
 	speedVec = Vec3(0, 0, 0);//移動ベクトル
-	targetPos = Vec3(0, 0, 0);//移動目標
+	targetPos[0] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	targetPos[1] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	targetPos[2] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	nowTargetPos = 0;
+
 	collisionPos = Vec3(0, 0, 0);//当たり判定（OBB）の各辺
 	tableNum = -1;
 
@@ -41,8 +45,7 @@ void Unit::Init( void)
 	nowShot = 0;
 	maxShot = 0;
 
-//	colisionNode = Node::create();
-	time = 0.0f;//管理フレーム
+	time = 0.0f;//管理時間
 }
 
 
@@ -74,7 +77,9 @@ int Unit::Init(int num, int utype)
 	pos = Vec3(0, 0, 0);
 	speed = 0.0f;
 	speedVec = Vec3(0, 0, 0);
-	targetPos = Vec3(0, 0, 0);
+	targetPos[0] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	targetPos[1] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	targetPos[2] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
 
 	time = 0.0f;//管理時間を初期化
 
@@ -294,4 +299,18 @@ void Unit::SetAnimation(const std::string& animeName, const int speed)
 int Unit::GetTime(void)
 {
 	return time;
+}
+
+
+
+
+
+
+void Unit::SetTargetPos(Vec3 pos[3])
+{
+	for (int i = 0; i < 3; i++)
+	{
+		targetPos[i] = pos[i];
+	}
+
 }

@@ -23,21 +23,32 @@ void Enemy::SetNextEnemy(int num1, int num2, int num3)
 }
 
 
-int Enemy::SetAI(int idle, int atk, int appear)
+void Enemy::SetTargetPos(Vec3 pos[3])
 {
-	if(AI_ATK_NUM <= atk || AI_APPEAR_NUM <= appear || AI_IDLE_NUM <= idle)
+	for (int i = 0; i < 3; i++)
 	{
-		AIIdle = idle;
-		AIAtk = atk;
-		AIappear = appear;
-//		return FALSE;
+		targetPos[i] = pos[i];
+	}
+
+}
+
+
+int Enemy::SetAI(int appear, int atk, int move, int life)
+{
+	if (AI_ATK_NUM <= atk || AI_APPEAR_NUM <= appear || AI_MOVE_NUM <= move || AI_LIFE_NUM <= life)
+	{
+		AIappear = AI_APPEAR_NUM;
+		AIAtk = AI_ATK_NUM;
+		AIMove = AI_MOVE_NUM;
+		AILife = AI_LIFE_NUM;
+		return FALSE;
 	}
 	else
 	{
-		AIIdle = -1;
-		AIAtk = -1;
-		AIappear = -1;
-//		return TRUE;
+		AIappear = appear;
+		AIAtk = atk;
+		AIMove = move;
+		AILife = life;
+		return TRUE;
 	}
-	return 0;
 }

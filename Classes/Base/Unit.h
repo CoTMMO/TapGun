@@ -70,9 +70,10 @@ namespace TapGun
 		int visible;//ユニット表示フラグ( == 使用フラグ)
 
 		//AI管理
-		int AIIdle;//エネミーのアイドルモーション
-		int AIAtk;//エネミーの攻撃モーション
 		int AIAppear;//
+		int AIMove;//
+		int AIAtk;//エネミーの攻撃モーション
+		int AILife;//AIの生き方
 
 		int nextEnemy;//このエネミーが倒れたときに次に出てくるエネミーの番号
 		int nextEnemies[3];//このエネミーを倒した次に出てくるエネミーの番号
@@ -88,6 +89,9 @@ namespace TapGun
 		//管理フレーム
 		float atkFrame;//攻撃までのカウント（秒）
 		float eWaitFrame;//出現までの待ち時間（秒）
+
+		float stsAtkFrame;//攻撃までのカウント（秒）
+		float stsWaitFrame;//出現までの待ち時間（秒）
 		float sleepTime;
 		cocos2d::Vec3 StandbyPos;//待機座標
 		int tableNum;
@@ -97,7 +101,9 @@ namespace TapGun
 		cocos2d::Vec3 pos;//モデル座標・・・削除予定（sprite3dの座標を使用）
 		float speed;//移動速度（移動量）
 		cocos2d::Vec3 speedVec;//移動ベクトル（speedをもとに計算する）
-		cocos2d::Vec3 targetPos;//移動時の目標座標
+		cocos2d::Vec3 targetPos[3];//移動時の目標座標
+		int nowTargetPos;//何番目の目標座標に向けて走るかの設定
+
 		cocos2d::Vec3 collisionPos;//OBBの辺の長さ（現在は１つのみ定義）
 
 		//==当たり判定関連クラス(仮)==
@@ -123,7 +129,7 @@ namespace TapGun
 		int Init(int num, int utype);//数値の初期化
 
 		void SetCollision(void);//当たり判定を初期化
-
+		void SetTargetPos(cocos2d::Vec3 pos[3]);//
 		void Update(void);//速度をもとに座標移動と当たり判定移動
 		void Update(float loopTime);//速度をもとに座標移動と当たり判定移動
 		void SetPos(cocos2d::Vec3 pos);//引数の座標に移動
