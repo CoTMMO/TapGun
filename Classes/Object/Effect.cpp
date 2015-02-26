@@ -1,5 +1,16 @@
+#include "cocos2d.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #include "Effect.h"
+#include "Sound.h"
+
+#else
+
+#include "Object/Effect.h"
+#include "System/Sound.h"
+
+#endif
 
 USING_NS_CC;
 using namespace std;
@@ -221,6 +232,8 @@ void Effect::setEnemyHitEffect( Sprite3D* sprite3d, Vec3 vec)
 
 void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
 {
+	auto sound = Sound::getInstance();
+
 	playerMuzzle -> shotFlag = true;
 	playerMuzzle -> count = 0;
 	auto point = parentData -> getAttachNode( pointName);
@@ -239,11 +252,14 @@ void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
 		playerMuzzle -> sprite3D[i] -> setPosition3D( Vec3( 0, 0, 0));
 		playerMuzzle -> sprite3D[i] -> setRotation3D( Vec3( 90, 0, 180));
 		point -> addChild( playerMuzzle -> sprite3D[i]);
+		sound -> playSE( "Shot.wav");
 	}
 }
 
 void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, const string& pointName2)
 {
+	auto sound = Sound::getInstance();
+
 	auto point1 = parentData -> getAttachNode( pointName1);
 	if( !point1) { return; }
 	auto point2 = parentData -> getAttachNode( pointName2);
@@ -275,6 +291,7 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point2 -> addChild( enemyMuzzle[i] -> sprite3DL[j]);
 		}
+		sound -> playSE( "Shot.wav");
 		return;
 	}
 }

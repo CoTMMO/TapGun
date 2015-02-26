@@ -1,6 +1,16 @@
-
+/*
 #include "cocos2d.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+
 #include "Muzzle.h"
+#include "Sound.h"
+
+#else
+
+#include "Object/Muzzle.h"
+
+#endif
 
 USING_NS_CC;
 using namespace std;
@@ -28,7 +38,11 @@ Muzzle* Muzzle::createMuzzle( _Sprite3D* parentData, string pointName)
 	return p;
 }
 
-void Muzzle::setMuzzleAction( void) { shotFlag = true; }
+void Muzzle::setMuzzleAction( void) 
+{ 
+	shotFlag = true; 
+
+}
 
 void Muzzle::muzzleUpdate( void)
 {
@@ -61,3 +75,4 @@ void Muzzle::muzzleUpdate( void)
 		count++;
 	}
 }
+*/
