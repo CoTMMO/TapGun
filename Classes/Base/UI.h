@@ -102,10 +102,10 @@ namespace TapGun
 		cocos2d::Node *hpParent;
 		cocos2d::Sprite *hp[HPGauge];
 		cocos2d::Node *timeParent;
-		cocos2d::Sprite *timeNumber[TimeNumber][9];
+		cocos2d::Sprite *timeNumber[TimeNumber][10];
 		cocos2d::Node *bulletParent;
 		cocos2d::Sprite *bullet;
-		cocos2d::Sprite *bulletNumber[BulletNumber][9];
+		cocos2d::Sprite *bulletNumber[BulletNumber][10];
 		cocos2d::Sprite *escape[Escape];
 		cocos2d::Sprite *pause;
 		cocos2d::Sprite *enemyAttack[EnemyAttack][3];

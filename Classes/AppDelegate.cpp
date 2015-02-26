@@ -75,3 +75,8 @@ void AppDelegate::applicationWillEnterForeground()
 {
 	Director::getInstance() -> startAnimation();
 }
+
+//double AppDelegate::getLoopTime( void)
+//{
+//	
+//}
