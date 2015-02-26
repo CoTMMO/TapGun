@@ -20,7 +20,6 @@ enemy/mot_enemy_side_walk_right.c3b,swalk_r
 enemy/mot_enemy_side_walk_right.c3t,swalk_r
 
 
-
 enemy/mot_enemy_dei1.c3b,dei1
 enemy/mot_enemy_dei1.c3t,dei1
 
@@ -46,9 +45,6 @@ enemy/mot_enemy_run_stop.c3b,stop
 enemy/mot_enemy_run_stop.c3t,stop
 
 
-
-
-
 enemy/mot_enemy_shot.c3b,shot
 enemy/mot_enemy_shot.c3t,shot
 
@@ -63,6 +59,4 @@ enemy/mot_enemy_side_roll2.c3t,sroll2
 
 enemy/mot_enemy_suraid.c3b,slide
 enemy/mot_enemy_suraid.c3t,slide
-
-
 

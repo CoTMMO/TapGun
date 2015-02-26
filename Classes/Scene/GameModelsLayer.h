@@ -132,6 +132,10 @@ namespace TapGun
 		void ActionEMove(int num);
 		void ActionEAttack(int num);
 
+
+		void SetEnemyAtk(int num);
+		void SetEnemyMove(int num);
+
 		//敵の処理
 		void setNextEnemy(int num);
 
@@ -145,6 +149,7 @@ namespace TapGun
 
 		//計算用
 		int getNowTime();
+		float getCross(cocos2d::Vec3 v1, cocos2d::Vec3 v2);
 	};
 }
 #endif //__GAME_MODELSLAYER_H__

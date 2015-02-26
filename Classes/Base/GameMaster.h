@@ -27,15 +27,16 @@ namespace TapGun
 #define STS_RELOADSTART (12.0f)//回避モーションが始まってからリロードが行われるまでの時間
 
 
+
 //敵のパラメータ定義
 #define STS_ENEMY_HP 6//敵のHP
 #define STS_ENEMY_MAXSHOT 5//敵の連射数
 
 #define STS_ENEMY_RUNSPEED 0.005f//敵の走り速度
 #define STS_ENEMY_WALKSPEED 0.002f//敵の歩き速度
-#define STS_ENEMY_SWALKSPEED 0.002f//敵の横歩き速度
-#define STS_ENEMY_SJUMPSPEED 0.005f//敵の横歩き速度
-#define STS_ENEMY_ACROSPEED 0.005f//敵の横歩き速度
+#define STS_ENEMY_SWALKSPEED 0.001f//敵の横歩き速度
+#define STS_ENEMY_SJUMPSPEED 0.005f//敵の
+#define STS_ENEMY_ACROSPEED 0.005f//敵の
 
 #define STS_EBULLET_SPEED 0.019f//敵の弾の速度
 
@@ -124,6 +125,9 @@ namespace TapGun
 #define TIME_MAXTIME 180000//ゲーム本編の最大時間（ミリ秒）
 #define TIME_ACTION_UI 1800//ActionのUIを表示する時間（ミリ秒）
 #define TIME_OP 6000//ActionのUIを表示する時間（ミリ秒）
+
+#define TIME_WROT 300//
+
 
 	enum _CAMERA_FLAG_
 	{

@@ -89,9 +89,11 @@ namespace TapGun
 		//管理フレーム(必要であれば時間をdoubleに変更する)
 		int atkFrame;//攻撃までのカウント（ミリ秒）
 		int eWaitFrame;//出現までの待ち時間（ミリ秒）
-		int stsAtkFrame;//攻撃までのカウント（ミリ秒）
-		int stsWaitFrame;//出現までの待ち時間（ミリ秒）
-		int sleepTime;
+
+		int stsAtkFrame[3];//攻撃までのカウント定義（ミリ秒）
+		int stsWaitFrame;//出現までの待ち時間定義（ミリ秒）
+
+		int sleepTime;//待機状態で
 		cocos2d::Vec3 StandbyPos;//待機座標
 		int tableNum;
 

@@ -38,7 +38,7 @@ Vec3 changeCameraRot;
 */
 bool GameModelsLayer::init()
 {
-	if (!Layer::init())
+	if(!Layer::init())
 	{
 		return false;
 	}
@@ -60,9 +60,9 @@ bool GameModelsLayer::init()
 */
 void GameModelsLayer::InitLayer(void)
 {
-//	LoadModels();//スプライトの生成
-//	player.createMuzzle(player.sprite3d);
-//	player.muzzleFlagOff();
+	//	LoadModels();//スプライトの生成
+	//	player.createMuzzle(player.sprite3d);
+	//	player.muzzleFlagOff();
 	InitAllModels();
 
 	InitPlayer(0);//とりあえず引数0
@@ -321,8 +321,9 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->finishNumber = 11;//10体の敵が出る
 
 		//敵の初期化
-		for (int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
+		for(int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
 		{
+			//
 			unit[i].sprite3d->setVisible(false);//敵モデル非表示
 			unit[i].visible = FALSE;//敵モデル非表示
 			unit[i].sprite3d->setPosition3D(Vec3(0.0f, 0.0f, 0.0f));//敵モデル非表示
@@ -333,20 +334,28 @@ void GameModelsLayer::SetEnemy(void)
 			unit[i].maxShot = STS_ENEMY_MAXSHOT;
 
 			//
-			unit[i].AIMove= -1;
+			unit[i].AIMove = -1;
 			unit[i].AIAtk = -1;
 			unit[i].AIAppear = -1;//
 			unit[i].AILife = -1;
 
-			for (int j = 0; j < 3; j++)
+			//
+			for(int j = 0; j < 3; j++)
 			{
 				unit[i].nextEnemies[j] = -1;
+			}
+
+			//
+			for(int j = 0; j < 3; j++)
+			{
+				unit[i].stsAtkFrame[j] = 0.0f;
 			}
 
 			unit[i].atkFrame = 0.0f;//
 			unit[i].eWaitFrame = 0.0f;//出現までの待ちフレーム
 			unit[i].sleepTime = 0.0f;
 		}
+
 
 		//敵の出現ポイントをセット
 		enemyTable->standbyPos[0] = (Vec3(16.665f, 0.0f, -14.551f));
@@ -384,8 +393,8 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->targetPos[4][2] = (Vec3(10.673f, 0.0f, -13.275f));
 
 		//enemyTable->targetPos[5][2] = (Vec3(9.705f, 0.0f, -8.381f));
-		enemyTable->targetPos[5][1] = (Vec3(11.385f, 0.0f, -10.211f));
-		enemyTable->targetPos[5][2] = (Vec3(12.21f, 0.0f, -12.327f));
+		//enemyTable->targetPos[5][1] = (Vec3(11.385f, 0.0f, -10.211f));
+		enemyTable->targetPos[5][2] = (Vec3(11.55f, 0.0f, -9.23f));
 
 		//enemyTable->targetPos[6][1] = (Vec3(11.385f, 0.0f, -7.781f));
 		//enemyTable->targetPos[6][2] = (Vec3(9.705f, 0.0f, -8.381f));
@@ -393,14 +402,14 @@ void GameModelsLayer::SetEnemy(void)
 
 		//enemyTable->targetPos[9][1] = (Vec3(11.385f, 0.0f, -7.781f));
 		//enemyTable->targetPos[9][2] = (Vec3(9.705f, 0.0f, -8.381f));
-		enemyTable->targetPos[7][2] = (Vec3(12.21f, 0.0f, 12.327f));
+		enemyTable->targetPos[7][2] = (Vec3(12.21f, 0.0f, -12.327f));
 
 		//enemyTable->targetPos[7][1] = (Vec3(11.385f, 0.0f, -7.781f));
 		//enemyTable->targetPos[7][2] = (Vec3(9.705f, 0.0f, -8.381f));
 		enemyTable->targetPos[8][2] = (Vec3(11.504f, 0.0f, -9.227f));
 
 		//enemyTable->targetPos[8][2] = (Vec3(9.705f, 0.0f, -13.016f));
-		enemyTable->targetPos[9][1] = (Vec3(10.673f, 0.0f, -7.781f));
+		enemyTable->targetPos[9][1] = (Vec3(10.673f, 0.0f, -13.275f));
 		enemyTable->targetPos[9][2] = (Vec3(15.682f, 0.0f, -13.016f));
 
 
@@ -412,17 +421,24 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[0].SetNextEnemy(2, -1, -1);
 		enemyTable->enemyData[0].alive = TRUE;
 		enemyTable->enemyData[0].SetAI(AI_APPEAR_RUN, AI_ATK_NONE, AI_MOVE_WALK, AI_LIFE_SWITCH);
+//		enemyTable->enemyData[0].SetAI(AI_APPEAR_SWALK, AI_ATK_NONE, AI_MOVE_WALK, AI_LIFE_SWITCH);
 		enemyTable->enemyData[0].sleepTime = 1000;
 		enemyTable->enemyData[0].hitpoint = 5;
-
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		enemyTable->enemyData[0].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[0].stsAtkFrame[2] = 1000;
 
 		enemyTable->enemyData[1].standbyPos = enemyTable->standbyPos[1];
 		enemyTable->enemyData[1].SetTargetPos(enemyTable->targetPos[1]);
 		enemyTable->enemyData[1].SetNextEnemy(3, -1, -1);
 		enemyTable->enemyData[1].alive = TRUE;
 		enemyTable->enemyData[1].SetAI(AI_APPEAR_RUN, AI_ATK_NONE, AI_MOVE_SWALK, AI_LIFE_SWITCH);
+//		enemyTable->enemyData[1].SetAI(AI_APPEAR_SWALK, AI_ATK_NONE, AI_MOVE_SWALK, AI_LIFE_SWITCH);
 		enemyTable->enemyData[1].sleepTime = 1000;
 		enemyTable->enemyData[1].hitpoint = 5;
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		enemyTable->enemyData[1].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[1].stsAtkFrame[2] = 1000;
 
 
 		enemyTable->enemyData[2].standbyPos = enemyTable->standbyPos[2];
@@ -432,6 +448,9 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[2].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[2].sleepTime = 1000;
 		enemyTable->enemyData[2].hitpoint = 5;
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		//enemyTable->enemyData[2].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[2].stsAtkFrame[2] = 3000;
 
 
 		enemyTable->enemyData[3].standbyPos = enemyTable->standbyPos[3];
@@ -441,6 +460,9 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[3].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[3].sleepTime = 1000;
 		enemyTable->enemyData[3].hitpoint = 5;
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		//enemyTable->enemyData[2].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[3].stsAtkFrame[2] = 4000;
 
 
 		enemyTable->enemyData[4].standbyPos = enemyTable->standbyPos[4];
@@ -450,6 +472,9 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[4].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[4].sleepTime = 1000;
 		enemyTable->enemyData[4].hitpoint = 5;
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		//enemyTable->enemyData[2].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[4].stsAtkFrame[2] = 5000;
 
 
 		//要チェック
@@ -460,6 +485,9 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[5].SetAI(AI_APPEAR_RUN, AI_ATK_FAKE, AI_MOVE_WALK, AI_LIFE_STOP);
 		enemyTable->enemyData[5].sleepTime = 1000;
 		enemyTable->enemyData[5].hitpoint = 5;
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		enemyTable->enemyData[5].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[5].stsAtkFrame[2] = 1000;
 
 
 		enemyTable->enemyData[6].standbyPos = enemyTable->standbyPos[6];
@@ -469,7 +497,12 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[6].SetAI(AI_APPEAR_SWALK, AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[6].sleepTime = 1000;
 		enemyTable->enemyData[6].hitpoint = 5;
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		//->enemyData[5].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[6].stsAtkFrame[2] = 3000;
 
+
+		//サイドジャンプ行動を行う
 		//要チェック
 		enemyTable->enemyData[7].standbyPos = enemyTable->standbyPos[7];
 		enemyTable->enemyData[7].SetTargetPos(enemyTable->targetPos[7]);
@@ -478,6 +511,9 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[7].SetAI(AI_APPEAR_SJUMP, AI_ATK_SJUMP, AI_MOVE_SJUMP, AI_LIFE_SWITCH);//サイドジャンプモーションをアニメーション管理で分割します
 		enemyTable->enemyData[7].sleepTime = 1000;
 		enemyTable->enemyData[7].hitpoint = 5;
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		//->enemyData[5].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[7].stsAtkFrame[2] = 5000;
 
 
 		enemyTable->enemyData[8].standbyPos = enemyTable->standbyPos[8];
@@ -488,8 +524,12 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[8].SetAI(AI_APPEAR_WALK, AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[8].sleepTime = 1000;
 		enemyTable->enemyData[8].hitpoint = 5;
+		//enemyTable->enemyData[0].stsAtkFrame[0] = 
+		//->enemyData[5].stsAtkFrame[1] = 1000;
+		enemyTable->enemyData[8].stsAtkFrame[2] = 3000;
 
-
+		//要チェック
+		//アクロバット移動
 		enemyTable->enemyData[9].standbyPos = enemyTable->standbyPos[9];
 		enemyTable->enemyData[9].SetTargetPos(enemyTable->targetPos[9]);
 		enemyTable->enemyData[9].SetNextEnemy(-1, -1, -1);
@@ -498,6 +538,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[9].SetAI(AI_APPEAR_ACRO, AI_ATK_ACRO,AI_MOVE_RUN, AI_LIFE_ONCE);//
 		enemyTable->enemyData[9].sleepTime = 1000;
 		enemyTable->enemyData[9].hitpoint = 5;
+		enemyTable->enemyData[9].stsAtkFrame[2] = 3000;
 
 
 		//敵の出現定義が済んだら、最初に出現させる敵のセットを行う
@@ -507,13 +548,17 @@ void GameModelsLayer::SetEnemy(void)
 		unit[1].sprite3d->setPosition3D(enemyTable->enemyData[0].standbyPos);//敵モデル非表示
 		unit[1].SetTargetPos(enemyTable->enemyData[0].targetPos);
 		unit[1].StandbyPos = enemyTable->enemyData[0].standbyPos;
+		for(int i = 0; i < 3; i++)
+		{
+			unit[1].stsAtkFrame[i] = enemyTable->enemyData[0].stsAtkFrame[i];
+		}
 		unit[1].tableNum = 0;
-
 		unit[1].AIAppear = enemyTable->enemyData[0].AIappear;
 		unit[1].AIAtk = enemyTable->enemyData[0].AIAtk;
 		unit[1].AIMove = enemyTable->enemyData[0].AIMove;
 		unit[1].AILife = enemyTable->enemyData[0].AILife;
-		unit[1].stsAtkFrame = enemyTable->enemyData[0].stsAtkFrame;
+
+
 		unit[1].stsWaitFrame = enemyTable->enemyData[0].stsWaitFrame;
 
 		unit[2].eState = ESTATE_SLEEP;
@@ -528,7 +573,10 @@ void GameModelsLayer::SetEnemy(void)
 		unit[2].AIAtk = enemyTable->enemyData[1].AIAtk;
 		unit[2].AIMove = enemyTable->enemyData[1].AIMove;
 		unit[2].AILife = enemyTable->enemyData[1].AILife;
-		unit[2].stsAtkFrame = enemyTable->enemyData[1].stsAtkFrame;
+		for(int i = 0; i < 3; i++)
+		{
+			unit[1].stsAtkFrame[i] = enemyTable->enemyData[0].stsAtkFrame[i];
+		}
 		unit[2].stsWaitFrame = enemyTable->enemyData[1].stsWaitFrame;
 
 		break;
@@ -607,9 +655,23 @@ void GameModelsLayer::UpdateWait()
 		//カメラの位置が滑らかに変化する処理を入れる
 		GameMasterM->SetCamera3DPos(Vec3(W_SETX, W_SETY, W_SETZ));//プレイヤー（親ノード）とカメラの位置関係をセット
 		GameMasterM->SetCamera3DRot(Vec3(W_ROTX, W_ROTY, W_ROTZ));
+
+
+		Vec3 tmp = player.sprite3d->getRotation3D();//プレイヤーの今の角度をもとに
+		rotationR = GameMasterM->stagePoint[GameMasterM->sPoint].pRot.y - tmp.y;//戦闘時の角度との差を計算する
+		rotationR *= TIME_WROT * 0.01f;//1ミリ秒ごとに変化する角度を計算
+		rotationCount = 0;
+
+
 	}
 		break;
 	case 1:
+
+		//一定時間かけてカメラを動かす処理
+
+
+
+
 		GameMasterM->waitFlag = 2;
 		break;
 	case 2:
@@ -2140,10 +2202,10 @@ void GameModelsLayer::setNextEnemy(int num)
 	enemyTable->enemyData[unit[num].tableNum].alive = FALSE;//num番の敵を倒した扱いにする
 
 	//現在のウェーブと、死亡した敵の番号をもとに、次のモデルを準備する
-	for (int i = 0; i < 3; i++)
+	for(int i = 0; i < 3; i++)
 	{
 		const int nextNum = enemyTable->enemyData[unit[num].tableNum].nextEnemiesNum[i];
-		if (-1 == nextNum)//次のモデルが設定されていなければ
+		if(-1 == nextNum)//次のモデルが設定されていなければ
 		{
 			continue;
 		}
@@ -2167,7 +2229,10 @@ void GameModelsLayer::setNextEnemy(int num)
 			unit[n].AILife = enemyTable->enemyData[nextNum].AILife;
 
 			//敵のステータスをセット
-			unit[n].stsAtkFrame = enemyTable->enemyData[nextNum].stsAtkFrame;
+			for(int i = 0; i < 3; i++)
+			{
+				unit[n].stsAtkFrame[i] = enemyTable->enemyData[nextNum].stsAtkFrame[i];
+			}
 			unit[n].stsWaitFrame = enemyTable->enemyData[nextNum].stsWaitFrame;
 			unit[n].hitpoint = enemyTable->enemyData[nextNum].hitpoint;
 
@@ -2293,16 +2358,20 @@ int GameModelsLayer::getNowTime(void)
 }
 
 
+
+
+
+
+
 //
 void GameModelsLayer::ActionEStandby(int num)
 {
 	//向きの設定
-
 	//スリープ状態からスタンバイ状態に移行するときは、targetPosの値から移動目標を自動で判断する
-	for (int i = 0; i < 3; i++)
+	for(int i = 0; i < 3; i++)
 	{
 		//現在はtargetPos配列に有効座標が入っているものとして処理を組んでいます
-		if (Vec3(-999.0f, -999.0f, -999.0f) != unit[num].targetPos[i])
+		if(Vec3(-999.0f, -999.0f, -999.0f) != unit[num].targetPos[i])
 		{
 			unit[num].nowTargetPos = i;
 			break;
@@ -2310,7 +2379,7 @@ void GameModelsLayer::ActionEStandby(int num)
 	}
 
 	//出現モーションに応じて動き方を変える
-	switch (unit[num].AIAppear)
+	switch(unit[num].AIAppear)
 	{
 	case AI_APPEAR_RUN:
 		unit[num].speed = STS_ENEMY_RUNSPEED;//
@@ -2329,21 +2398,20 @@ void GameModelsLayer::ActionEStandby(int num)
 		break;
 	}
 
-
 	unit[num].speedVec = unit[num].targetPos[unit[num].nowTargetPos] - unit[num].sprite3d->getPosition3D();
 	unit[num].speedVec.normalize();//ベクトルの正規化を行う
 	double r = atan2(unit[num].speedVec.z, unit[num].speedVec.x);
 	r = CC_RADIANS_TO_DEGREES(r);
-
 
 	//正規化が終わったら、速度をかけて方向ベクトルの計算終了
 	unit[num].speedVec.x *= unit[num].speed;
 	unit[num].speedVec.z *= unit[num].speed;
 	unit[num].speedVec.y = 0;//yは今のところ0で扱う
 
+	float gai = 0;
 
 	//出現モーションに応じて動き方を変える
-	switch (unit[num].AIAppear)
+	switch(unit[num].AIAppear)
 	{
 	case AI_APPEAR_RUN:
 		unit[num].speed = STS_ENEMY_RUNSPEED;//
@@ -2361,22 +2429,55 @@ void GameModelsLayer::ActionEStandby(int num)
 	case AI_APPEAR_SWALK:
 		//横移動
 		unit[num].speed = STS_ENEMY_SWALKSPEED;
-		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
-		unit[num].sprite3d->startAnimationLoop("swalk_l");
+		//要チェック
+		//外積をもとに
+		gai = getCross(unit[num].sprite3d->getPosition3D(), unit[num].targetPos[unit[num].nowTargetPos]);
+		if(gai <= 0)
+		{
+			unit[num].sprite3d->setRotation3D(Vec3(0.0f, 180.0f - r, 0.0f));//横歩きなので正面を向かせる
+			unit[num].sprite3d->startAnimationLoop("swalk_l");
+		}
+		else
+		{
+			unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//横歩きなので正面を向かせる
+			unit[num].sprite3d->startAnimationLoop("swalk_r");
+		}
+
 		unit[num].eState = ESTATE_MOVE;//待機が終わったら移動
 		break;
 	case AI_APPEAR_SJUMP:
 		//横移動
+		//要チェック
 		unit[num].speed = STS_ENEMY_SJUMPSPEED;//
-		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
-		unit[num].sprite3d->startAnimationLoop("run");
+		gai = getCross(unit[num].sprite3d->getPosition3D(), unit[num].targetPos[unit[num].nowTargetPos]);
+		if(gai <= 0)
+		{
+			unit[num].sprite3d->setRotation3D(Vec3(0.0f, 180.0f - r, 0.0f));//横歩きなので正面を向かせる
+			unit[num].sprite3d->startAnimationLoop("slide");
+		}
+		else
+		{
+			unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//横歩きなので正面を向かせる
+			unit[num].sprite3d->startAnimationLoop("slide");
+		}
 		unit[num].eState = ESTATE_MOVE;//待機が終わったら移動
+
 		break;
 	case AI_APPEAR_ACRO:
 		//横移動
+		//要チェック
 		unit[num].speed = STS_ENEMY_ACROSPEED;//
-		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
-		unit[num].sprite3d->startAnimationLoop("run");
+		gai = getCross(unit[num].sprite3d->getPosition3D(), unit[num].targetPos[unit[num].nowTargetPos]);
+		if(gai <= 0)
+		{
+			unit[num].sprite3d->setRotation3D(Vec3(0.0f, 180.0f - r, 0.0f));//横歩きなので正面を向かせる
+			unit[num].sprite3d->startAnimation("sroll2");
+		}
+		else
+		{
+			unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//横歩きなので正面を向かせる
+			unit[num].sprite3d->startAnimation("sroll2");
+		}
 		unit[num].eState = ESTATE_MOVE;//待機が終わったら移動
 		break;
 	}
@@ -2389,16 +2490,44 @@ void GameModelsLayer::ActionEMove(int num)
 	Vec3 tmpPos = unit[num].sprite3d->getPosition3D();
 	//目標地点との距離を求める
 	float d1 = tmpPos.distance(unit[num].targetPos[unit[num].nowTargetPos]);
-
 	//一定以上目的地に近付いたら
-	if (0.1f >= d1)
+	if(0.05f >= d1)
 	{
+		//エネミーのライフサイクルで場合分け
+		switch(unit[num].AILife)
+		{
+		case AI_LIFE_ONCE://
+			//現在の目的地が最終ポイントであれば、キャラクターを消す
+			//それ以外であればアイドル
+			if(2 == unit[num].nowTargetPos)
+			{
+				//敵を消去して、次テーブルを検索
+				unit[num].speed = 0.0f;//
+				unit[num].speedVec = Vec3(0.0f, 0.0f, 0.0f);
+				unit[num].sprite3d->stopALLAnimation();
+
+				unit[num].sprite3d->setVisible(false);
+				unit[num].visible = FALSE;
+				setNextEnemy(num);//次の敵の出現チェック
+
+				break;//ここでブレーク：要チェック
+			}
+			else
+			{
+				//それ以外の場合はアイドルに移行
+			}
+		case AI_LIFE_SWITCH://2点間を移動する
+		case AI_LIFE_STOP://最終地点でとまる
+			//アイドル
+			break;
+		}
+
+
 		Vec3 tmpPos = GameMasterM->stagePoint[GameMasterM->sPoint].pPos;//
 		unit[num].sprite3d->setPosition3D(unit[num].targetPos[unit[num].nowTargetPos]);//敵をポジションにセット
 
 		tmpPos = tmpPos - unit[num].sprite3d->getPosition3D();//プレイヤーの位置へのベクトルを計算
 		tmpPos.normalize();//ベクトルの正規化を行う
-
 
 		double r = atan2(tmpPos.z, tmpPos.x);
 		r = CC_RADIANS_TO_DEGREES(r);
@@ -2411,8 +2540,12 @@ void GameModelsLayer::ActionEMove(int num)
 		unit[num].eState = ESTATE_IDLE;//アイドル状態を開始
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了
 		unit[num].sprite3d->startAnimationLoop("idle");//
-
+		unit[num].atkFrame = unit[num].stsAtkFrame[unit[num].nowTargetPos];//アイドル時間を設定
 		//アニメーションの管理フレームを初期化する
+	}
+	else
+	{
+
 	}
 }
 
@@ -2420,77 +2553,13 @@ void GameModelsLayer::ActionEMove(int num)
 //アイドル
 void GameModelsLayer::ActionEIdle(int num)
 {
-	//
 	unit[num].atkFrame -= GameMasterM->loopTime;
-	if (unit[num].atkFrame <= 0)
+	//アイドル時間が消費されたら
+	if(unit[num].atkFrame <= 0)
 	{
-		//攻撃モーションに応じて動きを変化
-		switch (unit[num].AIAtk)
-		{
-
-		case AI_ATK_NONE:
-
-			//攻撃しないキャラクターはアイドル状態などにもどる
-
-
-			break;
-		case AI_ATK_FAKE://威嚇攻撃を行う
-
-			unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
-			unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
-			unit[num].sprite3d->startAnimation("shot");
-			if (ESTATE_ATTACK1 == unit[num].eState)
-			{
-				unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
-			}
-
-
-			break;
-		case AI_ATK_SSHOT://立ち撃ちを行う
-
-			unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
-			unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
-			unit[num].sprite3d->startAnimation("shot");
-			if (ESTATE_ATTACK1 == unit[num].eState)
-			{
-				unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
-			}
-
-			break;
-		case AI_ATK_SJUMP://サイドジャンプ射撃
-
-			unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
-			unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
-			unit[num].sprite3d->startAnimation("shot");
-			if (ESTATE_ATTACK1 == unit[num].eState)
-			{
-				unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
-			}
-
-
-			break;
-		case AI_ATK_ACRO://アクロバティック
-
-			unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
-			unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
-			unit[num].sprite3d->startAnimation("shot");
-			if (ESTATE_ATTACK1 == unit[num].eState)
-			{
-				unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
-			}
-
-
-			break;
-		default:
-			unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
-			unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
-			unit[num].sprite3d->startAnimation("shot");
-			if (ESTATE_ATTACK1 == unit[num].eState)
-			{
-				unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
-			}
-			break;
-		}
+		//エネミーの攻撃をセット
+		//攻撃しない敵については関数内でステートの更新を行う
+		SetEnemyAtk(num);
 	}
 	else
 	{
@@ -2536,44 +2605,268 @@ void GameModelsLayer::ActionEDead(int num)
 */
 void GameModelsLayer::ActionEAttack(int num)
 {
-	//敵の攻撃モーションごとに弾の発射タイミングなどを選択
-	switch (unit[num].AIAtk)
-	{
-	case AI_ATK_NONE://攻撃モーションを行わない
-		break;
-	case AI_ATK_FAKE://威嚇攻撃を行う
-		break;
-	case AI_ATK_SSHOT://立ち撃ちを行う
-		break;
-	case AI_ATK_SJUMP://サイドジャンプ射撃
-		break;
-	case AI_ATK_ACRO://アクロバティック
-		break;
-	case AI_ATK_NUM:
-		break;
-	default:
-		break;
-	}
-
-	//タイミングを合わせて射撃を行う
-	unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
-	if (0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
-	{
-		//フレームが0になったら
-		ShootBullet(num);
-		unit[num].atkFrame = 0.15f;//次の弾発射までの時間を設定
-		unit[num].nowShot++;
-	}
 
 	//アニメーションが終了したら
-	if (0 == unit[num].sprite3d->checkAnimationState())
+	//どの敵キャラクターも
+	if(0 == unit[num].sprite3d->checkAnimationState())
 	{
-		//敵のAIの種類でモーションと移動量を変更する
-		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
-		unit[num].sprite3d->startAnimationLoop("bress");//
+		//AIの行動パターンをもとに動きを変更する
+		if(AI_LIFE_ONCE == unit[num].AILife)
+		{
+			//目標地点をスイッチする
+			unit[num].nowTargetPos += 1;//要チェック
+			SetEnemyMove(num);
 
-		unit[num].eState = ESTATE_IDLE;
-		unit[num].nowShot = 0;
+		}
+		else if(AI_LIFE_SWITCH == unit[num].AILife)
+		{
+			//目標地点をスイッチして再度動かす
+			if(2 == unit[num].nowTargetPos)
+			{
+				unit[num].nowTargetPos = 1;
+			}
+			else if(1 == unit[num].nowTargetPos)
+			{
+				unit[num].nowTargetPos = 2;
+			}
+
+			SetEnemyMove(num);
+
+		}
+		else if(AI_LIFE_STOP == unit[num].AILife)
+		{
+			//アイドル状態に移行する
+			unit[num].eState = ESTATE_IDLE;//アイドル状態を開始
+			unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了
+			unit[num].sprite3d->startAnimationLoop("idle");//
+			unit[num].atkFrame = unit[num].stsAtkFrame[unit[num].nowTargetPos];//アイドル時間を設定
+		}
+	}
+	else
+	{
+		//敵の攻撃モーションごとに弾の発射タイミングなどを選択
+		switch(unit[num].AIAtk)
+		{
+		case AI_ATK_NONE://攻撃しない
+			//
+			break;
+		case AI_ATK_FAKE://威嚇攻撃を行う
+
+			//タイミングを合わせて射撃を行う
+			unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
+			if(0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
+			{
+				//フレームが0になったら
+				ShootBullet(num);
+				unit[num].atkFrame = 0.15f;//次の弾発射までの時間を設定
+				unit[num].nowShot++;
+			}
+			break;
+		case AI_ATK_SSHOT://立ち撃ちを行う
+
+			//タイミングを合わせて射撃を行う
+			unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
+			if(0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
+			{
+				//フレームが0になったら
+				ShootBullet(num);
+				unit[num].atkFrame = 0.15f;//次の弾発射までの時間を設定
+				unit[num].nowShot++;
+			}
+			break;
+		case AI_ATK_SJUMP://サイドジャンプ射撃
+
+			break;
+		case AI_ATK_ACRO://アクロバティック
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+
+
+
+
+void GameModelsLayer::SetEnemyAtk(int num)
+{
+	//攻撃モーションに応じて動きを変化
+	switch(unit[num].AIAtk)
+	{
+		//
+	case AI_ATK_NONE:
+
+		//攻撃しない敵はAIのライフサイクルに従って動きを変更
+		if(AI_LIFE_ONCE == unit[num].AILife)
+		{
+			//一度のみ
+			//要チェック
+			//アニメーションの終了
+		}
+		else if(AI_LIFE_STOP == unit[num].AILife)
+		{
+			//アイドル状態を繰り返す
+			unit[num].eState = ESTATE_IDLE;
+
+			//要チェック
+			//アニメーションの終了
+
+		}
+		else if(AI_LIFE_SWITCH == unit[num].AILife)
+		{
+			//現在目標座標をもとに、次の目標座標へ移動する
+			//目標地点をスイッチして再度動かす
+			if(2 == unit[num].nowTargetPos)
+			{
+				unit[num].nowTargetPos = 1;
+			}
+			else if(1 == unit[num].nowTargetPos)
+			{
+				unit[num].nowTargetPos = 2;
+			}
+			SetEnemyMove(num);
+			unit[num].eState = ESTATE_MOVE;
+		}
+		break;
+	case AI_ATK_FAKE://威嚇攻撃を行う
+
+		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
+		unit[num].sprite3d->startAnimation("shot");
+
+		//要チェック　アニメーションに合わせた弾の発射タイミング
+		unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレームとして扱う
+		break;
+	case AI_ATK_SSHOT://立ち撃ちを行う
+
+		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
+		unit[num].sprite3d->startAnimation("shot");
+
+		//要チェック　アニメーションに合わせた弾の発射タイミング
+		unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレームとして扱う
+		break;
+	case AI_ATK_SJUMP://サイドジャンプ射撃//要チェック
+
+		//要チェック
+
+		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
+		unit[num].sprite3d->startAnimation("shot");
+		//要チェック　アニメーションに合わせた弾の発射タイミング
+		unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
+
+		break;
+	case AI_ATK_ACRO://アクロバティック//要チェック
+
+		//要チェック
+
+		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
+		unit[num].sprite3d->startAnimation("shot");
+		//要チェック　アニメーションに合わせた弾の発射タイミング
+		unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
+
+		break;
+	default:
+
+		//要チェック
+		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
+		unit[num].sprite3d->startAnimation("shot");
+		//要チェック　アニメーションに合わせた弾の発射タイミング
+		unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
+		break;
+	}
+}
+
+
+
+void GameModelsLayer::SetEnemyMove(int num)
+{
+	//敵の移動をセット
+	//すでに目標位置は更新されています
+
+	switch(unit[num].AIMove)
+	{
+	case AI_MOVE_NONE://動かない
+		break;
+	case AI_MOVE_RUN://走り
+		unit[num].speed = STS_ENEMY_RUNSPEED;//
+		break;
+	case AI_MOVE_WALK://歩き
+		unit[num].speed = STS_ENEMY_WALKSPEED;
+		break;
+	case AI_MOVE_SWALK://横歩き
+		unit[num].speed = STS_ENEMY_SWALKSPEED;
+		break;
+	case AI_MOVE_SJUMP://動かない
+		unit[num].speed = STS_ENEMY_SJUMPSPEED;//
+		break;
+	case AI_MOVE_ACRO://アクロバティック
+		unit[num].speed = STS_ENEMY_ACROSPEED;//
+		break;
+	}
+	unit[num].speedVec = unit[num].targetPos[unit[num].nowTargetPos] - unit[num].sprite3d->getPosition3D();
+	unit[num].speedVec.normalize();//ベクトルの正規化を行う
+	double r = atan2(unit[num].speedVec.z, unit[num].speedVec.x);
+	r = CC_RADIANS_TO_DEGREES(r);
+
+	//正規化が終わったら、速度をかけて方向ベクトルの計算終了
+	unit[num].speedVec.x *= unit[num].speed;
+	unit[num].speedVec.z *= unit[num].speed;
+	unit[num].speedVec.y = 0;//yは今のところ0で扱う
+
+	float gai = 0;
+
+
+	//アニメーション終了
+	unit[num].sprite3d->stopALLAnimation();
+
+
+	//目標地点が決まったら動き方をもとに
+	switch(unit[num].AIMove)
+	{
+	case AI_MOVE_NONE://動かない
+
+		break;
+	case AI_MOVE_RUN://走り
+		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
+		unit[num].sprite3d->startAnimationLoop("run");
+		break;
+	case AI_MOVE_WALK://歩き
+		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
+
+		unit[num].sprite3d->startAnimationLoop("walk");
+		break;
+	case AI_MOVE_SWALK://横歩き
+		//横移動
+		//要チェック
+		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 180.0f - r, 0.0f));//横歩きなので正面を向かせる
+
+		//外積をもとに
+		gai = getCross(unit[num].sprite3d->getPosition3D(), unit[num].targetPos[unit[num].nowTargetPos]);
+		if(gai <= 0)
+		{
+			unit[num].sprite3d->startAnimationLoop("swalk_l");
+		}
+		else
+		{
+			unit[num].sprite3d->startAnimationLoop("swalk_r");
+		}
+		break;
+	case AI_MOVE_SJUMP://
+		//横移動
+		//要チェック
+		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 180.0f - r, 0.0f));//
+		break;
+	case AI_MOVE_ACRO://アクロバティック
+		//横移動
+		//要チェック
+		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 180.0f - r, 0.0f));//
+
+		break;
 	}
 }
 
@@ -2594,6 +2887,9 @@ void GameModelsLayer::moveTime(float delta)
 {
 
 }
+
+
+
 
 
 
@@ -2632,3 +2928,12 @@ int GameModelsLayer::ChangeCamera(int num)
 	}
 	return TRUE;
 }
+
+
+float GameModelsLayer::getCross(cocos2d::Vec3 v1, cocos2d::Vec3 v2)
+{
+	Vec2 vec1 = Vec2(v1.x, v1.z);
+	Vec2 vec2 = Vec2(v2.x, v2.z);
+	return vec1.cross(vec2);
+}
+

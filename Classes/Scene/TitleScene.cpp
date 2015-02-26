@@ -148,7 +148,7 @@ void TitleScene::update( float delta)
 		if( alphaCount > 180)
 		{
 			menuFlag = TitleLogoOK;
-			sound -> playBGMLoop();
+			//sound -> playBGMLoop();
 		}
 		break;
 
@@ -311,7 +311,7 @@ void TitleScene::menuAction( void)
 void TitleScene::menuStartCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	sound -> stopBGM();
+//	sound -> stopBGM();
 	sound -> playSE( "MoveSE.mp3");
 	auto scene = GameScene::CreateScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
@@ -321,7 +321,7 @@ void TitleScene::menuStartCallback( Ref* pSender)
 void TitleScene::menuEndCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	sound -> stopBGM();
+//	sound -> stopBGM();
 	sound -> playSE( "MoveSE.mp3");
 	Director::getInstance() -> end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -332,7 +332,7 @@ void TitleScene::menuEndCallback( Ref* pSender)
 void TitleScene::menuCreditCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-	sound -> stopBGM();
+//	sound -> stopBGM();
 	sound -> playSE( "MoveSE.mp3");
 	auto scene = CreditScene::createScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
