@@ -83,6 +83,8 @@ namespace TapGun
 		void init( cocos2d::Layer* layer);
 		void update( void);
 		
+		void setLogo( void);
+		void setHP( int count);
 		void setGameTime( float time);
 		void setBulletCount( int count);
 		
@@ -95,6 +97,14 @@ namespace TapGun
 			Escape = 2,
 			EnemyAttack = 5,
 			Delete = 5,
+		};
+
+		enum LogoNumber
+		{
+			Action,
+			Wait,
+			Reload,
+			LogoNum,
 		};
 		
 		GameUI() {}
@@ -110,6 +120,7 @@ namespace TapGun
 		cocos2d::Sprite *pause;
 		cocos2d::Sprite *enemyAttack[EnemyAttack][3];
 		cocos2d::Sprite *deleteLogo[Delete];
+		cocos2d::Sprite* logo[LogoNum];
 	};
 
 	class LogoUI

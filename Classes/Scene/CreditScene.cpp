@@ -40,10 +40,16 @@ bool CreditScene::init()
 	listener -> onTouchEnded = CC_CALLBACK_2( CreditScene::onTouchEnded, this);
 
 	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	auto sprite = Sprite::create( "credit.png");
+#else
+	auto sprite = Sprite::create( "Graph/Pictures/credit.png");
+#endif
+	sprite -> setPosition( visibleSize.width / 2, visibleSize.height / 2);
+	addChild( sprite, 1);
 
-	auto label = Label::createWithTTF( "Credit Scene", "fonts/arial.ttf", 60);
-	label -> setPosition( Vec2( visibleSize.width / 2, visibleSize.height / 2));
-	addChild( label, 1);
+	auto action = FadeIn::create(1);
+	sprite -> runAction( action);
 
 	scheduleUpdate();
 	schedule( schedule_selector( CreditScene::moveTime), 0.016f);

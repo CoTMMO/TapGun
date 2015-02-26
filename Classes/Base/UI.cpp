@@ -279,7 +279,6 @@ void GameUI::init( Layer* layer)
 	escape[1] -> setPosition( Vec2( 1150, 130));
 	auto flip = FlipX::create(true);
 	escape[1] -> runAction(flip);
-	escape[1] -> setOpacity( 25);
 	
 	pause = Sprite::create();
 	
@@ -301,24 +300,117 @@ void GameUI::init( Layer* layer)
 		deleteLogo[i] -> setVisible( false);
 		layer -> addChild( deleteLogo[i]);
 	}
+
+	logo[LogoNumber::Action] = Sprite::createWithSpriteFrameName( "action.png");
+	logo[LogoNumber::Wait] = Sprite::createWithSpriteFrameName( "wait.png");
+	logo[LogoNumber::Reload] = Sprite::createWithSpriteFrameName( "rerode.png");
+
+	for( auto &p : logo)
+	{
+		p -> setPosition( 1280 / 2, 250);
+		p -> setScale( 0.3f);
+		p -> setVisible( false);
+		layer -> addChild( p);
+	}
 }
 
 void GameUI::update( void)
 {
-	static int time = 0;
+	auto master = GameMaster::GetInstance();
 	
-	static float count = GameMaster::GetInstance() -> GetGameTime();
-	int count100 = count / 100;
-	int count10 = ((int)count % 100);
+	setLogo();
+	setHP( master -> GetPlayerHP());
+	setGameTime( master -> GetGameTime());
+	setBulletCount( master -> GetPlayerBullets());
+		
+}
+
+void GameUI::setLogo( void)
+{
+	auto master = GameMaster::GetInstance();
+	static bool waitFlag = false;
+	static int waitTime = 0;
+
+	if( master -> GetGameState() == GSTATE_WAIT)
+	{
+		if( waitTime % 30 == 0 || waitTime == 0)
+		{
+			waitFlag = !waitFlag;
+			logo[LogoNumber::Wait] -> setVisible( waitFlag);
+		}
+		escape[0] -> setOpacity( 25);
+		escape[1] -> setOpacity( 25);
+		waitTime++;
+	}
+	else if( master -> GetGameState() == GSTATE_PLAY_SET)
+	{
+		waitFlag = false;
+		logo[LogoNumber::Wait] -> setVisible(false);
+	}
+	else if( master -> GetGameState() == GSTATE_PLAY_ACTION)
+	{
+		logo[LogoNumber::Action] -> setVisible(true);
+		if( master -> playerSide == PSIDE_LEFT)
+		{
+			escape[0] -> setOpacity( 255);
+		}
+		else
+		{
+			escape[1] -> setOpacity( 255);
+		}
+	}
+	else if( master -> GetGameState() == GSTATE_PLAY)
+	{
+		logo[LogoNumber::Action] -> setVisible(false);
+	}
+}
+
+void GameUI::setHP( int count)
+{
+	switch( count)
+	{
+	case 0:
+		hp[7] -> setVisible( false);
+		break;
+	case 1:
+		hp[6] -> setVisible( false);
+		break;
+	case 2:
+		hp[5] -> setVisible( false);
+		break;
+	case 3:
+		hp[4] -> setVisible( false);
+		break;
+	case 4:
+		hp[3] -> setVisible( false);
+		break;
+	case 5:
+		hp[2] -> setVisible( false);
+		break;
+	default:
+		break;
+	}
+}
+
+void GameUI::setGameTime( float time)
+{
+	auto master = GameMaster::GetInstance();
+
+	static int frame = 0;
+
+	int timer = time * 0.001f;
+	int count100 = timer / 100;
+	int count10 = ((int)timer % 100);
 	int count1 = count10 - ((count10 / 10) * 10);
-	int count01 = 0;
+	static int count01 = 10;
+	static int count001 = 10;
 		
 	for( int i = 0; i < 10; i++)
 	{
-		if( count / 100 == i) { continue; }
+		if( timer / 100 == i) { continue; }
 		timeNumber[0][i] -> setVisible( false);
 	}
-	timeNumber[0][(int)count / 100] -> setVisible( true);
+	timeNumber[0][(int)timer / 100] -> setVisible( true);
 	
 	for( int i = 0; i < 10; i++)
 	{
@@ -334,44 +426,49 @@ void GameUI::update( void)
 	}
 	timeNumber[2][count1] -> setVisible( true);
 	
-	timeNumber[3][0] -> setVisible( true);
-	timeNumber[4][0] -> setVisible( true);
-	
-	if( time % 20 == 0)
+	if( master -> GetGameState() == GSTATE_PLAY)
 	{
-		static int Bcount = 30;
-		int Bcount1 = Bcount - ((Bcount / 10) * 10);
-		
+		if( frame % 6 == 0)
+		{
+			for( int i = 0; i < 10; i++)
+			{
+				if( count01 / 10 == i) { continue; }
+				timeNumber[3][i] -> setVisible( false);
+			}
+			timeNumber[3][count01] -> setVisible( true);
+			if( count01 == 0) { count01 = 10; }
+			count01--;
+		}
 		for( int i = 0; i < 10; i++)
 		{
-			if( Bcount / 10 == i) { continue; }
-			bulletNumber[0][i] -> setVisible( false);
+			if( count001 / 10 == i) { continue; }
+			timeNumber[4][i] -> setVisible( false);
 		}
-		bulletNumber[0][Bcount / 10] -> setVisible( true);
-		
-		for( int i = 0; i < 10; i++)
-		{
-			if( Bcount1 == i) { continue; }
-			bulletNumber[1][i] -> setVisible( false);
-		}
-		bulletNumber[1][Bcount1] -> setVisible( true);
-		Bcount--;
+		timeNumber[4][count001] -> setVisible( true);
+		if( count001 == 0) { count001 = 10; }
+		count001--;
+	
+		frame++;
 	}
-	
-	time++;
-	
-	
-	
-}
-
-void GameUI::setGameTime( float time)
-{
-	
 }
 
 void GameUI::setBulletCount( int count)
 {
-	
+	int Bcount1 = count - ((count / 10) * 10);
+		
+	for( int i = 0; i < 10; i++)
+	{
+		if( count / 10 == i) { continue; }
+		bulletNumber[0][i] -> setVisible( false);
+	}
+	bulletNumber[0][count / 10] -> setVisible( true);
+		
+	for( int i = 0; i < 10; i++)
+	{
+		if( Bcount1 == i) { continue; }
+		bulletNumber[1][i] -> setVisible( false);
+	}
+	bulletNumber[1][Bcount1] -> setVisible( true);
 }
 
 
