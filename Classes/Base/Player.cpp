@@ -26,8 +26,6 @@ void Player::Init( void)
 	speedVec = Vec3(0, 0, 0);//移動ベクトル
 	targetPos = Vec3(0, 0, 0);//移動目標
 	collisionPos = Vec3(0, 0, 0);//当たり判定（OBB）の各辺
-
-	colisionNode = Node::create();
 }
 
 
@@ -54,8 +52,6 @@ void Player::SetCollision(void)
 
 	aabbBody.set(collision_min, collision_max);
 	obbHead = OBB(aabbBody);//
-
-	sprite3d->addChild(colisionNode);
 }
 
 

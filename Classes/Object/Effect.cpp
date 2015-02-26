@@ -232,7 +232,7 @@ void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 		sprintf( buf, "p_muzzle%02d", i + 1);
 #else
-		sprintf( buf, "Muzzle/p_muzzle%02d", i + 1);
+		sprintf( buf, "P_Muzzle/p_muzzle%02d", i + 1);
 #endif
 		playerMuzzle -> sprite3D[i] = _Sprite3D::create( buf);
 		playerMuzzle -> sprite3D[i] -> setVisible( false);
@@ -261,18 +261,18 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 			sprintf( buf, "e_muzzle%02d", j + 1);
 #else
-			sprintf( buf, "Muzzle/e_muzzle%02d", j + 1);
+			sprintf( buf, "E_Muzzle/e_muzzle%02d", j + 1);
 #endif
 			enemyMuzzle[i] -> sprite3DR[j] = _Sprite3D::create( buf);
 			enemyMuzzle[i] -> sprite3DR[j] -> setVisible( false);
 			enemyMuzzle[i] -> sprite3DR[j] -> setPosition3D( Vec3( 0, 0, 0));
-			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 270, 0, 180));
+			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point1 -> addChild( enemyMuzzle[i] -> sprite3DR[j]);
 			
 			enemyMuzzle[i] -> sprite3DL[j] = _Sprite3D::create( buf);
 			enemyMuzzle[i] -> sprite3DL[j] -> setVisible( false);
 			enemyMuzzle[i] -> sprite3DL[j] -> setPosition3D( Vec3( 0, 0, 0));
-			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 270, 0, 180));
+			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point2 -> addChild( enemyMuzzle[i] -> sprite3DL[j]);
 		}
 		return;

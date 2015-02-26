@@ -50,7 +50,6 @@ bool GameUILayer::init()
 void GameUILayer::InitLayer(void)
 {
 	InitAllUI();
-	LoadUISprite();
 	SetUI();
 }
 

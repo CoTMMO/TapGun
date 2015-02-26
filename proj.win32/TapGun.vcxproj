@@ -146,6 +146,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\Base\Sprite3D.cpp" />
     <ClCompile Include="..\Classes\Base\UI.cpp" />
     <ClCompile Include="..\Classes\Base\Unit.cpp" />
+    <ClCompile Include="..\Classes\Object\Effect.cpp" />
     <ClCompile Include="..\Classes\Object\Muzzle.cpp" />
     <ClCompile Include="..\Classes\Scene\CreditScene.cpp" />
     <ClCompile Include="..\Classes\Scene\GameModelsLayer.cpp" />
@@ -174,6 +175,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\Base\Unit.h" />
     <ClInclude Include="..\Classes\Define.h" />
     <ClInclude Include="..\Classes\Main.h" />
+    <ClInclude Include="..\Classes\Object\Effect.h" />
     <ClInclude Include="..\Classes\Object\Muzzle.h" />
     <ClInclude Include="..\Classes\Scene\CreditScene.h" />
     <ClInclude Include="..\Classes\Scene\GameModelsLayer.h" />

@@ -22,7 +22,7 @@
 #include "System/Directory.h"
 #include "System/Errorfunc.h"
 #include "System/Sound.h"
-
+#include "Object/Effect.h"
 #endif
 
 USING_NS_CC;
@@ -51,12 +51,12 @@ bool Test::init()
 	if ( !Layer::init()) { return false; }
 
 	auto cache = SpriteFrameCache::getInstance();
-	
+
 	cache -> addSpriteFramesWithFile( "HPGauge.plist");
 	cache -> addSpriteFramesWithFile( "Number.plist");
-	
+
 	billboard = BillBoard::create();
-	
+
 	//現在はタッチイベントのリスナーをここに用意しています
 	auto dispatcher = Director::getInstance()->getEventDispatcher();
 
@@ -67,11 +67,11 @@ bool Test::init()
 
 	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-	
+
 	for( auto &p : flag) p = false;
-	
+
 	auto Z = Node::create();
-	
+
 	hp[0] = Sprite::createWithSpriteFrameName( "HPFrame.png");
 	hp[1] = Sprite::createWithSpriteFrameName( "HPGaugeBG.png");
 	Z -> addChild( hp[0],1);
@@ -91,15 +91,17 @@ bool Test::init()
 	addChild( Z,1);
 	hp[1] -> setPosition( Vec2( 640, 700));
 
-	
+
 	hp[0] -> setScale( 0.8);
 	hp[1] -> setScale( 0.8);
-	
+
 	scheduleUpdate();
 	schedule( schedule_selector(Test::moveTime), 0.016f);
 
-	sprite3d = _Sprite3D::create( "enemy.c3t", "Enemy.anime");
-	sprite3d -> setPosition( 200, 200);
+
+
+	sprite3d = _Sprite3D::create( "Enemy/enemy.c3t", "Enemy.anime");
+	sprite3d -> setPosition3D( Vec3( 640, 200, -100));
 	sprite3d -> setRotation3D( Vec3( 0.0f, 0.0f, 0.0f));
 	sprite3d -> setScale( 200.0f);
 //	addChild( sprite3d);
@@ -113,12 +115,12 @@ void Test::update( float delta)
 	static int count = 0;
 //	sprite3d -> setRotation3D(( Vec3( 0.0f, count, 0.0f)));
 //	Effect::getInstance() -> muzzleUpdate();
-	
+
 	static float sca = 1.0;
 	static int pos = 640;
 	static float rot = 0;
-	
-	
+
+
 	for( int i = 0; i < 8; i++)
 	{
 		if(flag[i])
@@ -159,25 +161,25 @@ void Test::update( float delta)
 						break;
 					}
 					pos += 10;
-					
+
 					hp[i] -> setRotation( pos * 2 + 10);
 					hp[i] -> setPositionX( (hp[i] -> getPositionX() - (pos / 2)));
 					hp[i] -> setPositionY( (hp[i] -> getPositionY() + (pos / 2 + 5)));
 					count++;
 					break;
-					
+
 			case 4:
 					break;
-					
+
 			case 5:
 					break;
-					
+
 			case 6:
 					break;
-					
+
 			case 7:
 					break;
-					
+
 				default:
 					break;
 			}
@@ -187,7 +189,7 @@ void Test::update( float delta)
 
 void Test::moveTime( float delta)
 {
-	
+
 }
 
 bool Test::onTouchBegan(cocos2d::Touch *pTouch, cocos2d::Event *pEvent)
@@ -218,30 +220,30 @@ void Test::setEnemyHitEffect( Sprite3D* sprite3d)
 	auto cache = SpriteFrameCache::getInstance();
 
 	auto animation = Animation::create();
-	
+
 	for( int i = 0; i < 8; i++)
 	{
 		char buf[256];
 		sprintf( buf, "E_Hit%02d.png", i + 1);
 		animation -> addSpriteFrame( cache -> getSpriteFrameByName( buf));
 	}
-	
+
 	animation -> setDelayPerUnit( 0.05f);
 	animation -> setRestoreOriginalFrame( true);
-	
+
 	auto action = Animate::create( animation);
-	
+
 	auto callfunc = CallFunc::create( [&](void)->void
 	{
 		billboard -> removeFromParent();
 	});
-	
+
 	auto sequence = Sequence::create( action, callfunc, NULL);
-	
+
 	billboard -> runAction( sequence);
-	
+
 	billboard -> setPosition3D( Vec3( 1, 0.5, 1));
-	
+
 	billboard -> setScale( 0.003f);
 	sprite3d -> addChild( billboard);
 }

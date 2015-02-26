@@ -99,6 +99,9 @@
     <ClCompile Include="..\Classes\System\ResourceLoader.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Object\Effect.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\System\ResourceLoader.h">
       <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Object\Effect.h">
+      <Filter>Source\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

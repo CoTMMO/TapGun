@@ -81,16 +81,13 @@ bool GameScene::init()
 	gGameLayer = GameModelsLayer::create();
 	this->addChild(gGameLayer);
 
-
 	//UIレイヤーを作成
-	gUILayer = GameUILayer::create();
-	this->addChild(gUILayer);
+//	gUILayer = GameUILayer::create();
+//	this->addChild(gUILayer);
 
 
 	GameMasterS = GameMaster::GetInstance();//ゲームパラメータクラスのインスタンス生成
 	GameMasterS->InitScreenSize();//スクリーンサイズのセット
-	GameMasterS->InitParam();//ゲームパラメータの初期化
-
 
 	//現在はタッチイベントのリスナーをここに用意しています
 	auto dispatcher = Director::getInstance()->getEventDispatcher();
@@ -124,6 +121,8 @@ bool GameScene::init()
 	GameMasterS->loopTime = 0.0166f;
 	//
 	GameMasterS->reticleAjust = 0.1f;//
+
+	GameMasterS->SetGameState(GSTATE_CREATE);
 
 	return true;
 }
@@ -219,21 +218,29 @@ void GameScene::update(float delta)
 
 	auto d = Director::getInstance()->getDeltaTime();
 
-
-
 	//現在のゲームの状態でゲーム分岐
 	switch (GameMasterS->GetGameState())
 	{
 		//ゲームの残り時間はGameModelsLayer内で管理します
+	case GSTATE_CREATE:
 
+		GameMasterS->InitParam();//ゲームパラメータの初期化
+
+		if (NULL != gGameLayer)//現在は子レイヤーをクリエイトしたかを確認する
+		{
+			gGameLayer->LoadModels();//スプライトの生成
+		}
+		if (NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
+		{
+			gUILayer->LoadUISprite();//
+		}
+		break;
 	case GSTATE_INIT:
-		if(NULL != gGameLayer)//現在は子レイヤーをクリエイトしたかを確認する
+		if (NULL != gGameLayer)//現在は子レイヤーをクリエイトしたかを確認する
 		{
 			gGameLayer->InitLayer();//
-
-			//
 		}
-		if(NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
+		if (NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
 		{
 			gUILayer->InitLayer();//
 		}
@@ -248,7 +255,7 @@ void GameScene::update(float delta)
 
 		//シーン切り替え用の変数
 		timeCount += GameMasterS->loopTime;//
-		if(timeCount >= TIME_OP)
+		if (timeCount >= TIME_OP)
 		{
 
 		}
@@ -263,7 +270,10 @@ void GameScene::update(float delta)
 		gGameLayer->UpdateWait();
 		//gGameLayer->UpdatePlayer();//プレイヤーの更新はUpdateWait内で行います
 
-		gUILayer->UpdateLayer();
+		if (NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
+		{
+			gUILayer->UpdateLayer();
+		}
 		UpdateCamera();//モデルの移動をもとにカメラ移動
 
 		break;
@@ -335,14 +345,22 @@ void GameScene::update(float delta)
 
 		gGameLayer->UpdatePlayer();//プレイヤーの更新
 		gGameLayer->UpdateBullets();//弾は画面外へ飛ばす
-		gUILayer->UpdateLayer();
+
+		if (NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
+		{
+			gUILayer->UpdateLayer();
+		}
 		UpdateCamera();//モデルの移動をもとにカメラ移動
 		break;
 	case GSTATE_DEADOVER://プレイヤーがダメージで死亡
 
 		gGameLayer->UpdatePlayer();//プレイヤーの更新
 		gGameLayer->UpdateBullets();//弾は画面外へ飛ばす
-		gUILayer->UpdateLayer();
+
+		if (NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
+		{
+			gUILayer->UpdateLayer();
+		}
 		UpdateCamera();//モデルの移動をもとにカメラ移動
 		break;
 	case GSTATE_PAUSE:
