@@ -433,7 +433,7 @@ void GameMaster::InitCamera3D()
 	//今後、ゲームやプレイヤーの状態などで様々なカメラセットが出来るようにする？
 	//camera3D->createPerspective(20, (GLfloat)s.width / s.height, 1, 1000);
 	CamNode = Node::create();
-	camera3D = Camera::createPerspective(C_PERSE_L, (GLfloat)screenSize.width / screenSize.height, 1, 500);
+	camera3D = Camera::createPerspective(PERSE, (GLfloat)screenSize.width / screenSize.height, 1, 500);
 
 	camTarget = Vec3(0.0f, 0.0f, 0.0f);
 	camera3D->lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3::UNIT_Y);//lookAtは原点に置き、setPositionで視点を動かします。
@@ -889,11 +889,11 @@ int GameMaster::AddPlayerBullets(int value)
 *	現在ゲーム時間の取得
 *
 *	@author	sasebon
-*	@param	パラメーター
+*	@param	ミリ秒
 *	@return	現在ゲーム時間
 *	@date	2/24 Ver 1.0
 */
-float GameMaster::GetGameTime(void)
+int GameMaster::GetGameTime(void)
 {
 	return gameActionTime;
 }
@@ -903,11 +903,11 @@ float GameMaster::GetGameTime(void)
 *	現在ゲーム時間のセット
 *
 *	@author	sasebon
-*	@param	パラメーター
+*	@param	ミリ秒
 *	@return	適切な引数:1,不正な引数:-1
 *	@date	2/24 Ver 1.0
 */
-int GameMaster::setGameTime(float time)
+int GameMaster::setGameTime(int time)
 {
 	gameActionTime += time;
 	if(gameActionTime < 0.0f)
@@ -932,7 +932,7 @@ int GameMaster::setGameTime(float time)
 *	@return	適切な引数:1,不正な引数:-1
 *	@date	2/24 Ver 1.0
 */
-int GameMaster::AddGameTime(float time)
+int GameMaster::AddGameTime(int time)
 {
 	gameActionTime += time;
 	if(gameActionTime < 0)

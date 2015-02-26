@@ -17,7 +17,7 @@ namespace TapGun
 	{
 	public:
 
-		float timeCount;//
+		int timeCount;//
 
 		//メンバ変数
 

@@ -118,7 +118,7 @@ bool GameScene::init()
 	GameMasterS->preTV = new timeval;
 	gettimeofday(GameMasterS->nowTV, nullptr);
 	gettimeofday(GameMasterS->preTV, nullptr);
-	GameMasterS->loopTime = 0.0166f;
+	GameMasterS->loopTime = 16.666f;
 	//
 	GameMasterS->reticleAjust = 0.1f;//
 
@@ -214,9 +214,7 @@ void GameScene::update(float delta)
 	GameMasterS->nowTime = GameMasterS->nowTV->tv_sec * 1000.0f + GameMasterS->nowTV->tv_usec * 0.001f;
 
 	//ループにかかった時間を計測(秒)
-	GameMasterS->loopTime = (GameMasterS->nowTime - GameMasterS->preTime) * 0.001f;
-
-	auto d = Director::getInstance()->getDeltaTime();
+	GameMasterS->loopTime = (GameMasterS->nowTime - GameMasterS->preTime);
 
 	//現在のゲームの状態でゲーム分岐
 	switch (GameMasterS->GetGameState())
