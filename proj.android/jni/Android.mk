@@ -20,9 +20,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/Base/Unit.cpp \
 				   ../../Classes/Base/Sprite3D.cpp \
 				\
-				   ../../Classes/Object/Muzzle.cpp \
+				   ../../Classes/Object/Effect.cpp \
 				\
-				   ../../Classes/Scene/Character.cpp \
 				   ../../Classes/Scene/CreditScene.cpp \
 				   ../../Classes/Scene/GameModelsLayer.cpp \
 				   ../../Classes/Scene/GameScene.cpp \

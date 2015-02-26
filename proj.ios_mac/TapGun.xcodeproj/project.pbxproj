@@ -45,6 +45,8 @@
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		824C095D1A9E983900E7201B /* kougeki_icon.plist in Resources */ = {isa = PBXBuildFile; fileRef = 824C095B1A9E983900E7201B /* kougeki_icon.plist */; };
+		824C095E1A9E983900E7201B /* kougeki_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 824C095C1A9E983900E7201B /* kougeki_icon.png */; };
 		82641CC31A9AA21D00A8D98E /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82641C871A9AA21D00A8D98E /* AppDelegate.cpp */; };
 		82641CC41A9AA21D00A8D98E /* GameMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82641C8A1A9AA21D00A8D98E /* GameMaster.cpp */; };
 		82641CC51A9AA21D00A8D98E /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82641C8C1A9AA21D00A8D98E /* Player.cpp */; };
@@ -312,6 +314,8 @@
 		521A8E6219F0C34300D177D7 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		824C095B1A9E983900E7201B /* kougeki_icon.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = kougeki_icon.plist; sourceTree = "<group>"; };
+		824C095C1A9E983900E7201B /* kougeki_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kougeki_icon.png; sourceTree = "<group>"; };
 		82641C871A9AA21D00A8D98E /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		82641C881A9AA21D00A8D98E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		82641C8A1A9AA21D00A8D98E /* GameMaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMaster.cpp; sourceTree = "<group>"; };
@@ -790,6 +794,8 @@
 		828872511A9D51EE00817547 /* SpriteSheet */ = {
 			isa = PBXGroup;
 			children = (
+				824C095B1A9E983900E7201B /* kougeki_icon.plist */,
+				824C095C1A9E983900E7201B /* kougeki_icon.png */,
 				828872521A9D51EE00817547 /* continue.plist */,
 				828872531A9D51EE00817547 /* continue.png */,
 				828872541A9D51EE00817547 /* E_Hit.plist */,
@@ -1238,6 +1244,7 @@
 				82DE1BC51A9BF3ED006D00EE /* toon.fsh in Resources */,
 				82DE1B8D1A9BF3ED006D00EE /* mot_player_hitright2_0218.c3b in Resources */,
 				82DE1B9B1A9BF3ED006D00EE /* tex_gun.png in Resources */,
+				824C095E1A9E983900E7201B /* kougeki_icon.png in Resources */,
 				8288726F1A9D51EE00817547 /* Reticle.png in Resources */,
 				82DE1B6E1A9BF3ED006D00EE /* p_muzzle01.c3t in Resources */,
 				82DE1BCA1A9BF3ED006D00EE /* Title.wav in Resources */,
@@ -1247,6 +1254,7 @@
 				82DE1BD21A9BF3ED006D00EE /* gun_loop.wav in Resources */,
 				82DE1B701A9BF3ED006D00EE /* p_muzzle02.c3t in Resources */,
 				82DE1B431A9BF3ED006D00EE /* e_muzzle01.c3b in Resources */,
+				824C095D1A9E983900E7201B /* kougeki_icon.plist in Resources */,
 				82DE1B541A9BF3ED006D00EE /* mot_enemy_front_roll.c3t in Resources */,
 				82DE1BBD1A9BF3ED006D00EE /* outline.fsh in Resources */,
 				82DE1B491A9BF3ED006D00EE /* enemy.c3b in Resources */,

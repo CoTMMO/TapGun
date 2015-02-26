@@ -18,6 +18,7 @@
 
 #include "Base/UI.h"
 #include "Base/Sprite3D.h"
+#include "Object/Effect.h"
 #include "System/Directory.h"
 #include "System/Errorfunc.h"
 #include "System/Sound.h"
@@ -32,6 +33,8 @@ using namespace CocosDenshion;
 
 _Sprite3D* sprite3d;
 
+Sprite *hp[8];
+bool flag[8];
 
 Scene* Test::createScene()
 {
@@ -49,8 +52,8 @@ bool Test::init()
 
 	auto cache = SpriteFrameCache::getInstance();
 	
-	cache -> addSpriteFramesWithFile( "P_Hit.plist");
-	cache -> addSpriteFramesWithFile( "E_Hit.plist");
+	cache -> addSpriteFramesWithFile( "HPGauge.plist");
+	cache -> addSpriteFramesWithFile( "Number.plist");
 	
 	billboard = BillBoard::create();
 	
@@ -64,6 +67,34 @@ bool Test::init()
 
 	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+	
+	for( auto &p : flag) p = false;
+	
+	auto Z = Node::create();
+	
+	hp[0] = Sprite::createWithSpriteFrameName( "HPFrame.png");
+	hp[1] = Sprite::createWithSpriteFrameName( "HPGaugeBG.png");
+	Z -> addChild( hp[0],1);
+	for( int i = 2; i < 8; i++)
+	{
+		char buf[64];
+		sprintf( buf, "HPGauge_%02d.png", i - 1);
+		hp[i] = Sprite::createWithSpriteFrameName( buf);
+		hp[i] -> setPosition( Vec2( 640, 700));
+		hp[i] -> setScale( 0.8);
+
+		Z -> addChild( hp[i],2);
+	}
+
+	Z -> addChild( hp[1],1);
+	hp[0] -> setPosition( Vec2( 640, 700));
+	addChild( Z,1);
+	hp[1] -> setPosition( Vec2( 640, 700));
+
+	
+	hp[0] -> setScale( 0.8);
+	hp[1] -> setScale( 0.8);
+	
 	scheduleUpdate();
 	schedule( schedule_selector(Test::moveTime), 0.016f);
 
@@ -71,7 +102,7 @@ bool Test::init()
 	sprite3d -> setPosition( 200, 200);
 	sprite3d -> setRotation3D( Vec3( 0.0f, 0.0f, 0.0f));
 	sprite3d -> setScale( 200.0f);
-	addChild( sprite3d);
+//	addChild( sprite3d);
 
 	return true;
 }
@@ -81,21 +112,95 @@ void Test::update( float delta)
 //	Manager::getInstance() -> update();
 	static int count = 0;
 //	sprite3d -> setRotation3D(( Vec3( 0.0f, count, 0.0f)));
-	Effect::getInstance() -> muzzleUpdate();
-	count++;
+//	Effect::getInstance() -> muzzleUpdate();
+	
+	static float sca = 1.0;
+	static int pos = 640;
+	static float rot = 0;
+	
+	
+	for( int i = 0; i < 8; i++)
+	{
+		if(flag[i])
+		{
+			switch( i)
+			{
+			case 2:
+					if( count == 0)
+					{
+						sca = 1.0;
+						pos = 640;
+					}
+					if( count == 4)
+					{
+						flag[i] = false;
+						count = 0;
+						break;
+					}
+					sca -= 0.25;
+					hp[i] -> setScaleX( sca);
+					pos += 22;
+					hp[i] -> setPositionX( pos);
+					count++;
+
+					break;
+			case 3:
+					if( count == 0)
+					{
+//						hp[i] -> setAnchorPoint( Vec2( 1.0, 0.0));
+//						hp[i] -> setPosition( 804, 536);
+						pos = 0;
+					}
+					if( count == 4)
+					{
+//						flag[i] = false;
+//						hp[i] -> setAnchorPoint( Vec2( 0.5, 0.5));
+//						count = 0;
+						break;
+					}
+					pos += 10;
+					
+					hp[i] -> setRotation( pos * 2 + 10);
+					hp[i] -> setPositionX( (hp[i] -> getPositionX() - (pos / 2)));
+					hp[i] -> setPositionY( (hp[i] -> getPositionY() + (pos / 2 + 5)));
+					count++;
+					break;
+					
+			case 4:
+					break;
+					
+			case 5:
+					break;
+					
+			case 6:
+					break;
+					
+			case 7:
+					break;
+					
+				default:
+					break;
+			}
+		}
+	}
 }
 
 void Test::moveTime( float delta)
 {
-
+	
 }
 
 bool Test::onTouchBegan(cocos2d::Touch *pTouch, cocos2d::Event *pEvent)
 {
 //	setEnemyHitEffect( (Sprite3D*)sprite3d);
 //	Effect::getInstance() -> setEnemyHitEffect( sprite3d);
-	sprite3d -> startAnimation( "shot");
-	Effect::getInstance() -> setEnemyMuzzle( sprite3d, "Po_1", "Po_2");
+//	sprite3d -> startAnimation( "shot");
+//	Effect::getInstance() -> setEnemyMuzzle( sprite3d, "Po_1", "Po_2");
+	static int i = 2;
+
+	flag[i] = true;
+	i++;
+	if( i == 8) i = 2;
 	return true;
 }
 

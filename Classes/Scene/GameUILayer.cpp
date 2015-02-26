@@ -94,7 +94,8 @@ void GameUILayer::LoadUISprite()
 #else
 	fileName1 = "Graph/Pictures/reticle.png";
 #endif
-	UIBillBoard[UIKIND_RETICLE] = cocos2d::BillBoard::create(fileName1, BillBoard::Mode::VIEW_PLANE_ORIENTED);
+	UIBillBoard[UIKIND_RETICLE] = cocos2d::BillBoard::createWithTexture(
+		Sprite::createWithSpriteFrameName( "Reticle_idle.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
 
 
 	//リロードアラートの生成
@@ -187,7 +188,7 @@ void GameUILayer::SetUI()
 
 	Sprite* sprite[4];
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	sprite[0] = Sprite::create("four4096.png");
+	//	sprite[0] = Sprite::create("four4096.png");
 	//	sprite[1] = Sprite::create("time.png");
 	//	sprite[2] = Sprite::create("kaihiai.png");
 	//	sprite[3] = Sprite::create("timelogo.png");
@@ -260,7 +261,7 @@ void GameUILayer::MoveReticle(void)
 	{
 		if (flag == false)
 		{
-			LifeUI::getInstance()->init(this);
+			GameUI::getInstance()->init(this);
 			LogoUI::getInstance()->init(this);
 			flag = true;
 		}

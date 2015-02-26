@@ -53,6 +53,9 @@ bool TitleScene::init()
 	cache -> addSpriteFramesWithFile( "Logo.plist");
 	cache -> addSpriteFramesWithFile( "Number.plist");
 	cache -> addSpriteFramesWithFile( "HPGauge.plist");
+	cache -> addSpriteFramesWithFile( "continue.plist");
+	cache -> addSpriteFramesWithFile( "Reticle.plist");
+	cache -> addSpriteFramesWithFile( "kougeki_icon.plist");
 #else
 	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Title.plist");
 	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/P_Hit.plist");
@@ -60,7 +63,11 @@ bool TitleScene::init()
 	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Logo.plist");
 	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Number.plist");
 	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/HPGauge.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Reticle.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/kougeki_icon.plist");
 #endif
+	
 	menuFlag = TeamLogo;
 
 	auto listener = EventListenerTouchOneByOne::create();
@@ -270,7 +277,6 @@ void TitleScene::setSprite( void)
 void TitleScene::setMenu( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
-	auto cache = SpriteFrameCache::getInstance();
 
 	auto item = MenuItemSprite::create( Sprite::createWithSpriteFrameName( "title_start.png"), 
 				Sprite::createWithSpriteFrameName( "title_start_push.png"), CC_CALLBACK_1( TitleScene::menuStartCallback, this));
@@ -304,8 +310,6 @@ void TitleScene::menuAction( void)
 
 void TitleScene::menuStartCallback( Ref* pSender)
 {
-	ResourceLoader::getInstance() -> getSprite3D( 50);
-	
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
 	sound -> playSE( "MoveSE.mp3");

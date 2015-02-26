@@ -172,108 +172,257 @@ void UI::UpdatePos(Vec2 pos)
 {
 }
 
-LifeUI* LifeUI::getInstance( void)
+
+GameUI* GameUI::getInstance()
 {
-	static LifeUI* P;
-	if( !P) P = new LifeUI;
-	return P;
+	static GameUI *p = nullptr;
+	if( !p) { p = new GameUI; }
+	return p;
 }
 
-LifeUI::LifeUI()
+void GameUI::init( Layer* layer)
 {
-}
+	auto cache = SpriteFrameCache::getInstance();
 
-void LifeUI::init( Layer* layer)
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	SpriteFrameCache::getInstance() -> addSpriteFramesWithFile( "HPGauge.plist");
-	SpriteFrameCache::getInstance() -> addSpriteFramesWithFile( "Number.plist");
-	frame = Sprite::create( "lifekara.png");
-	bullet = Sprite::create( "Bullet.png");
-#else
-	SpriteFrameCache::getInstance() -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/HPGauge.plist");
-	SpriteFrameCache::getInstance() -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Number.plist");
-#endif
-
-	frame = Sprite::createWithSpriteFrameName( "HPFrame.png");
-	bullet = Sprite::createWithSpriteFrameName( "BulletFrame.png");
-	
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	bullet -> setScale( 0.2f);
-	bullet -> setPosition3D( Vec3( 640, 100, 0));
-#else
-	bullet -> setScale( 0.1f);
-	bullet -> setPosition3D( Vec3( 640, 100, 0));
-#endif
-	
-	
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	frame -> setScale( 1.0f);
-	frame -> setPosition3D( Vec3( 640, 800 - 100, 0));
-#else
-	frame -> setScale( 0.05f);
-	frame -> setPosition3D( Vec3( 640 - 5, 800 - 100, 0));
-	
-	life[Up] = Sprite::createWithSpriteFrameName( "life4.png");
-	life[Up] -> setPosition( Vec2( 2130, 3280));
-	life[Up] -> setScale( 1.9f);
-	life[Up] -> setColor( Color3B::GREEN);
-	life[Down] = Sprite::createWithSpriteFrameName( "life2.png");
-	life[Down] -> setPosition( Vec2( 2160, 1160));
-	life[Down] -> setScale( 1.9f);
-	life[Down] -> setColor( Color3B::GREEN);
-	life[Left] = Sprite::createWithSpriteFrameName( "life1.png");
-	life[Left] -> setPosition( Vec2( 620, 1810));
-	life[Left] -> setScale( 1.9f);
-	life[Left] -> setColor( Color3B::GREEN);
-	life[Right] = Sprite::createWithSpriteFrameName( "life3.png");
-	life[Right] -> setPosition( Vec2( 3700, 2220));
-	life[Right] -> setScale( 1.9f);
-	life[Right] -> setColor( Color3B::GREEN);
-
-	for( auto &p : life) { frame -> addChild( p); }
-	
-	number[0] = Sprite::createWithSpriteFrameName( "Num1.png");
-	number[0] -> setPosition( Vec2( 1330, 2180));
-	number[0] -> setScale( 1.9f);
-	number[1] = Sprite::createWithSpriteFrameName( "Num0.png");
-	number[1] -> setPosition( Vec2( 1830, 2200));
-	number[1] -> setScale( 1.9f);
-	number[2] = Sprite::createWithSpriteFrameName( "Num0.png");
-	number[2] -> setPosition( Vec2( 2330, 2200));
-	number[2] -> setScale( 1.9f);
-	number[3] = Sprite::createWithSpriteFrameName( "Num0.png");
-	number[3] -> setPosition( Vec2( 2900, 1920));
-	number[3] -> setScale( 1.0f);
-	number[4] = Sprite::createWithSpriteFrameName( "Num0.png");
-	number[4] -> setPosition( Vec2( 3200, 1920));
-	number[4] -> setScale( 1.0f);
-	
-	for( auto &p : number) { frame -> addChild( p); }
-#endif
-	
-	// auto time = GameMaster::GetInstance() -> gameTime;
-	
-	/*
-	if( time > 100)
+	hpParent = Node::create();
+	hp[0] = Sprite::createWithSpriteFrameName( "HPFrame.png");
+	hp[1] = Sprite::createWithSpriteFrameName( "HPGaugeBG.png");
+	for( int i = 2; i < HPGauge; i++)
 	{
-		number[0] = Sprite::createWithSpriteFrameName( "Num1.png");
-		number[0] -> setVisible( true);
+		char buf[64];
+		sprintf( buf, "HPGauge_%02d.png", i - 1);
+		hp[i] = Sprite::createWithSpriteFrameName( buf);
 	}
-	else if( time >= 90 && time < 100)
+	for( auto &p : hp)
 	{
-		number[0] -> setVisible( false);
-		number[1] = Sprite::createWithSpriteFrameName( "Num9.png");
-	}*/
+		p -> setPosition( Vec2( 640, 700));
+		p -> setScale( 0.8);
+		hpParent -> addChild( p,2);
+	}
+	layer -> addChild( hpParent);
 	
-	layer -> addChild( frame);
-	layer -> addChild( bullet);
+	timeParent = Node::create();
+	for( int i = 0; i < TimeNumber; i++) // NumberSprite Count
+	{
+		for( int k = 0; k < 9; k++)	// NumberSprite init Loop
+		{
+			char buf[64];
+			sprintf( buf, "%d.png", k);
+			timeNumber[i][k] = Sprite::createWithSpriteFrameName( buf);
+			timeNumber[i][k] -> setScale( 0.16f);
+			timeNumber[i][k] -> setVisible( false);
+			timeParent -> addChild( timeNumber[i][k]);
+		}
+	}
+
+	for( int i = 0; i < 9; i++)
+	{
+		timeNumber[0][i] -> setPosition( Vec2( 560, 700));
+		timeNumber[1][i] -> setPosition( Vec2( 600, 700));
+		timeNumber[2][i] -> setPosition( Vec2( 640, 700));
+		timeNumber[3][i] -> setPosition( Vec2( 690, 695));
+		timeNumber[4][i] -> setPosition( Vec2( 720, 695));
+		timeNumber[3][i] -> setScale( 0.12f);
+		timeNumber[4][i] -> setScale( 0.12f);
+	}
+	timeNumber[0][1] -> setVisible( true);
+	timeNumber[1][8] -> setVisible( true);
+	timeNumber[2][0] -> setVisible( true);
+	timeNumber[3][0] -> setVisible( true);
+	timeNumber[4][0] -> setVisible( true);
+	
+	layer -> addChild( timeParent);
+
+	bulletParent = Node::create();
+	
+	bullet = Sprite::createWithSpriteFrameName( "BulletFrame.png");
+	bullet -> setPosition( Vec2( 640, 60));
+	bullet -> setScale( 0.15f);
+	bulletParent -> addChild( bullet, 1);
+	
+	for( int i = 0; i < BulletNumber; i++) // NumberSprite Count
+	{
+		for( int k = 0; k < 9; k++)	// NumberSprite init Loop
+		{
+			char buf[64];
+			sprintf( buf, "%d_.png", k);
+			bulletNumber[i][k] = Sprite::createWithSpriteFrameName( buf);
+			bulletNumber[i][k] -> setVisible( false);
+			bulletNumber[i][k] -> setScale( 0.15f);
+			bulletParent -> addChild( bulletNumber[i][k], 3);
+		}
+	}
+	
+	for( int i = 0; i < 9; i++)
+	{
+		bulletNumber[0][i] -> setPosition( Vec2( 580, 55));
+		bulletNumber[1][i] -> setPosition( Vec2( 615, 55));
+		bulletNumber[2][i] -> setPosition( Vec2( 670, 50));
+		bulletNumber[3][i] -> setPosition( Vec2( 700, 50));
+		bulletNumber[2][i] -> setScale( 0.12f);
+		bulletNumber[3][i] -> setScale( 0.12f);
+	}
+	bulletNumber[0][3] -> setVisible( true);
+	bulletNumber[1][0] -> setVisible( true);
+	bulletNumber[2][3] -> setVisible( true);
+	bulletNumber[3][0] -> setVisible( true);
+	
+	layer -> addChild( bulletParent);
+	
+	for( int i = 0; i < Escape; i++)
+	{
+		escape[i] = Sprite::createWithSpriteFrameName( "Escape.png");
+		escape[i] -> setScale( 0.4f);
+		layer -> addChild( escape[i]);
+	}
+	escape[0] -> setPosition( Vec2( 130, 130));
+	escape[1] -> setPosition( Vec2( 1150, 130));
+	auto flip = FlipX::create(true);
+	escape[1] -> runAction(flip);
+	
+	pause = Sprite::create();
+	
+	for( int i = 0; i < EnemyAttack; i++)
+	{
+		for( int k = 0; k < 3; k++)
+		{
+			char buf[64];
+			sprintf( buf, "kougeki_icon_%d.png", k + 1);
+			enemyAttack[i][k] = Sprite::createWithSpriteFrameName( buf);
+			enemyAttack[i][k] -> setVisible( false);
+			layer -> addChild( enemyAttack[i][k]);
+		}
+	}
+	
+	for( int i = 0; i < Delete; i++)
+	{
+		deleteLogo[i] = Sprite::createWithSpriteFrameName( "Derete.png");
+		deleteLogo[i] -> setVisible( false);
+		layer -> addChild( deleteLogo[i]);
+	}
 }
 
-void LifeUI::update( void)
+void GameUI::update( void)
 {
-
+	
 }
+
+void GameUI::setGameTime( float time)
+{
+	
+}
+
+void GameUI::setBulletCount( int count)
+{
+	
+}
+
+
+
+//
+//
+//LifeUI* LifeUI::getInstance( void)
+//{
+//	static LifeUI* P;
+//	if( !P) P = new LifeUI;
+//	return P;
+//}
+//
+//LifeUI::LifeUI()
+//{
+//}
+//
+//void LifeUI::init( Layer* layer)
+//{
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+//	SpriteFrameCache::getInstance() -> addSpriteFramesWithFile( "HPGauge.plist");
+//	SpriteFrameCache::getInstance() -> addSpriteFramesWithFile( "Number.plist");
+//	frame = Sprite::create( "lifekara.png");
+//	bullet = Sprite::create( "Bullet.png");
+//#else
+//	SpriteFrameCache::getInstance() -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/HPGauge.plist");
+//	SpriteFrameCache::getInstance() -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Number.plist");
+//#endif
+//
+//	frame = Sprite::createWithSpriteFrameName( "HPFrame.png");
+//	bullet = Sprite::createWithSpriteFrameName( "BulletFrame.png");
+//	
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+//	bullet -> setScale( 0.2f);
+//	bullet -> setPosition3D( Vec3( 640, 100, 0));
+//#else
+//	bullet -> setScale( 0.1f);
+//	bullet -> setPosition3D( Vec3( 640, 100, 0));
+//#endif
+//	
+//	
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+//	frame -> setScale( 1.0f);
+//	frame -> setPosition3D( Vec3( 640, 800 - 100, 0));
+//#else
+//	frame -> setScale( 0.05f);
+//	frame -> setPosition3D( Vec3( 640 - 5, 800 - 100, 0));
+//	
+//	life[Up] = Sprite::createWithSpriteFrameName( "life4.png");
+//	life[Up] -> setPosition( Vec2( 2130, 3280));
+//	life[Up] -> setScale( 1.9f);
+//	life[Up] -> setColor( Color3B::GREEN);
+//	life[Down] = Sprite::createWithSpriteFrameName( "life2.png");
+//	life[Down] -> setPosition( Vec2( 2160, 1160));
+//	life[Down] -> setScale( 1.9f);
+//	life[Down] -> setColor( Color3B::GREEN);
+//	life[Left] = Sprite::createWithSpriteFrameName( "life1.png");
+//	life[Left] -> setPosition( Vec2( 620, 1810));
+//	life[Left] -> setScale( 1.9f);
+//	life[Left] -> setColor( Color3B::GREEN);
+//	life[Right] = Sprite::createWithSpriteFrameName( "life3.png");
+//	life[Right] -> setPosition( Vec2( 3700, 2220));
+//	life[Right] -> setScale( 1.9f);
+//	life[Right] -> setColor( Color3B::GREEN);
+//
+//	for( auto &p : life) { frame -> addChild( p); }
+//	
+//	number[0] = Sprite::createWithSpriteFrameName( "Num1.png");
+//	number[0] -> setPosition( Vec2( 1330, 2180));
+//	number[0] -> setScale( 1.9f);
+//	number[1] = Sprite::createWithSpriteFrameName( "Num0.png");
+//	number[1] -> setPosition( Vec2( 1830, 2200));
+//	number[1] -> setScale( 1.9f);
+//	number[2] = Sprite::createWithSpriteFrameName( "Num0.png");
+//	number[2] -> setPosition( Vec2( 2330, 2200));
+//	number[2] -> setScale( 1.9f);
+//	number[3] = Sprite::createWithSpriteFrameName( "Num0.png");
+//	number[3] -> setPosition( Vec2( 2900, 1920));
+//	number[3] -> setScale( 1.0f);
+//	number[4] = Sprite::createWithSpriteFrameName( "Num0.png");
+//	number[4] -> setPosition( Vec2( 3200, 1920));
+//	number[4] -> setScale( 1.0f);
+//	
+//	for( auto &p : number) { frame -> addChild( p); }
+//#endif
+//	
+//	// auto time = GameMaster::GetInstance() -> gameTime;
+//	
+//	/*
+//	if( time > 100)
+//	{
+//		number[0] = Sprite::createWithSpriteFrameName( "Num1.png");
+//		number[0] -> setVisible( true);
+//	}
+//	else if( time >= 90 && time < 100)
+//	{
+//		number[0] -> setVisible( false);
+//		number[1] = Sprite::createWithSpriteFrameName( "Num9.png");
+//	}*/
+//	
+//	layer -> addChild( frame);
+//	layer -> addChild( bullet);
+//}
+//
+//void LifeUI::update( void)
+//{
+//
+//}
 
 
 LogoUI* LogoUI::getInstance( void)
