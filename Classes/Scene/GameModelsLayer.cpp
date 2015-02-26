@@ -60,6 +60,7 @@ bool GameModelsLayer::init()
 */
 void GameModelsLayer::InitLayer(void)
 {
+	srand( 0);
 //	LoadModels();//スプライトの生成
 //	player.createMuzzle(player.sprite3d);
 //	player.muzzleFlagOff();

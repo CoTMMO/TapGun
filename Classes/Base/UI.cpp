@@ -204,7 +204,7 @@ void GameUI::init( Layer* layer)
 	timeParent = Node::create();
 	for( int i = 0; i < TimeNumber; i++) // NumberSprite Count
 	{
-		for( int k = 0; k < 9; k++)	// NumberSprite init Loop
+		for( int k = 0; k < 10; k++)	// NumberSprite init Loop
 		{
 			char buf[64];
 			sprintf( buf, "%d.png", k);
@@ -215,7 +215,7 @@ void GameUI::init( Layer* layer)
 		}
 	}
 
-	for( int i = 0; i < 9; i++)
+	for( int i = 0; i < 10; i++)
 	{
 		timeNumber[0][i] -> setPosition( Vec2( 560, 700));
 		timeNumber[1][i] -> setPosition( Vec2( 600, 700));
@@ -225,8 +225,8 @@ void GameUI::init( Layer* layer)
 		timeNumber[3][i] -> setScale( 0.12f);
 		timeNumber[4][i] -> setScale( 0.12f);
 	}
-	timeNumber[0][1] -> setVisible( true);
-	timeNumber[1][8] -> setVisible( true);
+	timeNumber[0][3] -> setVisible( true);
+	timeNumber[1][0] -> setVisible( true);
 	timeNumber[2][0] -> setVisible( true);
 	timeNumber[3][0] -> setVisible( true);
 	timeNumber[4][0] -> setVisible( true);
@@ -242,7 +242,7 @@ void GameUI::init( Layer* layer)
 	
 	for( int i = 0; i < BulletNumber; i++) // NumberSprite Count
 	{
-		for( int k = 0; k < 9; k++)	// NumberSprite init Loop
+		for( int k = 0; k < 10; k++)	// NumberSprite init Loop
 		{
 			char buf[64];
 			sprintf( buf, "%d_.png", k);
@@ -253,7 +253,7 @@ void GameUI::init( Layer* layer)
 		}
 	}
 	
-	for( int i = 0; i < 9; i++)
+	for( int i = 0; i < 10; i++)
 	{
 		bulletNumber[0][i] -> setPosition( Vec2( 580, 55));
 		bulletNumber[1][i] -> setPosition( Vec2( 615, 55));
@@ -279,6 +279,7 @@ void GameUI::init( Layer* layer)
 	escape[1] -> setPosition( Vec2( 1150, 130));
 	auto flip = FlipX::create(true);
 	escape[1] -> runAction(flip);
+	escape[1] -> setOpacity( 25);
 	
 	pause = Sprite::create();
 	
@@ -304,6 +305,62 @@ void GameUI::init( Layer* layer)
 
 void GameUI::update( void)
 {
+	static int time = 0;
+	
+	static float count = GameMaster::GetInstance() -> GetGameTime();
+	int count100 = count / 100;
+	int count10 = ((int)count % 100);
+	int count1 = count10 - ((count10 / 10) * 10);
+	int count01 = 0;
+		
+	for( int i = 0; i < 10; i++)
+	{
+		if( count / 100 == i) { continue; }
+		timeNumber[0][i] -> setVisible( false);
+	}
+	timeNumber[0][(int)count / 100] -> setVisible( true);
+	
+	for( int i = 0; i < 10; i++)
+	{
+		if( count10 / 10 == i) { continue; }
+		timeNumber[1][i] -> setVisible( false);
+	}
+	timeNumber[1][count10 / 10] -> setVisible( true);
+	
+	for( int i = 0; i < 10; i++)
+	{
+		if( count1 / 10 == i) { continue; }
+		timeNumber[2][i] -> setVisible( false);
+	}
+	timeNumber[2][count1] -> setVisible( true);
+	
+	timeNumber[3][0] -> setVisible( true);
+	timeNumber[4][0] -> setVisible( true);
+	
+	if( time % 20 == 0)
+	{
+		static int Bcount = 30;
+		int Bcount1 = Bcount - ((Bcount / 10) * 10);
+		
+		for( int i = 0; i < 10; i++)
+		{
+			if( Bcount / 10 == i) { continue; }
+			bulletNumber[0][i] -> setVisible( false);
+		}
+		bulletNumber[0][Bcount / 10] -> setVisible( true);
+		
+		for( int i = 0; i < 10; i++)
+		{
+			if( Bcount1 == i) { continue; }
+			bulletNumber[1][i] -> setVisible( false);
+		}
+		bulletNumber[1][Bcount1] -> setVisible( true);
+		Bcount--;
+	}
+	
+	time++;
+	
+	
 	
 }
 
@@ -466,11 +523,11 @@ void LogoUI::update( void)
 
 void LogoUI::setLogo( LogoNumber num)
 {
-	logo[num] -> setVisible(true);
-	logo[num] -> runAction(Sequence::create( DelayTime::create( 1.5f), Hide::create(), NULL));
+//	logo[num] -> setVisible(true);
+//	logo[num] -> runAction(Sequence::create( DelayTime::create( 1.5f), Hide::create(), NULL));
 }
 
 void LogoUI::resetLogo( LogoNumber num)
 {
-	logo[num] -> setVisible(false);
+//	logo[num] -> setVisible(false);
 }

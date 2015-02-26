@@ -51,6 +51,7 @@ void GameUILayer::InitLayer(void)
 {
 	InitAllUI();
 	SetUI();
+	GameUI::getInstance() -> init( this);
 }
 
 
@@ -147,42 +148,42 @@ void GameUILayer::LoadUISprite()
 void GameUILayer::SetUI()
 {
 	auto s = Director::getInstance()->getWinSize();//スクリーンサイズを取得
-
-	//レティクルの設定
-	UIBillBoard[UIKIND_RETICLE]->setPosition(s.width / 2, s.height / 2);
-	UIBillBoard[UIKIND_RETICLE]->setScale(0.4f);
-	addChild(UIBillBoard[UIKIND_RETICLE]);
-
-	Ui[UIKIND_RETICLE].Init(UIKIND_RETICLE, UIKIND_RETICLE);
-	valid[UIKIND_RETICLE] = TRUE;
-
-	//ウェイトUIの設定
-	UIBillBoard[UIKIND_WAIT]->setPosition(s.width / 2, s.height / 2);
-	UIBillBoard[UIKIND_WAIT]->setScale(0.1f);
-	UIBillBoard[UIKIND_WAIT]->setVisible(false);
-	addChild(UIBillBoard[UIKIND_WAIT]);
-
-	Ui[UKIND_BULLET_B].Init(UKIND_BULLET_B, UKIND_BULLET_B);
-	valid[UKIND_BULLET_B] = TRUE;
-
-	//アクションUIの設定
-	UIBillBoard[UIKIND_ACTION]->setPosition(s.width / 2, s.height / 2);
-	UIBillBoard[UIKIND_ACTION]->setScale(0.1f);
-	UIBillBoard[UIKIND_ACTION]->setVisible(false);
-	addChild(UIBillBoard[UIKIND_ACTION]);
-
-	Ui[UIKIND_ACTION].Init(UIKIND_ACTION, UIKIND_ACTION);
-	valid[UIKIND_ACTION] = TRUE;
-
-
-	//リロードアラートの設定
-	UIBillBoard[UIKIND_RELOAD]->setPosition(s.width / 2, s.height / 2);
-	UIBillBoard[UIKIND_RELOAD]->setScale(0.1f);
-	addChild(UIBillBoard[UIKIND_RELOAD]);
-	UIBillBoard[UIKIND_RELOAD]->setVisible(false);
-
-	Ui[UIKIND_RELOAD].Init(UIKIND_RELOAD, UIKIND_RELOAD);
-	valid[UIKIND_RELOAD] = TRUE;
+//
+//	//レティクルの設定
+//	UIBillBoard[UIKIND_RETICLE]->setPosition(s.width / 2, s.height / 2);
+//	UIBillBoard[UIKIND_RETICLE]->setScale(0.4f);
+//	addChild(UIBillBoard[UIKIND_RETICLE]);
+//
+//	Ui[UIKIND_RETICLE].Init(UIKIND_RETICLE, UIKIND_RETICLE);
+//	valid[UIKIND_RETICLE] = TRUE;
+//
+//	//ウェイトUIの設定
+//	UIBillBoard[UIKIND_WAIT]->setPosition(s.width / 2, s.height / 2);
+//	UIBillBoard[UIKIND_WAIT]->setScale(0.1f);
+//	UIBillBoard[UIKIND_WAIT]->setVisible(false);
+//	addChild(UIBillBoard[UIKIND_WAIT]);
+//
+//	Ui[UKIND_BULLET_B].Init(UKIND_BULLET_B, UKIND_BULLET_B);
+//	valid[UKIND_BULLET_B] = TRUE;
+//
+//	//アクションUIの設定
+//	UIBillBoard[UIKIND_ACTION]->setPosition(s.width / 2, s.height / 2);
+//	UIBillBoard[UIKIND_ACTION]->setScale(0.1f);
+//	UIBillBoard[UIKIND_ACTION]->setVisible(false);
+//	addChild(UIBillBoard[UIKIND_ACTION]);
+//
+//	Ui[UIKIND_ACTION].Init(UIKIND_ACTION, UIKIND_ACTION);
+//	valid[UIKIND_ACTION] = TRUE;
+//
+//
+//	//リロードアラートの設定
+//	UIBillBoard[UIKIND_RELOAD]->setPosition(s.width / 2, s.height / 2);
+//	UIBillBoard[UIKIND_RELOAD]->setScale(0.1f);
+//	addChild(UIBillBoard[UIKIND_RELOAD]);
+//	UIBillBoard[UIKIND_RELOAD]->setVisible(false);
+//
+//	Ui[UIKIND_RELOAD].Init(UIKIND_RELOAD, UIKIND_RELOAD);
+//	valid[UIKIND_RELOAD] = TRUE;
 
 
 	Sprite* sprite[4];
@@ -241,6 +242,7 @@ void GameUILayer::InitAllUI()
 void GameUILayer::UpdateLayer( void)
 {
 	GameUILayer::MoveReticle();
+	GameUI::getInstance() -> update();
 }
 
 
