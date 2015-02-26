@@ -760,7 +760,7 @@ Vec2 GameMaster::setHidePoint(StagePoint stagePoint)
 *	@return	HP
 *	@date	2/6 Ver 1.0
 */
-float GameMaster::GetPlayerHP(void)
+int GameMaster::GetPlayerHP(void)
 {
 	return playerHP;
 }
@@ -773,7 +773,7 @@ float GameMaster::GetPlayerHP(void)
 *	@return	適切な引数:1,不正な引数:-1
 *	@date	2/22 Ver 1.0
 */
-int GameMaster::SetPlayerHP(float value)
+int GameMaster::SetPlayerHP(int value)
 {
 	if (value > STS_MAXPLAYERHP)
 	{
@@ -801,7 +801,7 @@ int GameMaster::SetPlayerHP(float value)
 *	@return	適切な引数:1,不正な引数:-1
 *	@date	2/6 Ver 1.0
 */
-int GameMaster::AddPlayerHP(float value)
+int GameMaster::AddPlayerHP(int value)
 {
 	playerHP += value;
 	if (playerHP > STS_MAXPLAYERHP)

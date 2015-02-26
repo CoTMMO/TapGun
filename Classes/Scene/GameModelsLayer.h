@@ -125,9 +125,9 @@ namespace TapGun
 		//エネミーの更新
 		void ActionEStandby(int num);
 		void ActionEIdle(int num);
-		void ActionEDodge(int num);
+//		void ActionEDodge(int num);
 		void ActionEDamaged(int num);
-		void ActionERecover(int num);
+//		void ActionERecover(int num);
 		void ActionEDead(int num);
 		void ActionEMove(int num);
 		void ActionEAttack(int num);
@@ -144,7 +144,7 @@ namespace TapGun
 		int ChangeCamera(int num);
 
 		//計算用
-		float getNowTime();
+		int getNowTime();
 	};
 }
 #endif //__GAME_MODELSLAYER_H__

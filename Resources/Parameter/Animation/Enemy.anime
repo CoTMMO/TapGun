@@ -1,4 +1,25 @@
 
+enemy/mot_enemy_bress.c3b,idle
+enemy/mot_enemy_bress.c3t,idle
+
+
+
+enemy/mot_enemy_run.c3b,run
+enemy/mot_enemy_run.c3t,run
+
+enemy/mot_enemy_walk2.c3b,walk
+enemy/mot_enemy_walk2.c3t,walk
+
+enemy/mot_enemy_back_walk.c3b,bwalk
+enemy/mot_enemy_back_walk.c3t,bwalk
+
+enemy/mot_enemy_side_walk_left.c3b,swalk_l
+enemy/mot_enemy_side_walk_left.c3t,swalk_l
+
+enemy/mot_enemy_side_walk_right.c3b,swalk_r
+enemy/mot_enemy_side_walk_right.c3t,swalk_r
+
+
 
 enemy/mot_enemy_dei1.c3b,dei1
 enemy/mot_enemy_dei1.c3t,dei1
@@ -24,8 +45,9 @@ enemy/mot_enemy_jump.c3t,jump
 enemy/mot_enemy_run_stop.c3b,stop
 enemy/mot_enemy_run_stop.c3t,stop
 
-enemy/mot_enemy_run.c3b,run
-enemy/mot_enemy_run.c3t,run
+
+
+
 
 enemy/mot_enemy_shot.c3b,shot
 enemy/mot_enemy_shot.c3t,shot
@@ -42,14 +64,5 @@ enemy/mot_enemy_side_roll2.c3t,sroll2
 enemy/mot_enemy_suraid.c3b,slide
 enemy/mot_enemy_suraid.c3t,slide
 
-enemy/mot_enemy_bress.c3b,idle
-enemy/mot_enemy_bress.c3t,idle
 
-enemy/mot_enemy_back_walk.c3b,bwalk
-enemy/mot_enemy_back_walk.c3t,bwalk
 
-enemy/mot_enemy_side_walk_left.c3b,swalk_l
-enemy/mot_enemy_side_walk_left.c3t,swalk_l
-
-enemy/mot_enemy_side_walk_right.c3b,swalk_r
-enemy/mot_enemy_side_walk_right.c3t,swalk_r

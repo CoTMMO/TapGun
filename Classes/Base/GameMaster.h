@@ -11,15 +11,13 @@ namespace TapGun
 #define FALSE -1
 #define TRUE 1
 
-	//#define FRAME 0.01666f//時間を
-
-	//プレイヤーのパラメータ定義
+//プレイヤーのパラメータ定義
 #define STS_MAXPLAYERHP 6//プレイヤーの最大HP
 #define STS_RAPIDSPEED 8//プレイヤーの連射速度（フレーム）
 #define STS_MAXBULLETS 30//プレイヤーの最大弾数
 #define STS_MUTEKIFRAME (120 / 60.0f) //無敵時間
 
-#define STS_RUNSPEED 4.0f//プレイヤーのウェイト時の速度
+#define STS_RUNSPEED 0.004f//プレイヤーのウェイト時の速度
 
 #define STS_HIDEWAIT (25.0f)//回避モーションが終了するまでの全体フレーム
 #define STS_HIDESTART 1//回避ボタンを押してから回避モーションが始まるまでの時間
@@ -33,13 +31,13 @@ namespace TapGun
 #define STS_ENEMY_HP 6//敵のHP
 #define STS_ENEMY_MAXSHOT 5//敵の連射数
 
-#define STS_ENEMY_RUNSPEED 5.0f//敵の走り速度
-#define STS_ENEMY_WALKSPEED 2.0f//敵の歩き速度
-#define STS_ENEMY_SWALKSPEED 2.0f//敵の横歩き速度
-#define STS_ENEMY_SJUMPSPEED 5.0f//敵の横歩き速度
-#define STS_ENEMY_ACROSPEED 5.0f//敵の横歩き速度
+#define STS_ENEMY_RUNSPEED 0.005f//敵の走り速度
+#define STS_ENEMY_WALKSPEED 0.002f//敵の歩き速度
+#define STS_ENEMY_SWALKSPEED 0.002f//敵の横歩き速度
+#define STS_ENEMY_SJUMPSPEED 0.005f//敵の横歩き速度
+#define STS_ENEMY_ACROSPEED 0.005f//敵の横歩き速度
 
-#define STS_EBULLET_SPEED 19.0f//敵の弾の速度
+#define STS_EBULLET_SPEED 0.019f//敵の弾の速度
 
 #define BATTLE_FEILD_X 0.8//タッチで攻撃可能な画面割合
 
@@ -337,9 +335,9 @@ namespace TapGun
 		void SetGameState(int gState);
 
 		//プレイヤーHPのゲッターとセッター
-		float GetPlayerHP(void);
-		int SetPlayerHP(float value);
-		int AddPlayerHP(float value);
+		int GetPlayerHP(void);
+		int SetPlayerHP(int value);
+		int AddPlayerHP(int value);
 
 		//プレイヤー弾数のゲッターとセッター
 		int GetPlayerBullets(void);

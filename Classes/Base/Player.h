@@ -38,9 +38,9 @@ namespace TapGun
 		int hitpoint;
 
 		//モーション管理用の時間変数
-		float motStartTime;//モーションを開始した時間（秒）
-		float motPreTime;//前ループ時の時間（秒）
-		float motProcTime;//モーションを開始してからの経過時間（秒）
+		int motStartTime;//モーションを開始した時間（ミリ秒）
+		int motPreTime;//前ループ時の時間（ミリ秒）
+		int motProcTime;//モーションを開始してからの経過時間（ミリ秒）
 
 		cocos2d::Vec3 cameraAjust;//回避モーション時のカメラ位置補正
 
@@ -81,7 +81,7 @@ namespace TapGun
 		void SetCollision(void);//当たり判定を初期化
 
 		void Update(void);//速度をもとに座標移動と当たり判定移動
-		void Update(float loopTime);//速度をもとに座標移動と当たり判定移動
+		void Update(int loopTime);//速度をもとに座標移動と当たり判定移動
 		void SetPos(cocos2d::Vec3 pos);//引数の座標に移動
 
 		void SetAnimation(const std::string& animeName, const int speed);//

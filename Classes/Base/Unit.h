@@ -86,13 +86,12 @@ namespace TapGun
 
 		int eState;//敵の状態
 
-		//管理フレーム
-		float atkFrame;//攻撃までのカウント（秒）
-		float eWaitFrame;//出現までの待ち時間（秒）
-
-		float stsAtkFrame;//攻撃までのカウント（秒）
-		float stsWaitFrame;//出現までの待ち時間（秒）
-		float sleepTime;
+		//管理フレーム(必要であれば時間をdoubleに変更する)
+		int atkFrame;//攻撃までのカウント（ミリ秒）
+		int eWaitFrame;//出現までの待ち時間（ミリ秒）
+		int stsAtkFrame;//攻撃までのカウント（ミリ秒）
+		int stsWaitFrame;//出現までの待ち時間（ミリ秒）
+		int sleepTime;
 		cocos2d::Vec3 StandbyPos;//待機座標
 		int tableNum;
 
@@ -131,17 +130,17 @@ namespace TapGun
 		void SetCollision(void);//当たり判定を初期化
 		void SetTargetPos(cocos2d::Vec3 pos[3]);//
 		void Update(void);//速度をもとに座標移動と当たり判定移動
-		void Update(float loopTime);//速度をもとに座標移動と当たり判定移動
+		void Update(int loopTime);//
 		void SetPos(cocos2d::Vec3 pos);//引数の座標に移動
 
 		void SetAnimation(const std::string& animeName, const int speed);//
 
 		void InitTime(void);//時間を初期化
 		int GetTime(void);//キャラクター固有時間の取得
-		void SetTime(float f);//時間のセット
+		void SetTime(int time);//時間のセット（ミリ秒）
 	private:
 
-		float time;//Unit固有フレーム
+		int time;//Unit固有時間（ミリ秒）
 	};
 }
 #endif //__UNIT_H__

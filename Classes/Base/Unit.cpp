@@ -196,7 +196,7 @@ void Unit::Update(void)
 *	@return	なし
 *	@date	1/8 Ver 1.0
 */
-void Unit::Update(float loopTime)
+void Unit::Update(int loopTime)
 {
 	//時間を加算
 	time += loopTime;
@@ -248,13 +248,13 @@ void Unit::InitTime(void)
 *	キャラクター固有時間のセット
 *
 *	@author	sasebon
-*	@param	任意の時間
+*	@param	任意の時間(ミリ秒)
 *	@return	なし
 *	@date	1/20 Ver 1.0
 */
-void Unit::SetTime(float f)
+void Unit::SetTime(int t)
 {
-	time = f;
+	time = t;
 }
 
 
