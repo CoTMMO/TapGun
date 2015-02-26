@@ -14,7 +14,7 @@ namespace TapGun
 	//#define FRAME 0.01666f//時間を
 
 	//プレイヤーのパラメータ定義
-#define STS_MAXPLAYERHP 999//プレイヤーの最大HP
+#define STS_MAXPLAYERHP 6//プレイヤーの最大HP
 #define STS_RAPIDSPEED 8//プレイヤーの連射速度（フレーム）
 #define STS_MAXBULLETS 30//プレイヤーの最大弾数
 #define STS_MUTEKIFRAME (120 / 60.0f) //無敵時間
@@ -62,8 +62,9 @@ namespace TapGun
 #define HIDE_UI_Y1 (HIDE_UI_RECT_Y * 0.5f + HIDE_UI_POS_Y)
 
 
+#define PERSE 22.296f//カメラ視野角
+
 //Action時のカメラの設定(右)
-#define C_PERSE_R 35//カメラ視野角
 #define C_SETX_R -0.62f
 #define C_SETY_R 1.51f
 #define C_SETZ_R 5.3f
@@ -73,7 +74,6 @@ namespace TapGun
 
 
 //Action時のカメラの設定(左)
-#define C_PERSE_L 35//カメラ視野角
 #define C_SETX_L 0.52f
 #define C_SETY_L 1.51f
 #define C_SETZ_L 2.3f
@@ -108,9 +108,9 @@ namespace TapGun
 #define MACRO_CROT_Y(y) (y + 180)
 	//#define MACRO_CROT_Z(a) ()//Zは恐らく使用しない
 
-	//秒をフレームに変換/フレームを秒に変換
-#define MACRO_StoF(second) (second * 60.0f)
-#define MACRO_FtoS(frame) (frame * 0.01666f)
+	//ミリ秒をフレームに変換/フレームをミリ秒に変換
+#define MACRO_StoF(second) (second * 60.0f * 0.001f)
+#define MACRO_FtoS(frame) (frame * 0.01666f * 1000)
 
 
 	//プレイヤーが回避する時の軸の座標（プレイヤーから見た相対座標、左側時）
@@ -123,9 +123,9 @@ namespace TapGun
 #define HIDECAMERA_Y -1.1f
 
 	//時間
-#define TIME_MAXTIME 180.0f//ゲーム本編の最大時間
-#define TIME_ACTION_UI 1.8f//ActionのUIを表示する時間（秒）
-#define TIME_OP 6.0f//ActionのUIを表示する時間（秒）
+#define TIME_MAXTIME 180000//ゲーム本編の最大時間（ミリ秒）
+#define TIME_ACTION_UI 1800//ActionのUIを表示する時間（ミリ秒）
+#define TIME_OP 6000//ActionのUIを表示する時間（ミリ秒）
 
 	enum _CAMERA_FLAG_
 	{
@@ -246,13 +246,13 @@ namespace TapGun
 		//各種public変数は今後privateに置き換えていきます
 
 		//タイム
-		float gameActionTime;//ウェーブの残り時間（秒）
+		int gameActionTime;//ウェーブの残り時間（ミリ秒）
 
 		timeval* nowTV;//現在時刻(timeval)
 		timeval* preTV;//前フレームまでの時刻(timeval)
-		float nowTime;//現在時刻（秒）
-		float preTime;//1ループ前の時刻（秒）
-		float loopTime;//ループに要した時間（秒）
+		int nowTime;//現在時刻（ミリ秒）
+		int preTime;//1ループ前の時刻（ミリ秒）
+		int loopTime;//ループに要した時間（ミリ秒）
 
 		int shotFlag;//プレイヤーの攻撃アニメーション用フラグ(5フレーム以上タッチしているかどうか)
 
@@ -349,9 +349,9 @@ namespace TapGun
 		void CalcCameraRot(void);
 
 		//現在ゲーム時間のゲッターとセッター
-		float GetGameTime(void);
-		int setGameTime(float time);
-		int AddGameTime(float time);
+		int GetGameTime(void);
+		int setGameTime(int time);
+		int AddGameTime(int time);
 
 	private:
 		int playerState;//プレイヤーの状態
