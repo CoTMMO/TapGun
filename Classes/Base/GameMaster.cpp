@@ -171,13 +171,13 @@ void GameMaster::InitParam()
 
 
 	//W
-	stagePoint[POINT_W2].pPos = Vec3(18.56f, 0.0f, -16.27f);//
-	stagePoint[POINT_W2].pRot = Vec3(0.0f, 150.0f, 0.0f);
-	stagePoint[POINT_W2].cPos = Vec3(17.526f, 1.665f, 13.716f);//
-	stagePoint[POINT_W2].cRot = Vec3(85.444f, -37.629f, 0.0f);
-	stagePoint[POINT_W2].pointType = POINT_BATTLE;
-	stagePoint[POINT_W2].playerSide = PSIDE_LEFT;
-	stagePoint[POINT_W2].hidePoint = setHidePoint(stagePoint[POINT_W2]);//カメラの回避座標をセット
+	//stagePoint[POINT_W2].pPos = Vec3(18.56f, 0.0f, -16.27f);//
+	//stagePoint[POINT_W2].pRot = Vec3(0.0f, 150.0f, 0.0f);
+	//stagePoint[POINT_W2].cPos = Vec3(17.526f, 1.665f, 13.716f);//
+	//stagePoint[POINT_W2].cRot = Vec3(85.444f, -37.629f, 0.0f);
+	//stagePoint[POINT_W2].pointType = POINT_BATTLE;
+	//stagePoint[POINT_W2].playerSide = PSIDE_LEFT;
+	//stagePoint[POINT_W2].hidePoint = setHidePoint(stagePoint[POINT_W2]);//カメラの回避座標をセット
 
 
 	//L
@@ -187,13 +187,13 @@ void GameMaster::InitParam()
 
 
 	//W
-	stagePoint[POINT_W3].pPos = Vec3(17.715f, 0.0f, -32.801f);//
-	stagePoint[POINT_W3].pRot = Vec3(0.0f, -60.0f, 0.0f);
-	stagePoint[POINT_W3].cPos = Vec3(20.365f, 2.131f, -32.342f);//
-	stagePoint[POINT_W3].cRot = Vec3(77.804f, -93.801f, 0.0f);
-	stagePoint[POINT_W3].pointType = POINT_BATTLE;
-	stagePoint[POINT_W3].playerSide = PSIDE_RIGHT;
-	stagePoint[POINT_W3].hidePoint = setHidePoint(stagePoint[POINT_W3]);//カメラの回避座標をセット
+	//stagePoint[POINT_W3].pPos = Vec3(17.715f, 0.0f, -32.801f);//
+	//stagePoint[POINT_W3].pRot = Vec3(0.0f, -60.0f, 0.0f);
+	//stagePoint[POINT_W3].cPos = Vec3(20.365f, 2.131f, -32.342f);//
+	//stagePoint[POINT_W3].cRot = Vec3(77.804f, -93.801f, 0.0f);
+	//stagePoint[POINT_W3].pointType = POINT_BATTLE;
+	//stagePoint[POINT_W3].playerSide = PSIDE_RIGHT;
+	//stagePoint[POINT_W3].hidePoint = setHidePoint(stagePoint[POINT_W3]);//カメラの回避座標をセット
 
 	//L
 	//stagePoint[POINT_L2_2a].pPos = Vec3(0.7f, 0.0f, 20.35f);
@@ -201,18 +201,19 @@ void GameMaster::InitParam()
 	//stagePoint[POINT_L2_2a].pointType = POINT_CHANGE;
 
 	//W
-	stagePoint[POINT_W4].pPos = Vec3(0.807f, -2.0f, -32.287f);//
-	stagePoint[POINT_W4].pRot = Vec3(0.0f, -145.0f, 0.0f);
-	stagePoint[POINT_W4].cPos = Vec3(0.676f, -0.34f, -29.174f);
-	stagePoint[POINT_W4].cRot = Vec3(86.57f, 11.325f, 0.0f);
-	stagePoint[POINT_W4].pointType = POINT_BATTLE;
-	stagePoint[POINT_W4].playerSide = PSIDE_RIGHT;
-	stagePoint[POINT_W4].hidePoint = setHidePoint(stagePoint[POINT_W4]);//カメラの回避座標をセット
+	//stagePoint[POINT_W4].pPos = Vec3(0.807f, -2.0f, -32.287f);//
+	//stagePoint[POINT_W4].pRot = Vec3(0.0f, -145.0f, 0.0f);
+	//stagePoint[POINT_W4].cPos = Vec3(0.676f, -0.34f, -29.174f);
+	//stagePoint[POINT_W4].cRot = Vec3(86.57f, 11.325f, 0.0f);
+	//stagePoint[POINT_W4].pointType = POINT_BATTLE;
+	//stagePoint[POINT_W4].playerSide = PSIDE_RIGHT;
+	//stagePoint[POINT_W4].hidePoint = setHidePoint(stagePoint[POINT_W4]);//カメラの回避座標をセット
 
 	//クリア
-	stagePoint[POINT_FINISH].pPos = Vec3(12.0f, 0.0f, 5.0f);
+	stagePoint[POINT_FINISH].pPos = Vec3(6.856f, 0.0f, -3.849f);//
 	stagePoint[POINT_FINISH].pRot = Vec3(0.0f, 165.0f, 0.0f);
-	stagePoint[POINT_FINISH].pointType = POINT_CLEAR;
+	stagePoint[POINT_FINISH].cPos = Vec3(6.363f, 1.0f, -1.101f);//
+	stagePoint[POINT_FINISH].cRot = Vec3(MACRO_CROT_X(87.167f), MACRO_CROT_Y(-23.778f), 0.0f);
 }
 
 
