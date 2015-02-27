@@ -7,6 +7,7 @@
 #include "Sprite3D.h"
 #include "Sound.h"
 #include "ResourceLoader.h"
+#include "Effect.h"
 
 #else
 
@@ -14,6 +15,7 @@
 #include "Base/GameMaster.h"
 #include "System/Sound.h"
 #include "System/ResourceLoader.h"
+#include "Object/Effect.h"
 
 #endif
 
@@ -105,7 +107,7 @@ void GameModelsLayer::LoadModels()
 #endif
 
 	auto aa = ResourceLoader::getInstance();
-
+	auto ef = Effect::getInstance();
 	//スプライトとノードのcreate
 //	player.sprite3d = aa->getSprite3D(ResourceLoader::ModelNumber::Player);
 	player.sprite3d = _Sprite3D::create(fileName1, fileName2);
@@ -877,7 +879,8 @@ void GameModelsLayer::UpdatePlayer(void)
 	//2：プレイヤーのフレーム・座標更新
 	player.Update(GameMasterM->loopTime);
 	//マズルの更新
-	//	player.muzzleUpdate();
+	auto ef = Effect::getInstance();
+	ef->muzzleUpdate();
 }
 
 
@@ -1045,6 +1048,9 @@ void GameModelsLayer::ActionShot()
 	if (FALSE == GameMasterM->shotFlag && MACRO_StoF(player.motProcTime) >= STS_RAPIDSPEED)
 	{
 		GameMasterM->shotFlag = TRUE;
+
+		auto ef = Effect::getInstance();
+		ef->setPlayerMuzzle(player.sprite3d, "po_");
 		player.sprite3d->stopAllActions();
 		player.sprite3d->startAnimationLoop(shot, 0, MACRO_FtoS(7.0f));
 	}
@@ -1066,6 +1072,10 @@ void GameModelsLayer::ActionShot()
 			{
 				GameMasterM->flgPlayerATK = TRUE;
 				GameMasterM->AddPlayerBullets(-1);//弾数を減らす
+
+				auto ef = Effect::getInstance();
+				ef->setPlayerMuzzle(player.sprite3d, "po_");
+
 				//音声はフラグ成立時に鳴らす
 				//sound->playSE("Shot.wav");
 				GameMasterM->rapidFrame = 0.0f;
@@ -1182,10 +1192,6 @@ void GameModelsLayer::ActionDodge(void)
 		player.sprite3d->stopAllActions();
 		player.sprite3d->startAnimation(h_reload);//リロードモーションを再生
 
-		//モーション用カウンターを初期化
-		player.motProcTime = 0.0f;//経過時間を0に初期化
-		player.motPreTime = getNowTime();
-		player.motStartTime = getNowTime();
 
 		//座標と角度をセットしてキャラクターの座標を補正
 		if (PSIDE_LEFT == GameMasterM->playerSide)
@@ -1194,7 +1200,7 @@ void GameModelsLayer::ActionDodge(void)
 			player.wrapper->setRotation3D(Vec3(0.0f, -90.0f, 0.0f));
 
 			//回避に合わせてカメラの座標を補正する
-			player.cameraAjust = Vec3(camTarget.x * MACRO_FtoS(STS_HIDEWAIT), camTarget.y * MACRO_FtoS(STS_HIDEWAIT), camTarget.z * MACRO_FtoS(STS_HIDEWAIT));//ループごとの移動量を計算
+			player.cameraAjust = Vec3(camTarget.x * player.motProcTime, camTarget.y * player.motProcTime, camTarget.z * player.motProcTime);//ループごとの移動量を計算
 		}
 		else
 		{
@@ -1204,6 +1210,11 @@ void GameModelsLayer::ActionDodge(void)
 			//回避に合わせてカメラの座標を補正する
 			player.cameraAjust = Vec3(camTarget.x * MACRO_FtoS(STS_HIDEWAIT), camTarget.y * MACRO_FtoS(STS_HIDEWAIT), camTarget.z * MACRO_FtoS(STS_HIDEWAIT));//ループごとの移動量を計算
 		}
+
+		//モーション用カウンターを初期化
+		player.motProcTime = 0.0f;//経過時間を0に初期化
+		player.motPreTime = getNowTime();
+		player.motStartTime = getNowTime();
 	}
 	else
 	{
@@ -1241,6 +1252,8 @@ void GameModelsLayer::ActionDodge(void)
 
 				//回避に合わせてカメラの座標を補正する
 				player.cameraAjust = Vec3(camTarget.x * player.motProcTime, camTarget.y * player.motProcTime, camTarget.z * player.motProcTime);//ループごとの移動量を計算
+
+
 			}
 			else
 			{
@@ -1298,8 +1311,8 @@ void GameModelsLayer::ActionHide(void)
 
 	if (TSTATE_ON == GameMasterM->GetTouchState() || TSTATE_MOVE == GameMasterM->GetTouchState())
 	{
-		//タッチ中はリロードを再生、再生後はモーション停止
-		player.cameraAjust = Vec3(camTarget.x * MACRO_FtoS(STS_HIDEWAIT), camTarget.y * MACRO_FtoS(STS_HIDEWAIT), camTarget.z * MACRO_FtoS(STS_HIDEWAIT)) * 0.001f;//ループごとの移動量を計算
+		//回避に合わせてカメラの座標を補正する
+		player.cameraAjust = Vec3(camTarget.x * MACRO_FtoS(STS_HIDEWAIT), camTarget.y * MACRO_FtoS(STS_HIDEWAIT), camTarget.z * MACRO_FtoS(STS_HIDEWAIT));//ループごとの移動量を計算
 	}
 	else if (TSTATE_RELEASE == GameMasterM->GetTouchState())//離されれば
 	{
@@ -1378,7 +1391,7 @@ void GameModelsLayer::ActionAppear(void)
 		if (PSIDE_LEFT == GameMasterM->playerSide)
 		{
 			//回避フレームに比例してカメラの回転を変化させる
-			float rot = lTime * 90.0f / (MACRO_FtoS(STS_HIDEWAIT)) * 0.001f;
+			float rot = lTime * 90.0f / (MACRO_FtoS(STS_HIDEWAIT));
 			Vec3 tmp = player.wrapper->getRotation3D();
 			tmp.y += rot;//
 			player.wrapper->setRotation3D(tmp);//プレイヤーの親ノード（回避軸）の角度を更新する
@@ -1390,7 +1403,7 @@ void GameModelsLayer::ActionAppear(void)
 			player.cameraAjust = 
 				Vec3(camTarget.x * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime),
 				camTarget.y * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime),
-				camTarget.z * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime)) * 0.001f;//ループごとの移動量を計算
+				camTarget.z * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime));//ループごとの移動量を計算
 		}
 		else
 		{
@@ -1644,7 +1657,7 @@ void GameModelsLayer::UpdateBullets()
 			unit[num].Update(GameMasterM->loopTime);//座標と一緒に当たり判定を移動
 
 			//指定時間が経過したら消去処理
-			if(4.0f <= unit[num].GetTime())
+			if(4000 <= unit[num].GetTime())
 			{
 				unit[num].speed = 0.0f;
 				unit[num].visible = FALSE;
