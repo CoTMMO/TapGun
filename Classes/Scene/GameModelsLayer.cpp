@@ -806,6 +806,9 @@ void GameModelsLayer::UpdateWait()
 			else if (POINT_CLEAR == GameMasterM->stagePoint[GameMasterM->sPoint].pointType)//クリアしたら
 			{
 
+
+				//
+
 			}
 			else
 			{
@@ -2608,8 +2611,6 @@ void GameModelsLayer::ActionEIdle(int num)
 
 			break;
 		}
-
-
 	}
 	else
 	{
@@ -2702,7 +2703,7 @@ void GameModelsLayer::ActionEAttack(int num)
 			unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
 			if(0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
 			{
-				unit[num].atkFrame = 0.15f;//次の弾発射までの時間を設定
+				unit[num].atkFrame = 1500;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
 			}
 			break;
@@ -2714,7 +2715,7 @@ void GameModelsLayer::ActionEAttack(int num)
 			{
 				//フレームが0になったら
 				ShootBullet(num);
-				unit[num].atkFrame = 0.15f;//次の弾発射までの時間を設定
+				unit[num].atkFrame = 1500;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
 			}
 			break;
@@ -2793,7 +2794,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
+		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレーム
 
 		break;
 	case AI_ATK_ACRO://アクロバティック//要チェック
@@ -2804,7 +2805,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
+		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレーム
 
 		break;
 	default:
@@ -2814,7 +2815,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		unit[num].atkFrame = 1.0f;//弾を発射するまでの残りフレーム
+		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレーム
 		break;
 	}
 }

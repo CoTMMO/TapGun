@@ -36,7 +36,7 @@ namespace TapGun
 #define STS_ENEMY_WALKSPEED 0.002f//敵の歩き速度
 #define STS_ENEMY_SWALKSPEED 0.0005f//敵の横歩き速度
 #define STS_ENEMY_SJUMPSPEED 0.005f//敵の
-#define STS_ENEMY_ACROSPEED 0.005f//敵の
+#define STS_ENEMY_ACROSPEED 0.001f//敵の
 
 #define STS_EBULLET_SPEED 0.019f//敵の弾の速度
 
@@ -75,9 +75,9 @@ namespace TapGun
 //Action時のカメラの設定(左)
 #define C_SETX_L 0.52f
 #define C_SETY_L 1.51f
-#define C_SETZ_L 2.3f
+#define C_SETZ_L 4.3f
 #define C_ROTX_L 0.0f
-#define C_ROTY_L -10.0f
+#define C_ROTY_L -13.0f
 #define C_ROTZ_L 0.0f
 
 
@@ -85,7 +85,7 @@ namespace TapGun
 #define W_PERSE 45//カメラ視野角
 #define W_SETX 0.0f
 #define W_SETY 1.61f
-#define W_SETZ 2.9f
+#define W_SETZ 4.0f
 
 #define W_ROTX 0.0f
 #define W_ROTY 0.0f
@@ -218,13 +218,13 @@ namespace TapGun
 		//		POINT_L1,
 
 		//		POINT_L2_1a,
-		POINT_W2,
+		//POINT_W2,
 		//		POINT_L2,
 
 		//POINT_L3_1,
-		POINT_W3,
+		//POINT_W3,
 		//POINT_W3_2,
-		POINT_W4,
+		//POINT_W4,
 		POINT_FINISH,
 	};
 
