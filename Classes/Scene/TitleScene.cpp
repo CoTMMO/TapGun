@@ -1,5 +1,6 @@
 
 #include "cocos2d.h"
+#include "SimpleAudioEngine.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
@@ -23,7 +24,8 @@
 
 USING_NS_CC;
 using namespace TapGun;
-
+using namespace CocosDenshion;
+ 
 _Sprite3D* sp;
 
 Scene* TitleScene::createScene()
@@ -211,7 +213,7 @@ void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 		menuFlag = MenuIn;
 		sprite[Logo] -> runAction( MoveTo::create( 1, Point( 3000, sprite[Logo] -> getPositionY())));
 		auto action = Blink::create( 0.2, 3);
-		sound -> playSE( "MoveSE.mp3");
+		sound -> playSE( "MoveSE.wav");
 		auto func = CallFunc::create( [&](void) -> void { sprite[Menu] -> setVisible( false); menuAction(); });
 		sprite[Menu] -> runAction( Sequence::create( action, func, NULL));
 	}
@@ -312,7 +314,9 @@ void TitleScene::menuStartCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	sound -> releaseBGM();
+	sound -> loadBGM( "Main01.wav");
+	sound -> playSE( "MoveSE.wav");
 	auto scene = GameScene::CreateScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
@@ -321,8 +325,8 @@ void TitleScene::menuStartCallback( Ref* pSender)
 void TitleScene::menuEndCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
-//	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	sound -> stopBGM();
+	sound -> playSE( "MoveSE.wav");
 	Director::getInstance() -> end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	exit(0);
@@ -333,7 +337,7 @@ void TitleScene::menuCreditCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	sound -> playSE( "MoveSE.wav");
 	auto scene = CreditScene::createScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
@@ -342,9 +346,19 @@ void TitleScene::menuCreditCallback( Ref* pSender)
 void TitleScene::loadSound( void)
 {
 	auto sound = Sound::getInstance();
-
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	sound -> loadBGM( "Title.mp3");
 	sound -> loadSE( "MoveSE.mp3");
+	
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	sound -> loadBGM( "Title.mp3");
+	sound -> loadSE( "MoveSE.mp3");
+#else
+	sound -> loadBGM( "Title.wav");
+	sound -> loadSE( "MoveSE.wav");
+	sound -> loadSE( "Shot.wav");
+	sound -> loadSE( "Reload.wav");
+#endif
 }
 
 template<class P> bool TitleScene::checkFlag( P* flag, const P number) { return ( ( *flag & number) != 0); }

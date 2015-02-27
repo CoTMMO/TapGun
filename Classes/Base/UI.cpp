@@ -7,11 +7,13 @@
 
 #include "GameMaster.h"
 #include "GameUILayer.h"
+#include "Sound.h"
 
 #else
 
 #include "Base/GameMaster.h"
 #include "Scene/GameUILayer.h"
+#include "System/Sound.h"
 
 #endif
 
@@ -331,8 +333,16 @@ void GameUI::setLogo( void)
 	static bool waitFlag = false;
 	static int waitTime = 0;
 
+	auto sound = Sound::getInstance();
+	static bool bgmFlag = false;
+
 	if( master -> GetGameState() == GSTATE_WAIT)
 	{
+		if( bgmFlag == false && waitTime == 70)
+		{
+			sound -> playBGMLoop();
+			bgmFlag = true;
+		}
 		if( waitTime % 30 == 0 || waitTime == 0)
 		{
 			waitFlag = !waitFlag;
@@ -362,6 +372,15 @@ void GameUI::setLogo( void)
 	else if( master -> GetGameState() == GSTATE_PLAY)
 	{
 		logo[LogoNumber::Action] -> setVisible(false);
+	}
+
+	if( master -> GetPlayerBullets() == 0)
+	{
+		logo[LogoNumber::Reload] -> setVisible( true);
+	}
+	else
+	{
+		logo[LogoNumber::Reload] -> setVisible( false);
 	}
 }
 
