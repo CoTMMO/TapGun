@@ -4,7 +4,7 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #include "TitleScene.h"
-#include "CreditSceneScene.h"
+#include "CreditScene.h"
 
 #else
 
@@ -31,7 +31,7 @@ bool CreditScene::init()
 
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
 
-	//Œ»Ý‚Íƒ^ƒbƒ`ƒCƒxƒ“ƒg‚ÌƒŠƒXƒi[‚ð‚±‚±‚É—pˆÓ‚µ‚Ä‚¢‚Ü‚·
+	//Ã¥ÂªÃ§â€ºÃ‡Ã•Ã‰^Ã‰bÃ‰`Ã‰CÃ‰xÃ‰Ã¬Ã‰gÃ‡ÃƒÃ‰Ã¤Ã‰XÃ‰iÃ…[Ã‡ï£¿Ã‡Â±Ã‡Â±Ã‡â€¦Ã³pÃ â€Ã‡ÂµÃ‡Æ’Ã‡Â¢Ã‡â€¹Ã‡âˆ‘
 	auto dispatcher = Director::getInstance()->getEventDispatcher();
 
 	listener = EventListenerTouchOneByOne::create();
@@ -40,10 +40,16 @@ bool CreditScene::init()
 	listener -> onTouchEnded = CC_CALLBACK_2( CreditScene::onTouchEnded, this);
 
 	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	auto sprite = Sprite::create( "credit.png");
+#else
+	auto sprite = Sprite::create( "Graph/Pictures/credit.png");
+#endif
+	sprite -> setPosition( visibleSize.width / 2, visibleSize.height / 2);
+	addChild( sprite, 1);
 
-	auto label = Label::createWithTTF( "Credit Scene", "fonts/arial.ttf", 60);
-	label -> setPosition( Vec2( visibleSize.width / 2, visibleSize.height / 2));
-	addChild( label, 1);
+	auto action = FadeIn::create(1);
+	sprite -> runAction( action);
 
 	scheduleUpdate();
 	schedule( schedule_selector( CreditScene::moveTime), 0.016f);
@@ -72,4 +78,7 @@ void CreditScene::onTouchMoved(cocos2d::Touch *pTouch, cocos2d::Event *pEvent)
 
 void CreditScene::onTouchEnded(cocos2d::Touch *pTouch, cocos2d::Event *pEvent)
 {
+	auto scene = TitleScene::createScene();
+	auto tran = TransitionCrossFade::create( 1, scene);
+	Director::getInstance() -> replaceScene( tran);
 }

@@ -13,6 +13,12 @@ public:
 	virtual bool applicationDidFinishLaunching();
 	virtual void applicationDidEnterBackground();
 	virtual void applicationWillEnterForeground();
+	
+//	double getLoopTime( void);
+//	
+//	double preTime;
+//	double nowTime;
+//	double loopTime;
 };
 
 #endif // _APP_DELEGATE_H_

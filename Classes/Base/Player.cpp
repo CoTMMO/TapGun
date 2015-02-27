@@ -26,8 +26,6 @@ void Player::Init( void)
 	speedVec = Vec3(0, 0, 0);//移動ベクトル
 	targetPos = Vec3(0, 0, 0);//移動目標
 	collisionPos = Vec3(0, 0, 0);//当たり判定（OBB）の各辺
-
-	colisionNode = Node::create();
 }
 
 
@@ -54,8 +52,6 @@ void Player::SetCollision(void)
 
 	aabbBody.set(collision_min, collision_max);
 	obbHead = OBB(aabbBody);//
-
-	sprite3d->addChild(colisionNode);
 }
 
 
@@ -96,17 +92,17 @@ void Player::Update(void)
 *	Playerの各種変数更新
 *
 *	@author	sasebon
-*	@param	なし
+*	@param	ループ時間（ミリ秒）
 *	@return	なし
 *	@date	1/8 Ver 1.0
 */
-void Player::Update(float loopTime)
+void Player::Update(int loopTime)
 {
 	//フレームを加算
 
 	//座標を移動
 	Vec3 pos = wrapper->getPosition3D();
-	pos += speedVec * loopTime;
+	pos += speedVec * loopTime;//
 	wrapper->setPosition3D(pos);
 
 	//当たり判定を移動

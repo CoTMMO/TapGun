@@ -1,5 +1,6 @@
 
 #include "cocos2d.h"
+#include "SimpleAudioEngine.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
@@ -23,6 +24,9 @@
 
 USING_NS_CC;
 using namespace TapGun;
+using namespace CocosDenshion;
+ 
+_Sprite3D* sp;
 
 Scene* TitleScene::createScene()
 {
@@ -43,11 +47,29 @@ bool TitleScene::init()
 	frame = 0;
 
 	auto cache = SpriteFrameCache::getInstance();
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/Title.plist");
 
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/P_Hit.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/E_Hit.plist");
-
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	cache -> addSpriteFramesWithFile( "Title.plist");
+	cache -> addSpriteFramesWithFile( "P_Hit.plist");
+	cache -> addSpriteFramesWithFile( "E_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Logo.plist");
+	cache -> addSpriteFramesWithFile( "Number.plist");
+	cache -> addSpriteFramesWithFile( "HPGauge.plist");
+	cache -> addSpriteFramesWithFile( "continue.plist");
+	cache -> addSpriteFramesWithFile( "Reticle.plist");
+	cache -> addSpriteFramesWithFile( "kougeki_icon.plist");
+#else
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Title.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/P_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/E_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Logo.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Number.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/HPGauge.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Reticle.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/kougeki_icon.plist");
+#endif
+	
 	menuFlag = TeamLogo;
 
 	auto listener = EventListenerTouchOneByOne::create();
@@ -57,9 +79,9 @@ bool TitleScene::init()
 	listener -> onTouchEnded = CC_CALLBACK_2( TitleScene::onTouchEnded, this);
 	_eventDispatcher -> addEventListenerWithSceneGraphPriority( listener, this);
 	
-//	loadSound();
-//	setSprite();
-//	setMenu();
+	loadSound();
+	setSprite();
+	setMenu();
 
 	scheduleUpdate();
 //	schedule( schedule_selector( TitleScene::moveTime), 0.016f * 8);
@@ -69,39 +91,57 @@ bool TitleScene::init()
 
 void TitleScene::update( float delta)
 {
-	_Sprite3D* sp;
 	static bool modelLoadFlag = false;
 	auto sound = Sound::getInstance();
-	auto cache = SpriteFrameCache::getInstance();
 
-	if( frame == ResourceLoader::Map) 
-	{ 
-//		ResourceLoader::getInstance() -> loadModel( "Stage/map507"); 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	if( frame == ResourceLoader::Map)
+	{
+		ResourceLoader::getInstance() -> loadModel( "stage");
 	}
-	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd) 
-	{ 
-		ResourceLoader::getInstance() -> loadModel( "enemy/enemy", "", "Enemy.anime"); 
+	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
+	{
+		ResourceLoader::getInstance() -> loadModel( "enemy", "", "Enemy.anime");
 	}
-	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd) 
-	{ 
-//		ResourceLoader::getInstance() -> loadModel( "Bullet/tama"); 
+	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
+	{
+		ResourceLoader::getInstance() -> loadModel( "tama");
 	}
 	else if( frame == ResourceLoader::Player)
 	{
-//		ResourceLoader::getInstance() -> loadModel( "player/player", "", "Player.anime");
+		ResourceLoader::getInstance() -> loadModel( "player", "", "Player.anime");
 	}
+#else
+	if( frame == ResourceLoader::Map)
+	{
+		ResourceLoader::getInstance() -> loadModel( "Stage/stage");
+	}
+	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
+	{
+		ResourceLoader::getInstance() -> loadModel( "Enemy/enemy", "", "Enemy.anime");
+	}
+	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
+	{
+		ResourceLoader::getInstance() -> loadModel( "Bullet/tama");
+	}
+	else if( frame == ResourceLoader::Player)
+	{
+		ResourceLoader::getInstance() -> loadModel( "Player/player", "", "Player.anime");
+	}
+#endif
 
 	switch( menuFlag)
 	{
 	case TeamLogo:
-		if( modelLoadFlag == false && ( sp = ResourceLoader::getInstance() -> getSprite3D( ResourceLoader::EnemyStart + 1)) != nullptr)
-		{
-			modelLoadFlag = true;
-			sp -> setPosition3D( Vec3( 640, 200, 0));
-			sp -> setScale( 300.0f);
-			addChild( sp);
-		}
-	//	teamLogoAction();		
+//		if( modelLoadFlag == false && ( sp = ResourceLoader::getInstance() -> getSprite3D( 50)) != nullptr)
+//		{
+//			modelLoadFlag = true;
+//			sp -> setPosition3D( Vec3( 640, 400, 50));
+//			sp -> setScale( 300.0f);
+//			sp->startAnimationLoop("dei1");
+//			addChild( sp);
+//		}
+		teamLogoAction();
 		break;
 
 	case TitleLogoIn:
@@ -173,7 +213,7 @@ void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 		menuFlag = MenuIn;
 		sprite[Logo] -> runAction( MoveTo::create( 1, Point( 3000, sprite[Logo] -> getPositionY())));
 		auto action = Blink::create( 0.2, 3);
-		sound -> playSE( "MoveSE.mp3");
+		sound -> playSE( "MoveSE.wav");
 		auto func = CallFunc::create( [&](void) -> void { sprite[Menu] -> setVisible( false); menuAction(); });
 		sprite[Menu] -> runAction( Sequence::create( action, func, NULL));
 	}
@@ -213,8 +253,11 @@ void TitleScene::teamLogoAction( void)
 void TitleScene::setSprite( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
-
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	teamLogo = Sprite::create( "ty.png");
+#else
 	teamLogo = Sprite::create( "Graph/Pictures/ty.png");
+#endif
 	teamLogo -> setPosition( Vec2( visibleSize.width / 2, visibleSize.height / 2));
 	teamLogo -> setOpacity( 0);
 	addChild( teamLogo);
@@ -236,7 +279,6 @@ void TitleScene::setSprite( void)
 void TitleScene::setMenu( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
-	auto cache = SpriteFrameCache::getInstance();
 
 	auto item = MenuItemSprite::create( Sprite::createWithSpriteFrameName( "title_start.png"), 
 				Sprite::createWithSpriteFrameName( "title_start_push.png"), CC_CALLBACK_1( TitleScene::menuStartCallback, this));
@@ -272,7 +314,9 @@ void TitleScene::menuStartCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	sound -> releaseBGM();
+	sound -> loadBGM( "Main01.wav");
+	sound -> playSE( "MoveSE.wav");
 	auto scene = GameScene::CreateScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
@@ -282,7 +326,7 @@ void TitleScene::menuEndCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	sound -> playSE( "MoveSE.wav");
 	Director::getInstance() -> end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	exit(0);
@@ -293,7 +337,7 @@ void TitleScene::menuCreditCallback( Ref* pSender)
 {
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
-	sound -> playSE( "MoveSE.mp3");
+	sound -> playSE( "MoveSE.wav");
 	auto scene = CreditScene::createScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
@@ -302,10 +346,19 @@ void TitleScene::menuCreditCallback( Ref* pSender)
 void TitleScene::loadSound( void)
 {
 	auto sound = Sound::getInstance();
-
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	sound -> loadBGM( "Title.mp3");
 	sound -> loadSE( "MoveSE.mp3");
-
+	
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	sound -> loadBGM( "Title.mp3");
+	sound -> loadSE( "MoveSE.mp3");
+#else
+	sound -> loadBGM( "Title.wav");
+	sound -> loadSE( "MoveSE.wav");
+	sound -> loadSE( "Shot.wav");
+	sound -> loadSE( "Reload.wav");
+#endif
 }
 
 template<class P> bool TitleScene::checkFlag( P* flag, const P number) { return ( ( *flag & number) != 0); }

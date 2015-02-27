@@ -73,35 +73,54 @@ namespace TapGun
 	};
 
 
-	class LifeUI
+	class GameUI
 	{
 	public:
-		enum LifeNUmber
-		{
-			Up,
-			Left,
-			Down,
-			Right,
-			LifeNum,
-			
-			NumberNum = 5,
-		};
-
-		LifeUI( const LifeUI& p) = delete;
-		LifeUI& operator=( const LifeUI& P) = delete;
-		static LifeUI* getInstance( void);
+		GameUI( const GameUI& p) = delete;
+		GameUI& operator=( const GameUI& P) = delete;
+		static GameUI* getInstance( void);
 		
 		void init( cocos2d::Layer* layer);
 		void update( void);
 		
-
-	private:
-		LifeUI();
+		void setLogo( void);
+		void setHP( int count);
+		void setGameTime( float time);
+		void setBulletCount( int count);
 		
-		cocos2d::Sprite* bullet;
-		cocos2d::Sprite* frame;
-		cocos2d::Sprite* life[LifeNum];
-		cocos2d::Sprite* number[NumberNum];
+	private:
+		enum UI_Count
+		{
+			HPGauge = 8,
+			TimeNumber = 5,
+			BulletNumber = 4,
+			Escape = 2,
+			EnemyAttack = 5,
+			Delete = 5,
+		};
+
+		enum LogoNumber
+		{
+			Action,
+			Wait,
+			Reload,
+			LogoNum,
+		};
+		
+		GameUI() {}
+		
+		cocos2d::Node *hpParent;
+		cocos2d::Sprite *hp[HPGauge];
+		cocos2d::Node *timeParent;
+		cocos2d::Sprite *timeNumber[TimeNumber][10];
+		cocos2d::Node *bulletParent;
+		cocos2d::Sprite *bullet;
+		cocos2d::Sprite *bulletNumber[BulletNumber][10];
+		cocos2d::Sprite *escape[Escape];
+		cocos2d::Sprite *pause;
+		cocos2d::Sprite *enemyAttack[EnemyAttack][3];
+		cocos2d::Sprite *deleteLogo[Delete];
+		cocos2d::Sprite* logo[LogoNum];
 	};
 
 	class LogoUI
@@ -128,6 +147,8 @@ namespace TapGun
 		LogoUI();
 		cocos2d::Sprite* logo[LogoNum];
 	};
+	
+	
 }
 #endif //__UI_H__
 

@@ -51,16 +51,12 @@ namespace TapGun
 
 		ESTATE_NONE,//
 		ESTATE_SLEEP,
-		ESTATE_WAIT,
 		ESTATE_ATTACK1,
-		ESTATE_ATTACK2,
-		ESTATE_ATTACK3,
 		ESTATE_DAMAGED,
 		ESTATE_DEAD,//死亡
 		ESTATE_END,//敵の終了処理
 		ESTATE_NUM
 	};
-
 
 	//Unitクラス
 	//プレイヤー・エネミー・弾・マップデータに用います
@@ -69,30 +65,45 @@ namespace TapGun
 	public:
 
 		//メンバ変数
-
-
 		//==フラグ系==
-		int valid;//Unit使用フラグ（TRUE/FALSE）
-		int visible;//ユニット表示フラグ
+		int visible;//ユニット表示フラグ( == 使用フラグ)
+
+		//AI管理
+		int AIAppear;//
+		int AIMove;//
+		int AIAtk;//エネミーの攻撃モーション
+		int AILife;//AIの生き方
 
 		int nextEnemy;//このエネミーが倒れたときに次に出てくるエネミーの番号
-		int AIType;//エネミーの行動パターン
+		int nextEnemies[3];//このエネミーを倒した次に出てくるエネミーの番号
 
+		//パラメータ
 		int kind;//Unit種別（_UNIT_KIND_）
-		int hitpoint;
+		int hitpoint;//
+		int nowShot;
+		int maxShot;//
 
-		//敵用ステート
-		int eState;
-		int eWaitFrame;//出現までの待ちフレーム
+		int eState;//敵の状態
+
+		//管理フレーム(必要であれば時間をdoubleに変更する)
+		int atkFrame;//攻撃までのカウント（ミリ秒）
+		int eWaitFrame;//出現までの待ち時間（ミリ秒）
+
+		int stsAtkFrame[3];//攻撃までのカウント定義（ミリ秒）
+		int stsWaitFrame;//出現までの待ち時間定義（ミリ秒）
+
+		int sleepTime;//待機状態で
 		cocos2d::Vec3 StandbyPos;//待機座標
-		float atkFrame;//
 		int tableNum;
+
 
 		//==変数==
 		cocos2d::Vec3 pos;//モデル座標・・・削除予定（sprite3dの座標を使用）
 		float speed;//移動速度（移動量）
 		cocos2d::Vec3 speedVec;//移動ベクトル（speedをもとに計算する）
-		cocos2d::Vec3 targetPos;//移動時の目標座標
+		cocos2d::Vec3 targetPos[3];//移動時の目標座標
+		int nowTargetPos;//何番目の目標座標に向けて走るかの設定
+
 		cocos2d::Vec3 collisionPos;//OBBの辺の長さ（現在は１つのみ定義）
 
 		//==当たり判定関連クラス(仮)==
@@ -118,25 +129,19 @@ namespace TapGun
 		int Init(int num, int utype);//数値の初期化
 
 		void SetCollision(void);//当たり判定を初期化
-
+		void SetTargetPos(cocos2d::Vec3 pos[3]);//
 		void Update(void);//速度をもとに座標移動と当たり判定移動
-		void Update(float loopTime);//速度をもとに座標移動と当たり判定移動
+		void Update(int loopTime);//
 		void SetPos(cocos2d::Vec3 pos);//引数の座標に移動
 
 		void SetAnimation(const std::string& animeName, const int speed);//
-		//void SetAnimation(const std::string& animeName, const int speed, const int frame, const int startF, const int endF);
-		//void UpdateAnimation(void);
-		//BOOL CheckAnimation(void);//
 
-		void InitFrame(void);//フレームを初期化
-		int GetFrame(void);//フレームの取得
-		void SetFrame(int f);//フレームのセット
-		//Character();
-		//~Character();
+		void InitTime(void);//時間を初期化
+		int GetTime(void);//キャラクター固有時間の取得
+		void SetTime(int time);//時間のセット（ミリ秒）
 	private:
 
-		int frame;//Unit固有フレーム
-		int animFrame;//アニメーション管理フレーム(animFrame >= 0 : 再生中 | animFrame == -1 : ループ再生 | animFrame == -2 : 無再生)
+		int time;//Unit固有時間（ミリ秒）
 	};
 }
 #endif //__UNIT_H__

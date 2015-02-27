@@ -24,7 +24,7 @@ void Unit::Init( void)
 	//初期化内容は随時更新します
 
 	//管理フラグ
-	valid = FALSE;
+	visible = FALSE;
 	kind = UKIND_NONE;//Unit種別をNONEに
 	eState = ESTATE_IDLE;//とりあえずIDLEで初期化
 
@@ -32,12 +32,20 @@ void Unit::Init( void)
 	pos = Vec3(0, 0, 0);//モデル座標
 	speed = 0.0f;//移動速度
 	speedVec = Vec3(0, 0, 0);//移動ベクトル
-	targetPos = Vec3(0, 0, 0);//移動目標
+	targetPos[0] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	targetPos[1] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	targetPos[2] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	nowTargetPos = 0;
+
 	collisionPos = Vec3(0, 0, 0);//当たり判定（OBB）の各辺
 	tableNum = -1;
 
-//	colisionNode = Node::create();
-	frame = 0;//管理フレーム
+
+	hitpoint = 0;
+	nowShot = 0;
+	maxShot = 0;
+
+	time = 0.0f;//管理時間
 }
 
 
@@ -55,13 +63,12 @@ int Unit::Init(int num, int utype)
 	//初期化内容は随時更新します
 
 	//num番のUnit構造体が使用されているか初期化されていない、またはUnit種別が不正、または配列外の場合はエラー
-	if(FALSE != valid || 0 > utype || UKIND_NUM <= utype || 0 > num || MAX_UNIT <= num)
+	if(0 > utype || UKIND_NUM <= utype || 0 > num || MAX_UNIT <= num)
 	{
 		return FALSE;
 	}
 
 	//フラグの初期化
-	valid = TRUE;//Unit構造体を使用している
 	kind = utype;//
 
 	tableNum = -1;//敵用　敵が出現する順番を指定する
@@ -70,14 +77,18 @@ int Unit::Init(int num, int utype)
 	pos = Vec3(0, 0, 0);
 	speed = 0.0f;
 	speedVec = Vec3(0, 0, 0);
-	targetPos = Vec3(0, 0, 0);
+	targetPos[0] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	targetPos[1] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
+	targetPos[2] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
 
-	frame = 0.0f;//管理フレーム
-	animFrame = -2;//
+	time = 0.0f;//管理時間を初期化
 
 	eWaitFrame = 0;//出現までの待ちフレーム
 	StandbyPos = Vec3(0, 0, 0);//待機座標
 
+	hitpoint = 0;
+	nowShot = 0;
+	maxShot = 0;
 
 	//モデルの種別によって当たり判定の設定を行う
 	//敵や弾の種類（副種別）によってさらに条件分けする
@@ -127,7 +138,6 @@ void Unit::SetCollision(void)
 
 	aabbBody.set(collision_min, collision_max);
 	obbHead = OBB(aabbBody);//
-
 }
 
 
@@ -147,7 +157,7 @@ void Unit::Update(void)
 	auto loopTime = director->getDeltaTime();//ループに要した時間を取得
 
 	//フレームを加算
-	frame += loopTime;
+	time += loopTime;
 
 	//座標を移動
 	pos = sprite3d->getPosition3D();
@@ -186,10 +196,10 @@ void Unit::Update(void)
 *	@return	なし
 *	@date	1/8 Ver 1.0
 */
-void Unit::Update(float loopTime)
+void Unit::Update(int loopTime)
 {
-	//フレームを加算
-	frame += loopTime;
+	//時間を加算
+	time += loopTime;
 
 	//座標を移動
 	pos = sprite3d->getPosition3D();
@@ -221,30 +231,30 @@ void Unit::Update(float loopTime)
 
 
 /**
-*	キャラクター固有フレームの初期化
+*	キャラクター固有時間の初期化
 *
 *	@author	sasebon
 *	@param	なし
 *	@return	なし
 *	@date	1/20 Ver 1.0
 */
-void Unit::InitFrame(void)
+void Unit::InitTime(void)
 {
-	frame = 0;
+	time = 0;
 }
 
 
 /**
-*	キャラクター固有フレームのセット
+*	キャラクター固有時間のセット
 *
 *	@author	sasebon
-*	@param	任意のフレーム
+*	@param	任意の時間(ミリ秒)
 *	@return	なし
 *	@date	1/20 Ver 1.0
 */
-void Unit::SetFrame(int f)
+void Unit::SetTime(int t)
 {
-	frame = f;
+	time = t;
 }
 
 
@@ -279,14 +289,28 @@ void Unit::SetAnimation(const std::string& animeName, const int speed)
 
 
 /**
-*	キャラクター固有フレームを返す
+*	キャラクター固有タイムを返す
 *
 *	@author	sasebon
 *	@param	なし
 *	@return	なし
 *	@date	1/20 Ver 1.0
 */
-int Unit::GetFrame(void)
+int Unit::GetTime(void)
 {
-	return frame;
+	return time;
+}
+
+
+
+
+
+
+void Unit::SetTargetPos(Vec3 pos[3])
+{
+	for (int i = 0; i < 3; i++)
+	{
+		targetPos[i] = pos[i];
+	}
+
 }

@@ -6,7 +6,7 @@
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
-#include "ADX2Manager.h"
+//#include "ADX2Manager.h"
 
 #else
 
@@ -35,6 +35,12 @@ namespace TapGun
 
 		CREATE_FUNC(Test);
 
+		cocos2d::BillBoard* billboard;
+//		cocos2d::Sprite* sprite;
+//		cocos2d::Animation* animation;
+		
+		void setEnemyHitEffect( cocos2d::Sprite3D* sprite3d);
+		
 //		CC_SYNTHESIZE_RETAIN( ADX2::CueSheet*, _cueSheet, CueSheet);
 	};
 }
