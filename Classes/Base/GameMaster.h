@@ -73,9 +73,9 @@ namespace TapGun
 
 
 //Action時のカメラの設定(左)
-#define C_SETX_L 0.52f
+#define C_SETX_L 0.0f
 #define C_SETY_L 1.51f
-#define C_SETZ_L 4.3f
+#define C_SETZ_L 5.0f
 #define C_ROTX_L 0.0f
 #define C_ROTY_L -13.0f
 #define C_ROTZ_L 0.0f
@@ -94,8 +94,8 @@ namespace TapGun
 
 //死亡時のカメラの初期設定
 #define KE_POSX 0.0f//Kill Eye Pos
-#define KE_POSY 2.5f
-#define KE_POSZ -5.0f
+#define KE_POSY 2.8f
+#define KE_POSZ -6.0f
 
 #define KT_POSX 0.0f//Kill Target Pos
 #define KT_POSY 0.0f
