@@ -1077,7 +1077,7 @@ void GameModelsLayer::ActionShot()
 				ef->setPlayerMuzzle(player.sprite3d, "po_");
 
 				//音声はフラグ成立時に鳴らす
-				//sound->playSE("Shot.wav");
+				//sound->playSE("Shot");
 				GameMasterM->rapidFrame = 0.0f;
 			}
 			else

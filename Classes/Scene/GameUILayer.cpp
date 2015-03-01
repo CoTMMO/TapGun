@@ -95,45 +95,8 @@ void GameUILayer::LoadUISprite()
 	fileName1 = "Graph/Pictures/reticle.png";
 #endif
 	UIBillBoard[UIKIND_RETICLE] = cocos2d::BillBoard::createWithTexture(
-		Sprite::createWithSpriteFrameName( "Reticle_idle.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
+		Sprite::createWithSpriteFrameName( "reticle_1.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
 
-
-	//リロードアラートの生成
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	fileName1 = "reload.png";
-#else
-	fileName1 = "Graph/Pictures/reload.png";
-#endif
-	UIBillBoard[UIKIND_RELOAD] = cocos2d::BillBoard::createWithTexture( 
-		Sprite::createWithSpriteFrameName( "rerode.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
-
-
-	//アクションUIの生成
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	fileName1 = "action.png";
-#else
-	fileName1 = "Graph/Pictures/action.png";
-#endif
-	UIBillBoard[UIKIND_ACTION] = cocos2d::BillBoard::createWithTexture( 
-		Sprite::createWithSpriteFrameName( "action.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
-
-
-	//ウェイトUIの生成
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	fileName1 = "wait.png";
-#else
-	fileName1 = "Graph/Pictures/wait.png";
-#endif
-	UIBillBoard[UIKIND_WAIT] = cocos2d::BillBoard::createWithTexture( 
-		Sprite::createWithSpriteFrameName( "wait.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
-
-
-	//回避アイコンの生成
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	fileName1 = "wait.png";
-#else
-	fileName1 = "Graph/Pictures/wait.png";
-#endif
 }
 
 
@@ -263,7 +226,6 @@ void GameUILayer::MoveReticle(void)
 		if (flag == false)
 		{
 			GameUI::getInstance()->init(this);
-			LogoUI::getInstance()->init(this);
 			flag = true;
 		}
 
@@ -317,14 +279,7 @@ void GameUILayer::MoveReticle(void)
 	case PSTATE_DAMAGED:
 	case PSTATE_DODGE:
 	case PSTATE_APPEAR://隠れた状態から出る
-		if (GameMasterL->GetPlayerBullets() <= 0)
-		{
-			LogoUI::getInstance()->setLogo(LogoUI::Reload);
-		}
-		else
-		{
-			LogoUI::getInstance()->resetLogo(LogoUI::Reload);
-		}
+		
 		/*
 		if(GameMasterL->nowBullets <= 0)
 		{
@@ -337,17 +292,14 @@ void GameUILayer::MoveReticle(void)
 		*/
 		break;
 	case PSTATE_HIDE://隠れている
-		LogoUI::getInstance()->resetLogo(LogoUI::Reload);
 		//			UIBillBoard[UIKIND_RELOAD]->setVisible(false);
 		break;
 	case PSTATE_RUN://走っている（Wait時）
-		LogoUI::getInstance()->resetLogo(LogoUI::Reload);
 		//			UIBillBoard[UIKIND_RELOAD]->setVisible(false);
 		break;
 	case PSTATE_DEAD://死亡
 		//ウェイト時と死亡時はGSTATE_PLAYではないので、他のステート時は一括でUIの非表示を管理した方がよい
 		//現在はここにも記述しておく
-		LogoUI::getInstance()->resetLogo(LogoUI::Reload);
 		//			UIBillBoard[UIKIND_RELOAD]->setVisible(false);
 		break;
 	}
@@ -390,7 +342,6 @@ void GameUILayer::MoveReticle(void)
 		static int count = 0;
 		if (count % 60 == 0)
 		{
-			LogoUI::getInstance()->setLogo(LogoUI::Wait);
 		}
 		count++;
 		//			UIBillBoard[UIKIND_WAIT]->setVisible(true);
@@ -399,7 +350,6 @@ void GameUILayer::MoveReticle(void)
 	case GSTATE_PLAY_SET://戦闘開始前の待ち時間（敵の配置にのみ使用する）
 		break;
 	case GSTATE_PLAY_ACTION://戦闘開始前の待ち時間（ActionのUIを描画するときに使用する）
-		LogoUI::getInstance()->setLogo(LogoUI::Action);
 		break;
 	case GSTATE_PLAY:
 		break;

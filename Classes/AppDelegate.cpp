@@ -1,6 +1,5 @@
 
 #include "AppDelegate.h"
-#include "Define.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
@@ -18,9 +17,6 @@
 
 USING_NS_CC;
 using namespace TapGun;
-
-cocos2d::Size SystemValue::windowSize;
-cocos2d::Vec2 SystemValue::origin;
 
 AppDelegate::AppDelegate()
 {

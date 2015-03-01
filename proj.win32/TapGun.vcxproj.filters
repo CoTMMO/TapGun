@@ -11,19 +11,19 @@
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Base">
-      <UniqueIdentifier>{218e5988-55f6-43e7-8531-f8cf6fede037}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\System">
-      <UniqueIdentifier>{79413f27-fd69-4fac-bdcf-e78f46f0377a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Stage">
-      <UniqueIdentifier>{24f4ffb0-4af8-44b8-9a5d-83680c2214d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scene">
-      <UniqueIdentifier>{99016d1c-76a3-4637-ab11-47152a6c6140}</UniqueIdentifier>
+      <UniqueIdentifier>{edf36b06-b1f1-4057-a0ad-7542abdf142c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Object">
-      <UniqueIdentifier>{93248708-cb65-41ee-ae87-797f0cd1de06}</UniqueIdentifier>
+      <UniqueIdentifier>{9fd8eb73-cd79-4a93-9667-770c132b45f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene">
+      <UniqueIdentifier>{abc17137-c84e-49af-a89c-9375c61a6ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Stage">
+      <UniqueIdentifier>{b5fe2c00-6b8c-49de-b105-e591c1057fba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System">
+      <UniqueIdentifier>{ee00c4b2-1664-4903-b7fe-8b35854a2d76}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,26 +51,14 @@
     <ClCompile Include="..\Classes\Base\Unit.cpp">
       <Filter>Source\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\System\Directory.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Errorfunc.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Script.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Shader.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Sound.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Wrapper.cpp">
-      <Filter>Source\System</Filter>
+    <ClCompile Include="..\Classes\Object\Effect.cpp">
+      <Filter>Source\Object</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Object\Muzzle.cpp">
       <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\CreditScene.cpp">
+      <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scene\GameModelsLayer.cpp">
       <Filter>Source\Scene</Filter>
@@ -93,14 +81,26 @@
     <ClCompile Include="..\Classes\Stage\EnemyTable.cpp">
       <Filter>Source\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Scene\CreditScene.cpp">
-      <Filter>Source\Scene</Filter>
+    <ClCompile Include="..\Classes\System\Directory.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\System\Errorfunc.cpp">
+      <Filter>Source\System</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\System\ResourceLoader.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Object\Effect.cpp">
-      <Filter>Source\Object</Filter>
+    <ClCompile Include="..\Classes\System\Script.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\System\Shader.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\System\Sound.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\System\Wrapper.cpp">
+      <Filter>Source\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,9 +108,6 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Define.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Base\GameMaster.h">
@@ -131,26 +128,14 @@
     <ClInclude Include="..\Classes\Base\Unit.h">
       <Filter>Source\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\System\Directory.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Errorfunc.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Script.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Shader.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Sound.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Wrapper.h">
-      <Filter>Source\System</Filter>
+    <ClInclude Include="..\Classes\Object\Effect.h">
+      <Filter>Source\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Object\Muzzle.h">
       <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\CreditScene.h">
+      <Filter>Source\Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\GameModelsLayer.h">
       <Filter>Source\Scene</Filter>
@@ -173,30 +158,31 @@
     <ClInclude Include="..\Classes\Stage\EnemyTable.h">
       <Filter>Source\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Main.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\Classes\System\Directory.h">
+      <Filter>Source\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Scene\CreditScene.h">
-      <Filter>Source\Scene</Filter>
+    <ClInclude Include="..\Classes\System\Errorfunc.h">
+      <Filter>Source\System</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\System\ResourceLoader.h">
       <Filter>Source\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Object\Effect.h">
-      <Filter>Source\Object</Filter>
+    <ClInclude Include="..\Classes\System\Script.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\System\Shader.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\System\Sound.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\System\Wrapper.h">
+      <Filter>Source\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
       <Filter>Resource</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\Classes\Template.txt">
-      <Filter>Source</Filter>
-    </Text>
-    <Text Include="..\Classes\Test.txt">
-      <Filter>Source</Filter>
-    </Text>
   </ItemGroup>
 </Project>

@@ -43,9 +43,11 @@ Sound* Sound::getInstance( void)
 int Sound::loadBGM( const string& fileName)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	Sound::getInstance() -> bgmFileName = fileName;
-#else
-	Sound::getInstance() -> bgmFileName = "Sound/BGM/" + fileName;
+	Sound::getInstance() -> bgmFileName = fileName + ".mp3";
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	Sound::getInstance() -> bgmFileName = "Sound/BGM/" + fileName + ".ogg";
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	Sound::getInstance() -> bgmFileName = "Sound/BGM/" + fileName + ".mp3";
 #endif
 	SimpleAudioEngine::getInstance() -> preloadBackgroundMusic( Sound::getInstance() -> bgmFileName.c_str());
 	return 0;
@@ -238,21 +240,33 @@ int Sound::releaseBGM( void)
  *
  *	@author	minaka 
  *	@param	fileName ファイル名
- *	@return	正常終了:0
+ *	@return	正常終了:0 エラー発生時:-1
  *	@date	1/4 Ver 1.0
  */
 int Sound::loadSE( const std::string& fileName)
 {
 	SoundData *data = new SoundData;
-	data -> fileName = fileName;
+	string str = static_cast<string>(fileName);
+	
+	if( str.size() < 4) return -1;
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	data -> filePath = fileName;
-#else
-	data -> filePath = "Sound/SE/" + fileName;
+	data -> filePath = fileName + ".mp3";
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	data -> filePath = "Sound/SE/" + fileName + ".ogg";
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	data -> filePath = "Sound/SE/" + fileName + ".wav";
 #endif
 	SimpleAudioEngine::getInstance() -> preloadEffect( data -> filePath.c_str());
-	seDataList.push_back( data);
+
+	while( int point = str.rfind( '/', str.size()) != -1)
+	{
+		str.erase( 0, point);
+	}
+	data -> fileName = str;
+	
 	data -> ID = seDataList.size() - 1;
+	
+	seDataList.push_back( data);
 	return 0;
 }
 
@@ -474,15 +488,27 @@ int Sound::releaseSEAll( void)
 int Sound::loadVoice( const std::string& fileName)
 {
 	SoundData *data = new SoundData;
-	data -> fileName = fileName;
+	string str = static_cast<string>(fileName);
+	
+	if( str.size() < 4) return -1;
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	data -> filePath = fileName;
-#else
-	data -> filePath = "Sound/Voice/" + fileName;
+	data -> filePath = fileName + ".mp3";
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	data -> filePath = "Sound/Voice/" + fileName + ".ogg";
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	data -> filePath = "Sound/Voice/" + fileName + ".wav";
 #endif
 	SimpleAudioEngine::getInstance() -> preloadEffect( data -> filePath.c_str());
-	voiceDataList.push_back( data);
+	
+	while( int point = str.rfind( '/', str.size()) != -1)
+	{
+		str.erase( 0, point);
+	}
+	data -> fileName = str;
+
 	data -> ID = voiceDataList.size() - 1;
+
+	voiceDataList.push_back( data);
 	return 0;
 }
 

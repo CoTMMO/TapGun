@@ -1,12 +1,11 @@
 
 #include "cocos2d.h"
-#include "SimpleAudioEngine.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #include "Sprite3D.h"
 #include "TitleScene.h"
-#include "GameScene.h"//遷移先のシーンをインクルード
+#include "GameScene.h"
 #include "CreditScene.h"
 #include "ResourceLoader.h"
 #include "Sound.h"
@@ -15,7 +14,7 @@
 
 #include "Base/Sprite3D.h"
 #include "Scene/TitleScene.h"
-#include "Scene/GameScene.h"//遷移先のシーンをインクルード
+#include "Scene/GameScene.h"
 #include "Scene/CreditScene.h"
 #include "System/ResourceLoader.h"
 #include "System/Sound.h"
@@ -24,28 +23,46 @@
 
 USING_NS_CC;
 using namespace TapGun;
-using namespace CocosDenshion;
  
-_Sprite3D* sp;
-
+/**
+*	タイトルシーンの作成
+*
+*	@author	minaka
+*	@param	なし
+*	@date	2/19 Ver 1.0
+*/
 Scene* TitleScene::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = TitleScene::create();
-	scene->addChild(layer);
+	scene -> addChild( layer);
 	return scene;
 }
 
+
+/**
+*	タイトルシーンの初期化
+*
+*	@author	minaka
+*	@param	なし
+*	@return 初期化成功時 true 失敗時 false
+*	@date	2/19 Ver 1.0
+*/
 bool TitleScene::init()
 {
 	if (!Layer::init()) { return false; }
+	
+	// 描画シーンのフラグをチームロゴに設定
+	menuFlag = TeamLogo;
 
+	// 各種パラメータを初期化
+	menuActionFlag = false;
 	alphaCount = 0;
 	logoAlphaFlag = false;
 	logoAlphaCount = 0;
 	logoAlphaWaitCount = 0;
-	frame = 0;
 
+	// テクスチャアトラスの読み込み
 	auto cache = SpriteFrameCache::getInstance();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -70,30 +87,42 @@ bool TitleScene::init()
 	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/kougeki_icon.plist");
 #endif
 	
-	menuFlag = TeamLogo;
-
+	// タッチ入力受け取りイベントを作成
 	auto listener = EventListenerTouchOneByOne::create();
-	listener -> setSwallowTouches(_swallowsTouches);
+	listener -> setSwallowTouches( _swallowsTouches);	
 	listener -> onTouchBegan = CC_CALLBACK_2( TitleScene::onTouchBegan, this);
 	listener -> onTouchMoved = CC_CALLBACK_2( TitleScene::onTouchMoved, this);
 	listener -> onTouchEnded = CC_CALLBACK_2( TitleScene::onTouchEnded, this);
 	_eventDispatcher -> addEventListenerWithSceneGraphPriority( listener, this);
 	
+	// リソースファイルの読み込みと初期化
 	loadSound();
 	setSprite();
 	setMenu();
 
+	// update関数が呼ばれるようにスケジュールをセット
 	scheduleUpdate();
-//	schedule( schedule_selector( TitleScene::moveTime), 0.016f * 8);
 
 	return true;
 }
 
+/**
+*	タイトルシーンの更新
+*
+*	@author	minaka
+*	@param	cocos依存なので省略
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::update( float delta)
 {
-	static bool modelLoadFlag = false;
+	// リソースファイル読み込みフレームの制御カウンタ
+	static unsigned int frame = 0;
+
+	// サウンドクラスのインスタンスを取得
 	auto sound = Sound::getInstance();
 
+	// 各種モデルデータの読み込み
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	if( frame == ResourceLoader::Map)
 	{
@@ -129,18 +158,12 @@ void TitleScene::update( float delta)
 		ResourceLoader::getInstance() -> loadModel( "Player/player", "", "Player.anime");
 	}
 #endif
+	frame++;
 
+	// 現在の描画シーンフラグに従って描画処理
 	switch( menuFlag)
 	{
 	case TeamLogo:
-//		if( modelLoadFlag == false && ( sp = ResourceLoader::getInstance() -> getSprite3D( 50)) != nullptr)
-//		{
-//			modelLoadFlag = true;
-//			sp -> setPosition3D( Vec3( 640, 400, 50));
-//			sp -> setScale( 300.0f);
-//			sp->startAnimationLoop("dei1");
-//			addChild( sp);
-//		}
 		teamLogoAction();
 		break;
 
@@ -188,22 +211,20 @@ void TitleScene::update( float delta)
 		log( "Title : FlagError");
 		break;
 	}
-	frame++;
 }
 
-void TitleScene::moveTime( float delta)
-{
-}
+// 以下未使用入力受け取り関数
+bool TitleScene::onTouchBegan( Touch *pTouch, Event *pEvent) { return true; }
+void TitleScene::onTouchMoved( Touch *pTouch, Event *pEvent) {}
 
-bool TitleScene::onTouchBegan( Touch *touch, Event *unused_event)
-{
-	return true;
-}
-
-void TitleScene::onTouchMoved( Touch *pTouch, Event *pEvent)
-{
-}
-
+/**
+*	タッチ入力の受け取り (離されたとき)
+*
+*	@author	minaka
+*	@param	cocos依存なので省略
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 {
 	auto sound = Sound::getInstance();
@@ -213,14 +234,32 @@ void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 		menuFlag = MenuIn;
 		sprite[Logo] -> runAction( MoveTo::create( 1, Point( 3000, sprite[Logo] -> getPositionY())));
 		auto action = Blink::create( 0.2, 3);
-		sound -> playSE( "MoveSE.wav");
-		auto func = CallFunc::create( [&](void) -> void { sprite[Menu] -> setVisible( false); menuAction(); });
+		sound -> playSE( "MoveSE");
+		auto func = CallFunc::create( [&](void) -> void 
+		{ 
+			sprite[Menu] -> setVisible( false); 
+			menuAction();
+		});
 		sprite[Menu] -> runAction( Sequence::create( action, func, NULL));
 	}
 }
 
+/**
+*	チームロゴの描画制御
+*
+*	@author	minaka
+*	@param	なし
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::teamLogoAction( void)
 {
+	// フェードイン・アウトの制御カウンタ
+	static int waitCount = 0;
+
+	// フェードイン・アウトの制御フラグ
+	static TeamLogoState teamLogoState = LogoIn;
+
 	if( teamLogoState == LogoIn)
 	{
 		alphaCount += AlphaValue;
@@ -250,6 +289,14 @@ void TitleScene::teamLogoAction( void)
 	}
 }
 
+/**
+*	タイトルシーン用のスプライト作成
+*
+*	@author	minaka
+*	@param	なし
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::setSprite( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
@@ -276,6 +323,14 @@ void TitleScene::setSprite( void)
 	sprite[Menu] -> setVisible( false);
 }
 
+/**
+*	タイトルシーン用のメニューの作成
+*
+*	@author	minaka
+*	@param	なし
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::setMenu( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
@@ -299,68 +354,106 @@ void TitleScene::setMenu( void)
 	addChild( menu[Credit]);
 }
 
+/**
+*	メニューの移動処理
+*
+*	@author	minaka
+*	@param	なし
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::menuAction( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
 
 	for( auto &p : menu)
 	{
-		auto action = MoveTo::create( 1, Vec2(  visibleSize.width / 2, p -> getPositionY()));
+		auto action = MoveTo::create( 0.8, Vec2(  visibleSize.width / 2, p -> getPositionY()));
 		p -> runAction( action);
+		auto func = CallFunc::create( [&](void) -> void { menuActionFlag = true; });
+		p -> runAction( Sequence::create( action, func, NULL));
 	}
 }
 
+/**
+*	GameStartのコールバック関数
+*
+*	@author	minaka
+*	@param	cocos依存なので省略
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::menuStartCallback( Ref* pSender)
 {
+	if( !menuActionFlag) { return; }
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
 	sound -> releaseBGM();
-	sound -> loadBGM( "Main01.wav");
-	sound -> playSE( "MoveSE.wav");
+	sound -> loadBGM( "Main01");
+	sound -> playSE( "MoveSE");
 	auto scene = GameScene::CreateScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
 }
 
+/**
+*	GameEndのコールバック関数
+*
+*	@author	minaka
+*	@param	cocos依存なので省略
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::menuEndCallback( Ref* pSender)
 {
+	if( !menuActionFlag) { return; }
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
-	sound -> playSE( "MoveSE.wav");
+	sound -> playSE( "MoveSE");
 	Director::getInstance() -> end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	exit(0);
 #endif
 }
 
+/**
+*	クレジットのコールバック関数
+*
+*	@author	minaka
+*	@param	cocos依存なので省略
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::menuCreditCallback( Ref* pSender)
 {
+	if( !menuActionFlag) { return; }
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
-	sound -> playSE( "MoveSE.wav");
+	sound -> playSE( "MoveSE");
 	auto scene = CreditScene::createScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
 }
 
+/**
+*	各種サウンドデータの読み込み
+*
+*	@author	minaka
+*	@param	cocos依存なので省略
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
 void TitleScene::loadSound( void)
 {
 	auto sound = Sound::getInstance();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	sound -> loadBGM( "Title.mp3");
-	sound -> loadSE( "MoveSE.mp3");
-	
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	sound -> loadBGM( "Title.mp3");
-	sound -> loadSE( "MoveSE.mp3");
-#else
-	sound -> loadBGM( "Title.wav");
-	sound -> loadSE( "MoveSE.wav");
-	sound -> loadSE( "Shot.wav");
-	sound -> loadSE( "Reload.wav");
-#endif
+
+	sound -> loadBGM( "Title");
+	sound -> loadSE( "Title/MoveSE");
+	sound -> loadSE( "Gun/Shot");
+	sound -> loadSE( "Gun/Reload");
 }
 
+// 以下フラグ制御関数
 template<class P> bool TitleScene::checkFlag( P* flag, const P number) { return ( ( *flag & number) != 0); }
 template<class P> void TitleScene::setFlag( P* flag, const P number) { *flag |= number; }
 template<class P> void TitleScene::resetFlag( P* flag, const P number) { *flag &= ~number; }
