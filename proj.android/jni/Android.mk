@@ -21,7 +21,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				\
 				   ../../Classes/Object/Effect.cpp \
 				\
+				   ../../Classes/Scene/ContinueLayer.cpp \
 				   ../../Classes/Scene/CreditScene.cpp \
+				   ../../Classes/Scene/GameClearLayer.cpp \
 				   ../../Classes/Scene/GameModelsLayer.cpp \
 				   ../../Classes/Scene/GameScene.cpp \
 				   ../../Classes/Scene/GameUILayer.cpp \

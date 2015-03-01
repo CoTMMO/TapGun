@@ -4,16 +4,6 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-//#include "ADX2Manager.h"
-
-#else
-
-//#include "Adx2/ADX2Manager.h"
-
-#endif
-
 namespace TapGun
 {
 	class Test : public cocos2d::Layer
@@ -41,7 +31,6 @@ namespace TapGun
 		
 		void setEnemyHitEffect( cocos2d::Sprite3D* sprite3d);
 		
-//		CC_SYNTHESIZE_RETAIN( ADX2::CueSheet*, _cueSheet, CueSheet);
 	};
 }
 

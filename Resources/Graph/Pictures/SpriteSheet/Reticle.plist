@@ -7,20 +7,20 @@
             <key>derete.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{1904,556}}</string>
+                <string>{{2,2},{951,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{72,746},{1904,556}}</string>
+                <string>{{35,22},{951,279}}</string>
                 <key>sourceSize</key>
-                <string>{2048,2048}</string>
+                <string>{1021,323}</string>
             </dict>
             <key>escape.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,560},{512,512}}</string>
+                <string>{{283,2},{512,512}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -30,10 +30,23 @@
                 <key>sourceSize</key>
                 <string>{512,512}</string>
             </dict>
-            <key>reticle_1.png</key>
+            <key>pause.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{516,560},{452,450}}</string>
+                <string>{{283,516},{466,466}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{23,23},{466,466}}</string>
+                <key>sourceSize</key>
+                <string>{512,512}</string>
+            </dict>
+            <key>reticle_idle.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{751,516},{452,450}}</string>
                 <key>offset</key>
                 <string>{0,2}</string>
                 <key>rotated</key>
@@ -43,10 +56,10 @@
                 <key>sourceSize</key>
                 <string>{512,512}</string>
             </dict>
-            <key>reticle_2.png</key>
+            <key>reticle_shot.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{968,560},{284,284}}</string>
+                <string>{{797,2},{284,284}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -64,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>Reticle.png</string>
             <key>size</key>
-            <string>{1908,1074}</string>
+            <string>{1203,984}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:c8c28d146ede99694e7d8c55e212cf56:bb3d28b9cd5d9b4a1be34ab7ec90b2db:e5f5129744122ad616cc2de89c10cc92$</string>
+            <string>$TexturePacker:SmartUpdate:2fb12716b29113f17d385cfe2a145f5e:4c87312fb15438046948b57e84c9f4a6:e5f5129744122ad616cc2de89c10cc92$</string>
             <key>textureFileName</key>
             <string>Reticle.png</string>
         </dict>

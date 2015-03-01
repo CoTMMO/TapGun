@@ -102,6 +102,12 @@
     <ClCompile Include="..\Classes\System\Wrapper.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scene\ContinueLayer.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\GameClearLayer.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -178,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\System\Wrapper.h">
       <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\ContinueLayer.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\GameClearLayer.h">
+      <Filter>Source\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
