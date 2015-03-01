@@ -15,16 +15,15 @@
 #else
   #define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
 #endif
-
-#ifndef _TIMEZONE_DEFINED 
+ 
+#ifndef WP8
 struct timezone 
 {
   int  tz_minuteswest; /* minutes W of Greenwich */
   int  tz_dsttime;     /* type of dst correction */
 };
-
+ 
 int gettimeofday(struct timeval *tv, struct timezone *tz);
-
 #endif
 
 

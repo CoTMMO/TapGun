@@ -36,6 +36,20 @@ Effect::Effect()
 	}
 	
 	playerMuzzle = new PlayerMuzzle;
+	for( int i = 0; i < PlayerMuzzleAnime; i++)
+	{
+		char buf[64];
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+		sprintf( buf, "p_muzzle%02d", i + 1);
+#else
+		sprintf( buf, "P_Muzzle/p_muzzle%02d", i + 1);
+#endif
+		playerMuzzle -> sprite3D[i] = _Sprite3D::create( buf);
+		playerMuzzle -> sprite3D[i] -> setVisible( false);
+		playerMuzzle -> sprite3D[i] -> setPosition3D( Vec3( 0, 0, 0));
+		playerMuzzle -> sprite3D[i] -> setRotation3D( Vec3( 90, 0, 180));
+		playerMuzzle -> sprite3D[i] -> retain();
+	}
 	
 	for( int i = 0; i < EnemyMuzzleCount; i++)
 	{
@@ -138,7 +152,6 @@ void Effect::setPlayerHitEffect( Sprite3D* sprite3d, Vec3 vec)
 	}
 }
 
-
 void Effect::setEnemyHitEffect( Sprite3D* sprite3d)
 {
 	for( int i = 0; i < EnemyNum; i++)
@@ -233,7 +246,7 @@ void Effect::setEnemyHitEffect( Sprite3D* sprite3d, Vec3 vec)
 void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
 {
 	auto sound = Sound::getInstance();
-
+	if( playerMuzzle -> shotFlag == true) { return; }
 	playerMuzzle -> shotFlag = true;
 	playerMuzzle -> count = 0;
 	auto point = parentData -> getAttachNode( pointName);
@@ -242,18 +255,11 @@ void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
 	for( int i = 0; i < PlayerMuzzleAnime; i++)
 	{
 		char buf[64];
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-		sprintf( buf, "p_muzzle%02d", i + 1);
-#else
-		sprintf( buf, "P_Muzzle/p_muzzle%02d", i + 1);
-#endif
-		playerMuzzle -> sprite3D[i] = _Sprite3D::create( buf);
-		playerMuzzle -> sprite3D[i] -> setVisible( false);
-		playerMuzzle -> sprite3D[i] -> setPosition3D( Vec3( 0, 0, 0));
-		playerMuzzle -> sprite3D[i] -> setRotation3D( Vec3( 90, 0, 180));
+//		playerMuzzle -> sprite3D[i] -> setVisible( false);
 		point -> addChild( playerMuzzle -> sprite3D[i]);
-		sound -> playSE( "Shot.wav");
+		sound -> playSE( "Shot");
 	}
+	int a = 0;
 }
 
 void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, const string& pointName2)
@@ -291,7 +297,7 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point2 -> addChild( enemyMuzzle[i] -> sprite3DL[j]);
 		}
-		sound -> playSE( "Shot.wav");
+		sound -> playSE( "Shot");
 		return;
 	}
 }
@@ -304,7 +310,7 @@ void Effect::muzzleUpdate( void)
 		{
 			playerMuzzle -> shotFlag = false;
 			playerMuzzle -> count = 0;
-			for( auto &p : playerMuzzle -> sprite3D) { p -> setVisible( false); }
+			for( auto &p : playerMuzzle -> sprite3D) { p -> removeFromParent(); }
 			return;
 		}
 		
@@ -314,11 +320,11 @@ void Effect::muzzleUpdate( void)
 			playerMuzzle -> sprite3D[0] -> setVisible( true);
 			break;
 		case 1:
-			playerMuzzle -> sprite3D[0] -> setVisible( false);
+			//playerMuzzle -> sprite3D[0] -> setVisible( false);
 			playerMuzzle -> sprite3D[1] -> setVisible( true);
 			break;
 		case 2:
-			playerMuzzle -> sprite3D[1] -> setVisible( false);
+			//playerMuzzle -> sprite3D[1] -> setVisible( false);
 			playerMuzzle -> sprite3D[2] -> setVisible( true);
 			break;
 		default:

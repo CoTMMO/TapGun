@@ -18,25 +18,24 @@ namespace TapGun
 	class TitleScene : public cocos2d::Layer
 	{
 	public:
-		static cocos2d::Scene* createScene();
+	static cocos2d::Scene* createScene();
+	private:
+			
 		
+		
+
+		CREATE_FUNC( TitleScene);
+
 		bool init();
 		void update( float delta);
-		void moveTime( float delta);
 
-		bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *unused_event);
+		bool onTouchBegan( cocos2d::Touch *pTouch, cocos2d::Event *pEvent);
 		void onTouchMoved( cocos2d::Touch *pTouch, cocos2d::Event *pEvent);
 		void onTouchEnded( cocos2d::Touch *pTouch, cocos2d::Event *pEvent);
 
 		void menuStartCallback( cocos2d::Ref* pSender);
 		void menuEndCallback( cocos2d::Ref* pSender);
 		void menuCreditCallback( cocos2d::Ref* pSender);
-
-		void sprite3DLoadCallback( _Sprite3D* sprite3D, void* param);
-
-		CREATE_FUNC( TitleScene);
-
-	private:
 		enum SpriteName
 		{
 			BG,
@@ -75,22 +74,17 @@ namespace TapGun
 			MenuNum,
 		};
 
-		TeamLogoState teamLogoState = LogoIn;
-		int waitCount = 0;
-
 		MenuFlag menuFlag;
+		bool menuActionFlag;
 		int alphaCount;
 
 		bool logoAlphaFlag;
 		int logoAlphaCount;
 		int logoAlphaWaitCount;
-		unsigned int frame;
-
+		
 		cocos2d::Sprite* teamLogo;
 		cocos2d::Sprite* sprite[SpriteNum];
 		cocos2d::Menu* menu[MenuNum];
-
-		cocos2d::Sprite* effect[8];
 
 		void teamLogoAction( void);
 		void setSprite( void);

@@ -1,6 +1,5 @@
 
 #include "cocos2d.h"
-#include "Define.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
@@ -74,12 +73,13 @@ void Errorfunc::setMessage( int lineNumber, string fileName, string functionName
  */
 void Errorfunc::drawMessage( Layer* layer)
 {
+	auto visibleSize = Director::getInstance() -> getVisibleSize();
 	int size = errorList.size();
 	string str;
 	
 	if( size == 0) return;
-	auto bg = LayerColor::create( Color4B::BLACK, SystemValue::windowSize.width, SystemValue::windowSize.height);
-	layer -> addChild( bg, SystemValue::ERROR_MESSAGE);
+	auto bg = LayerColor::create( Color4B::BLACK, visibleSize.width, visibleSize.height);
+	layer -> addChild( bg, 10);
 	for( int i = 0; i < size; i++)
 	{
 		size_t pos1;
@@ -101,8 +101,8 @@ void Errorfunc::drawMessage( Layer* layer)
 		str = "Error! / " + fileName + " / " + errorList[i] -> functionName + " / "
 			+ valueToString( errorList[i] -> lineNumber) + " / " + errorList[i] -> errorMessage;
 		auto message = Label::create( str, "Arial", 20);
-		message -> setPosition( Point( message -> getContentSize().width / 2 + 10, SystemValue::windowSize.height - message -> getContentSize().height - (message -> getContentSize().height * i)));
-		layer -> addChild( message, SystemValue::ERROR_MESSAGE);
+		message -> setPosition( Point( message -> getContentSize().width / 2 + 10, visibleSize.height - message -> getContentSize().height - (message -> getContentSize().height * i)));
+		layer -> addChild( message, 10);
 	}
 	releaseMessage();
 }

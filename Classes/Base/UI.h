@@ -87,6 +87,7 @@ namespace TapGun
 		void setHP( int count);
 		void setGameTime( float time);
 		void setBulletCount( int count);
+		void setReticlePoint( int count);
 		
 	private:
 		enum UI_Count
@@ -97,6 +98,7 @@ namespace TapGun
 			Escape = 2,
 			EnemyAttack = 5,
 			Delete = 5,
+			Reticle = 2,
 		};
 
 		enum LogoNumber
@@ -121,34 +123,8 @@ namespace TapGun
 		cocos2d::Sprite *enemyAttack[EnemyAttack][3];
 		cocos2d::Sprite *deleteLogo[Delete];
 		cocos2d::Sprite* logo[LogoNum];
+		cocos2d::Sprite* reticle[Reticle];
 	};
-
-	class LogoUI
-	{
-	public:
-		enum LogoNumber
-		{
-			Action,
-			Wait,
-			Reload,
-			LogoNum,
-		};
-
-		LogoUI( const LogoUI& p) = delete;
-		LogoUI& operator=( const LogoUI& P) = delete;
-		static LogoUI* getInstance( void);
-
-		void init( cocos2d::Layer* layer);
-		void update( void);
-		void setLogo( LogoNumber num);
-		void resetLogo( LogoNumber num);
-
-	private:
-		LogoUI();
-		cocos2d::Sprite* logo[LogoNum];
-	};
-	
-	
 }
 #endif //__UI_H__
 

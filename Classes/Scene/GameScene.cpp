@@ -101,16 +101,6 @@ bool GameScene::init()
 
 	//setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
-	sound = Sound::getInstance();
-
-	//sound -> loadBGM( "testBGM.mp3");
-	//sound -> playBGM();
-	sound->loadSE("Shot.wav");
-	sound->loadSE("Damage_01.wav");
-	sound->loadSE("Damage_02.wav");
-	sound->loadSE("Damage_03.wav");
-	sound->loadSE("Damage_04.wav");
-
 	this->scheduleUpdate();
 
 	//時間取得のための変数を初期化
