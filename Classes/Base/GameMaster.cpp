@@ -208,10 +208,11 @@ void GameMaster::InitParam()
 	//stagePoint[POINT_W4].hidePoint = setHidePoint(stagePoint[POINT_W4]);//カメラの回避座標をセット
 
 	//クリア
-	stagePoint[POINT_FINISH].pPos = Vec3(7.856f, 0.0f, -5.849f);//
-	stagePoint[POINT_FINISH].pRot = Vec3(0.0f, 165.0f, 0.0f);
-	stagePoint[POINT_FINISH].cPos = Vec3(6.363f, 1.0f, -1.101f);//
-	stagePoint[POINT_FINISH].cRot = Vec3(MACRO_CROT_X(87.167f), MACRO_CROT_Y(-23.778f), 0.0f);
+	stagePoint[POINT_END].pPos = Vec3(5.856f, 0.0f, -3.849f);//
+	stagePoint[POINT_END].pRot = Vec3(0.0f, 165.0f, 0.0f);
+	stagePoint[POINT_END].cPos = Vec3(6.363f, 1.0f, -1.101f);//
+	stagePoint[POINT_END].cRot = Vec3(MACRO_CROT_X(87.167f), MACRO_CROT_Y(-23.778f), 0.0f);
+	stagePoint[POINT_END].pointType = POINT_FINISH;
 }
 
 

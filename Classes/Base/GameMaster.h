@@ -38,6 +38,13 @@ namespace TapGun
 #define STS_ENEMY_SJUMPSPEED 0.005f//敵の
 #define STS_ENEMY_ACROSPEED 0.001f//敵の
 
+#define POS_ENEMY_LPOX -0.3f//敵の左の銃のポイント
+#define POS_ENEMY_LPOY 1.25f//敵の左の銃のポイント
+#define POS_ENEMY_LPOZ 0.1f//敵の左の銃のポイント
+#define POS_ENEMY_RPOX 0.3f//敵の右の銃のポイント
+#define POS_ENEMY_RPOY 1.25f//敵の右の銃のポイント
+#define POS_ENEMY_RPOZ 0.1f//敵の右の銃のポイント
+
 #define STS_EBULLET_SPEED 0.019f//敵の弾の速度
 
 #define BATTLE_FEILD_X 0.8//タッチで攻撃可能な画面割合
@@ -74,8 +81,8 @@ namespace TapGun
 
 //Action時のカメラの設定(左)
 #define C_SETX_L 0.0f
-#define C_SETY_L 1.51f
-#define C_SETZ_L 5.0f
+#define C_SETY_L 1.61f
+#define C_SETZ_L 4.8f
 #define C_ROTX_L 0.0f
 #define C_ROTY_L -13.0f
 #define C_ROTZ_L 0.0f
@@ -122,9 +129,9 @@ namespace TapGun
 #define HIDECAMERA_Y -1.1f
 
 	//時間
-#define TIME_MAXTIME 8000//ゲーム本編の最大時間（ミリ秒）
+#define TIME_MAXTIME 180000//ゲーム本編の最大時間（ミリ秒）
 #define TIME_ACTION_UI 1800//ActionのUIを表示する時間（ミリ秒）
-#define TIME_DEAD_UI 3000//ActionのUIを表示する時間（ミリ秒）
+#define TIME_DEAD_UI 3000//死亡時のカメラ表示する時間（ミリ秒）
 
 #define TIME_OP 6000//ActionのUIを表示する時間（ミリ秒）
 
@@ -208,7 +215,7 @@ namespace TapGun
 		POINT_NONE,//使用しない
 		POINT_BATTLE,//バトルマス
 		POINT_CHANGE,//方向転換
-		POINT_CLEAR,
+		POINT_FINISH,
 	};
 
 	enum _STAGE_POINT_
@@ -229,7 +236,7 @@ namespace TapGun
 		//POINT_W3,
 		//POINT_W3_2,
 		//POINT_W4,
-		POINT_FINISH,
+		POINT_END,
 	};
 
 
@@ -276,8 +283,6 @@ namespace TapGun
 
 		//		float hideFrame;//回避フレーム
 		float mutekiFrame;//無敵時間
-
-		//		float gameTime;//ゲーム全体の時間
 
 		float reticleAjust;//指の位置とレティクルの位置の差（画面に対する割合）
 

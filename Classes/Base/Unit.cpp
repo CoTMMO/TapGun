@@ -157,7 +157,7 @@ void Unit::Update(void)
 	auto loopTime = director->getDeltaTime();//ループに要した時間を取得
 
 	//フレームを加算
-	time += loopTime;
+	time += loopTime * 1000.0f;
 
 	//座標を移動
 	pos = sprite3d->getPosition3D();

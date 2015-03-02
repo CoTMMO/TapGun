@@ -276,8 +276,8 @@ int GameModelsLayer::InitEnemy(int stage_num)
 		unit[i].SetCollision();//
 		unit[i].eState = ESTATE_NONE;
 
-		unit[i].node2->setPosition3D(Vec3(0.0f, 0.0f, 0.0f));//
-		unit[i].node1->setPosition3D(Vec3(0.0f, 0.0f, 0.0f));//
+		unit[i].node1->setPosition3D(Vec3(POS_ENEMY_LPOX, POS_ENEMY_LPOY, POS_ENEMY_LPOZ));//
+		unit[i].node2->setPosition3D(Vec3(POS_ENEMY_RPOX, POS_ENEMY_RPOY, POS_ENEMY_RPOZ));//
 	}
 	return TRUE;
 }
@@ -459,7 +459,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[3].SetTargetPos(enemyTable->targetPos[3]);
 		enemyTable->enemyData[3].SetNextEnemy(5, -1, -1);
 		enemyTable->enemyData[3].alive = TRUE;
-		enemyTable->enemyData[3].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
+		enemyTable->enemyData[3].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[3].sleepTime = 1000;
 		enemyTable->enemyData[3].hitpoint = 5;
 		//enemyTable->enemyData[0].stsAtkFrame[0] = 
@@ -484,7 +484,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[5].SetTargetPos(enemyTable->targetPos[5]);
 		enemyTable->enemyData[5].SetNextEnemy(7, -1, -1);
 		enemyTable->enemyData[5].alive = TRUE;
-		enemyTable->enemyData[5].SetAI(AI_APPEAR_RUN, AI_ATK_FAKE, AI_MOVE_WALK, AI_LIFE_STOP);
+		enemyTable->enemyData[5].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_WALK, AI_LIFE_STOP);
 		enemyTable->enemyData[5].sleepTime = 1000;
 		enemyTable->enemyData[5].hitpoint = 5;
 		//enemyTable->enemyData[0].stsAtkFrame[0] = 
@@ -496,7 +496,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[6].SetTargetPos(enemyTable->targetPos[6]);
 		enemyTable->enemyData[6].SetNextEnemy(8, -1, -1);
 		enemyTable->enemyData[6].alive = TRUE;
-		enemyTable->enemyData[6].SetAI(AI_APPEAR_SWALK, AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
+		enemyTable->enemyData[6].SetAI(AI_APPEAR_SWALK, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[6].sleepTime = 1000;
 		enemyTable->enemyData[6].hitpoint = 5;
 		//enemyTable->enemyData[0].stsAtkFrame[0] = 
@@ -523,7 +523,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[8].SetNextEnemy(-1, -1, -1);
 		enemyTable->enemyData[8].finishFlag = TRUE;
 		enemyTable->enemyData[8].alive = TRUE;
-		enemyTable->enemyData[8].SetAI(AI_APPEAR_WALK, AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
+		enemyTable->enemyData[8].SetAI(AI_APPEAR_WALK, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[8].sleepTime = 1000;
 		enemyTable->enemyData[8].hitpoint = 5;
 		//enemyTable->enemyData[0].stsAtkFrame[0] = 
@@ -805,7 +805,7 @@ void GameModelsLayer::UpdateWait()
 				GameMasterM->shotFlag = FALSE;//
 
 			}
-			else if (POINT_CLEAR == GameMasterM->stagePoint[GameMasterM->sPoint].pointType)//クリアしたら
+			else if (POINT_FINISH == GameMasterM->stagePoint[GameMasterM->sPoint].pointType)//クリアしたら
 			{
 				//
 				GameMasterM->SetGameState(GSTATE_END);
@@ -1627,6 +1627,7 @@ void GameModelsLayer::ShootBullet(int enemy_num)
 		unit[num].speed = STS_EBULLET_SPEED;
 		unit[num].speedVec.x *= unit[num].speed;
 		unit[num].speedVec.z *= unit[num].speed;
+		unit[num].speedVec.y = 0.0f;
 
 		unit[num].sprite3d->setPosition3D(enemyPos);
 		unit[num].sprite3d->setPositionY(1.2f);
@@ -1636,6 +1637,81 @@ void GameModelsLayer::ShootBullet(int enemy_num)
 		unit[num].sprite3d->setVisible(true);
 	}
 }
+
+
+
+
+/**
+*	敵に弾を発射させる
+*
+*	@author	sasebon
+*	@param	弾を撃った敵の番号,弾を撃った回数
+*	@return	なし
+*	@date	2/12 Ver 1.0
+*/
+void GameModelsLayer::ShootBullet(int enemy_num, int count)
+{
+	//
+	int num = -1;
+	for (int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
+	{
+		if (FALSE == unit[i].visible)
+		{
+			//表示されていない弾用構造体の配列番号を取得する
+			num = i;
+			break;
+		}
+	}
+
+	//
+	if (num != -1)
+	{
+		//弾を一度初期化する
+		unit[num].Init(num, UKIND_EBULLET);
+
+		unit[num].sprite3d->setScale(0.5f);//
+
+		//弾を撃ったエネミーの座標と、プレイヤーの座標を元に、弾の移動方向を求める
+		Vec3 enemyPos;
+		if (0 == (count % 2))
+		{
+			enemyPos = unit[enemy_num].node1->getPosition3D() + unit[enemy_num].sprite3d->getPosition3D();
+			//enemyPos = unit[enemy_num].sprite3d->getPosition3D();
+		}
+		else
+		{
+			enemyPos = unit[enemy_num].node2->getPosition3D() + unit[enemy_num].sprite3d->getPosition3D();
+			//enemyPos = unit[enemy_num].sprite3d->getPosition3D();
+		}
+
+
+		//プレイヤーに向けて弾を発射する
+		unit[num].speedVec = GameMasterM->stagePoint[GameMasterM->sPoint].pPos - enemyPos;//
+		//ベクトルの正規化を行う
+		unit[num].speedVec.normalize();
+
+		//キャラクターの向きを調整
+		double r = atan2f(unit[num].speedVec.z, unit[num].speedVec.x);
+		r = CC_RADIANS_TO_DEGREES(r);
+
+		//unit[num].sprite3d->setRotation3D(Vec3(-90.0f, 90.0f - r, 0.0f));//
+		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
+
+		//正規化が終わったら、速度をかけて方向ベクトルの計算終了
+		unit[num].speed = STS_EBULLET_SPEED;
+		unit[num].speedVec.x *= unit[num].speed;
+		unit[num].speedVec.z *= unit[num].speed;
+		unit[num].speedVec.y = 0.0f;
+
+		unit[num].sprite3d->setPosition3D(enemyPos);
+//		unit[num].sprite3d->setPositionY(1.2f);
+
+		//弾を画面に描画する
+		unit[num].visible = TRUE;
+		unit[num].sprite3d->setVisible(true);
+	}
+}
+
 
 
 /**
@@ -1657,7 +1733,7 @@ void GameModelsLayer::UpdateBullets()
 			unit[num].Update(GameMasterM->loopTime);//座標と一緒に当たり判定を移動
 
 			//指定時間が経過したら消去処理
-			if (4000 <= unit[num].GetTime())
+			if (3000 <= unit[num].GetTime())
 			{
 				unit[num].speed = 0.0f;
 				unit[num].visible = FALSE;
@@ -2507,7 +2583,7 @@ void GameModelsLayer::ActionEMove(int num)
 	//目標地点との距離を求める
 	float d1 = tmpPos.distance(unit[num].targetPos[unit[num].nowTargetPos]);
 	//一定以上目的地に近付いたら
-	if(0.1f >= d1)
+	if(0.15f >= d1)
 	{
 		//エネミーのライフサイクルで場合分け
 		switch(unit[num].AILife)
@@ -2673,6 +2749,8 @@ void GameModelsLayer::ActionEAttack(int num)
 	//どの敵キャラクターも
 	if(0 == unit[num].sprite3d->checkAnimationState())
 	{
+		unit[num].nowShot = 0;
+
 		//AIの行動パターンをもとに動きを変更する
 		if(AI_LIFE_ONCE == unit[num].AILife)
 		{
@@ -2714,10 +2792,10 @@ void GameModelsLayer::ActionEAttack(int num)
 
 			//タイミングを合わせて射撃を行う
 			unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
-			if(0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
+			if(0 >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
 			{
 				Effect::getInstance() -> setEnemyMuzzle( unit[num].sprite3d, "Po_1", "Po_2");
-				unit[num].atkFrame = 1500;//次の弾発射までの時間を設定
+				unit[num].atkFrame = 0.35;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
 			}
 			break;
@@ -2725,13 +2803,13 @@ void GameModelsLayer::ActionEAttack(int num)
 
 			//タイミングを合わせて射撃を行う
 			unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
-			if(0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
+			if(0 >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
 			{
 				Effect::getInstance() -> setEnemyMuzzle( unit[num].sprite3d, "Po_1", "Po_2");
 				//フレームが0になったら
-				ShootBullet(num);
-				unit[num].atkFrame = 1500;//次の弾発射までの時間を設定
+				unit[num].atkFrame = 0.35;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
+				ShootBullet(num, unit[num].nowShot);
 			}
 			break;
 		case AI_ATK_SJUMP://サイドジャンプ射撃
@@ -2790,7 +2868,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->startAnimation("shot");
 
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		//unit[num].atkFrame = 1000;//弾を発射するまでの残りフレームとして扱う
+		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレームとして扱う
 		break;
 	case AI_ATK_SSHOT://立ち撃ちを行う
 
