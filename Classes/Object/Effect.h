@@ -41,7 +41,7 @@ namespace TapGun
 			
 			PlayerMuzzleAnime = 3,
 			EnemyMuzzleAnime = 2,
-			EnemyMuzzleCount = 8,
+			EnemyMuzzleCount = 16,
 		};
 		
 		struct EffectData

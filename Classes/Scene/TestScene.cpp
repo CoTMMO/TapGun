@@ -60,10 +60,13 @@ bool Test::init()
 	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
 
 	auto con = ContinueLayer::create();
-	addChild( con);
+//	addChild( con);
 
-
-
+	auto sprit = _Sprite3D::create( "Enemy/enemy");
+	sprit -> setCullFace( GL_FRONT);
+	sprit -> setPosition( 640, 0);
+	sprit -> setScale( 300.0f);
+	addChild( sprit);
 	
 
 	//現在はタッチイベントのリスナーをここに用意しています
