@@ -46,14 +46,31 @@ Effect::Effect()
 #endif
 		playerMuzzle -> sprite3D[i] = _Sprite3D::create( buf);
 		playerMuzzle -> sprite3D[i] -> setVisible( false);
-		playerMuzzle -> sprite3D[i] -> setPosition3D( Vec3( 0, 0, 0));
-		playerMuzzle -> sprite3D[i] -> setRotation3D( Vec3( 90, 0, 180));
+		playerMuzzle -> sprite3D[i] -> setCameraMask( (unsigned short)CameraFlag::USER1);
 		playerMuzzle -> sprite3D[i] -> retain();
 	}
 	
 	for( int i = 0; i < EnemyMuzzleCount; i++)
 	{
 		enemyMuzzle[i] = new EnemyMuzzle;
+		for( int j = 0; j < EnemyMuzzleAnime; j++)
+		{
+			char buf[64];
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+			sprintf( buf, "e_muzzle%02d", j + 1);
+#else
+			sprintf( buf, "E_Muzzle/e_muzzle%02d", j + 1);
+#endif
+			enemyMuzzle[i] -> sprite3DR[j] = _Sprite3D::create( buf);
+			enemyMuzzle[i] -> sprite3DR[j] -> setVisible( false);
+			enemyMuzzle[i] -> sprite3DR[j] -> setCameraMask( (unsigned short)CameraFlag::USER1);
+			enemyMuzzle[i] -> sprite3DR[j] -> retain();
+
+			enemyMuzzle[i] -> sprite3DL[j] = _Sprite3D::create( buf);
+			enemyMuzzle[i] -> sprite3DL[j] -> setVisible( false);
+			enemyMuzzle[i] -> sprite3DR[j] -> setCameraMask( (unsigned short)CameraFlag::USER1);
+			enemyMuzzle[i] -> sprite3DL[j] -> retain();
+		}
 	}
 }
 
@@ -251,15 +268,13 @@ void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
 	playerMuzzle -> count = 0;
 	auto point = parentData -> getAttachNode( pointName);
 	if( !point) { return; }
-	
+
 	for( int i = 0; i < PlayerMuzzleAnime; i++)
 	{
-		char buf[64];
-//		playerMuzzle -> sprite3D[i] -> setVisible( false);
-		point -> addChild( playerMuzzle -> sprite3D[i]);
-		sound -> playSE( "Shot");
+		playerMuzzle -> sprite3D[i] -> setRotation3D( Vec3( 90, 0, parentData -> getRotation3D().y));
+		point -> addChild( playerMuzzle -> sprite3D[i]);		
 	}
-	int a = 0;
+	sound -> playSE( "Shot");
 }
 
 void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, const string& pointName2)
@@ -279,22 +294,10 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 		
 		for( int j = 0; j < EnemyMuzzleAnime; j++)
 		{
-			char buf[64];
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-			sprintf( buf, "e_muzzle%02d", j + 1);
-#else
-			sprintf( buf, "E_Muzzle/e_muzzle%02d", j + 1);
-#endif
-			enemyMuzzle[i] -> sprite3DR[j] = _Sprite3D::create( buf);
-			enemyMuzzle[i] -> sprite3DR[j] -> setVisible( false);
-			enemyMuzzle[i] -> sprite3DR[j] -> setPosition3D( Vec3( 0, 0, 0));
-			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 0, 270, 180));
+			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 0, 270, parentData -> getRotation3D().y + 90));
 			point1 -> addChild( enemyMuzzle[i] -> sprite3DR[j]);
 			
-			enemyMuzzle[i] -> sprite3DL[j] = _Sprite3D::create( buf);
-			enemyMuzzle[i] -> sprite3DL[j] -> setVisible( false);
-			enemyMuzzle[i] -> sprite3DL[j] -> setPosition3D( Vec3( 0, 0, 0));
-			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, 180));
+			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, parentData -> getRotation3D().y + 90));
 			point2 -> addChild( enemyMuzzle[i] -> sprite3DL[j]);
 		}
 		sound -> playSE( "Shot");
@@ -320,11 +323,11 @@ void Effect::muzzleUpdate( void)
 			playerMuzzle -> sprite3D[0] -> setVisible( true);
 			break;
 		case 1:
-			//playerMuzzle -> sprite3D[0] -> setVisible( false);
+			playerMuzzle -> sprite3D[0] -> setVisible( false);
 			playerMuzzle -> sprite3D[1] -> setVisible( true);
 			break;
 		case 2:
-			//playerMuzzle -> sprite3D[1] -> setVisible( false);
+			playerMuzzle -> sprite3D[1] -> setVisible( false);
 			playerMuzzle -> sprite3D[2] -> setVisible( true);
 			break;
 		default:
@@ -341,8 +344,8 @@ void Effect::muzzleUpdate( void)
 			{
 				p -> shotFlag = false;
 				p -> count = 0;
-				for( auto &r : p -> sprite3DR) { r -> setVisible( false); }
-				for( auto &l : p -> sprite3DL) { l -> setVisible( false); }
+				for( auto &r : p -> sprite3DR) { r -> removeFromParent(); }
+				for( auto &l : p -> sprite3DL) { l -> removeFromParent(); }
 				return;
 			}
 			

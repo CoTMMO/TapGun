@@ -101,8 +101,8 @@ void GameModelsLayer::LoadModels()
 	auto aa = ResourceLoader::getInstance();
 	auto ef = Effect::getInstance();
 	//スプライトとノードのcreate
-//	player.sprite3d = aa->getSprite3D(ResourceLoader::ModelNumber::Player);
-	player.sprite3d = _Sprite3D::create(fileName1, fileName2);
+	player.sprite3d = aa->getSprite3D(ResourceLoader::ModelNumber::Player);
+//	player.sprite3d = _Sprite3D::create(fileName1, fileName2);
 	player.wrapper = Node::create();//モデルの親ノード
 	player.leftNode = Node::create();//プレイヤーの回転軸の基準ノード（左）
 	player.rightNode = Node::create();//プレイヤーの回転軸の基準ノード（右）
@@ -124,8 +124,8 @@ void GameModelsLayer::LoadModels()
 #else
 	fileName1 = "Stage/stage";
 #endif
-	unit[UNIT0_MAP].sprite3d = _Sprite3D::create(fileName1);//0番は現在マップに割り当て
-//	unit[UNIT0_MAP].sprite3d = aa->getSprite3D(ResourceLoader::ModelNumber::Map);//0番は現在マップに割り当て
+//	unit[UNIT0_MAP].sprite3d = _Sprite3D::create(fileName1);//0番は現在マップに割り当て
+	unit[UNIT0_MAP].sprite3d = aa->getSprite3D(ResourceLoader::ModelNumber::Map);//0番は現在マップに割り当て
 	addChild(unit[UNIT0_MAP].sprite3d);
 
 
@@ -140,8 +140,8 @@ void GameModelsLayer::LoadModels()
 	for(int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
 	{
 		//スプライトとノードのcreate
-		unit[i].sprite3d = _Sprite3D::create(fileName1, fileName2);//1番~20番を敵に割り当て
-//		unit[i].sprite3d = aa->getSprite3D(ResourceLoader::ModelNumber::EnemyStart + i - 1);
+//		unit[i].sprite3d = _Sprite3D::create(fileName1, fileName2);//1番~20番を敵に割り当て
+		unit[i].sprite3d = aa->getSprite3D(ResourceLoader::ModelNumber::EnemyStart + i - 1);
 		unit[i].wrapper = Node::create();//親ノードも初期化
 		unit[i].node1 = Node::create();//左手用ノード
 		unit[i].node2 = Node::create();//右手用ノード
@@ -163,8 +163,8 @@ void GameModelsLayer::LoadModels()
 
 	for(int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
 	{
-		unit[i].sprite3d = _Sprite3D::create(fileName1);
-//		unit[i].sprite3d = aa->getSprite3D(ResourceLoader::ModelNumber::BulletStart + i - 1);
+//		unit[i].sprite3d = _Sprite3D::create(fileName1);
+		unit[i].sprite3d = aa->getSprite3D(i);
 		unit[i].wrapper = Node::create();
 		unit[i].node1 = Node::create();//弾の先端用ノード
 		//		unit[i].colisionNode = Node::create();
@@ -2716,6 +2716,7 @@ void GameModelsLayer::ActionEAttack(int num)
 			unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
 			if(0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
 			{
+				Effect::getInstance() -> setEnemyMuzzle( unit[num].sprite3d, "Po_1", "Po_2");
 				unit[num].atkFrame = 1500;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
 			}
@@ -2726,6 +2727,7 @@ void GameModelsLayer::ActionEAttack(int num)
 			unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
 			if(0.0f >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
 			{
+				Effect::getInstance() -> setEnemyMuzzle( unit[num].sprite3d, "Po_1", "Po_2");
 				//フレームが0になったら
 				ShootBullet(num);
 				unit[num].atkFrame = 1500;//次の弾発射までの時間を設定

@@ -254,7 +254,7 @@ int Sound::loadSE( const std::string& fileName)
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	data -> filePath = "Sound/SE/" + fileName + ".ogg";
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	data -> filePath = "Sound/SE/" + fileName + ".wav";
+	data -> filePath = "Sound/SE/" + fileName + ".mp3";
 #endif
 	SimpleAudioEngine::getInstance() -> preloadEffect( data -> filePath.c_str());
 
@@ -496,7 +496,7 @@ int Sound::loadVoice( const std::string& fileName)
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	data -> filePath = "Sound/Voice/" + fileName + ".ogg";
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	data -> filePath = "Sound/Voice/" + fileName + ".wav";
+	data -> filePath = "Sound/Voice/" + fileName + ".mp3";
 #endif
 	SimpleAudioEngine::getInstance() -> preloadEffect( data -> filePath.c_str());
 	
