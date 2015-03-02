@@ -87,7 +87,7 @@ namespace TapGun
 		void setHP( int count);
 		void setGameTime( float time);
 		void setBulletCount( int count);
-		void setReticlePoint( int count);
+		void setReticlePoint( void);
 		
 	private:
 		enum UI_Count
@@ -110,6 +110,10 @@ namespace TapGun
 		};
 		
 		GameUI() {}
+
+		bool firstShotFlag;
+		bool returnEscapeFlag;
+		bool returnEscapeNoShotFlag;
 		
 		cocos2d::Node *hpParent;
 		cocos2d::Sprite *hp[HPGauge];
