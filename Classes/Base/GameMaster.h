@@ -122,8 +122,10 @@ namespace TapGun
 #define HIDECAMERA_Y -1.1f
 
 	//時間
-#define TIME_MAXTIME 180000//ゲーム本編の最大時間（ミリ秒）
+#define TIME_MAXTIME 8000//ゲーム本編の最大時間（ミリ秒）
 #define TIME_ACTION_UI 1800//ActionのUIを表示する時間（ミリ秒）
+#define TIME_DEAD_UI 3000//ActionのUIを表示する時間（ミリ秒）
+
 #define TIME_OP 6000//ActionのUIを表示する時間（ミリ秒）
 
 #define TIME_WROT 300//
@@ -147,14 +149,16 @@ namespace TapGun
 		GSTATE_PLAY_ACTION,//戦闘開始前の待ち時間（ActionのUIを描画するときに使用する）
 		GSTATE_PLAY,
 		GSTATE_PAUSE,
-		GSTATE_CONTINUE_INIT,//コンティニュー画面前の準備
-
 		GSTATE_TIMEOVER,//タイムオーバーによる演出
 		GSTATE_DEADOVER,//ダメージ死亡による演出
 
+		GSTATE_CONTINUE_INIT,//コンティニュー画面前の準備
 		GSTATE_CONTINUE,//コンティニューするかどうかの操作はここで行う
+		GSTATE_CONTINUE_END,//コンティニュー終了後の初期化
 
 		GSTATE_GAMEOVER,//
+		GSTATE_END,//ゲームシーンを終了してタイトルへ戻る
+
 		GSTATE_EVENT,//ムービーイベントなどを進行させるときに使用する？（現在未使用）
 		GSTATE_NUM
 	};

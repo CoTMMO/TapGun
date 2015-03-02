@@ -56,6 +56,8 @@ namespace TapGun
 
 		//void menuCloseCallback(CCObject* pSender);
 
+		void EndToTitle(void);//タイトルに戻る
+		void CreateCamera();//カメラの初期化
 		CREATE_FUNC(GameScene);
 	};
 }

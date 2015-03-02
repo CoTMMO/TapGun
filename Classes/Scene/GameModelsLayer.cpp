@@ -40,7 +40,7 @@ Vec3 changeCameraRot;
 */
 bool GameModelsLayer::init()
 {
-	if(!Layer::init())
+	if (!Layer::init())
 	{
 		return false;
 	}
@@ -62,9 +62,6 @@ bool GameModelsLayer::init()
 */
 void GameModelsLayer::InitLayer(void)
 {
-	//	LoadModels();//スプライトの生成
-	//	player.createMuzzle(player.sprite3d);
-	//	player.muzzleFlagOff();
 	InitAllModels();
 
 	InitPlayer(0);//とりあえず引数0
@@ -75,11 +72,6 @@ void GameModelsLayer::InitLayer(void)
 	InitEnemy(0);
 	InitBullet();
 
-	//timeval構造体の初期化
-	nowTV = new timeval();
-	preTV = new timeval();
-	memset(nowTV, 0, sizeof(timeval));
-	memset(preTV, 0, sizeof(timeval));
 }
 
 
@@ -192,6 +184,14 @@ void GameModelsLayer::LoadModels()
 	addChild(cNode.gNode);
 	cNode.gNode->addChild(cNode.lNode);
 	cNode.lNode->addChild(cNode.lNode2);
+
+
+	//とりあえずここで時間の初期化//要チェック
+	//timeval構造体の初期化
+	nowTV = new timeval();
+	preTV = new timeval();
+	memset(nowTV, 0, sizeof(timeval));
+	memset(preTV, 0, sizeof(timeval));
 }
 
 
@@ -225,7 +225,7 @@ void GameModelsLayer::InitPlayer(int wave_num)
 	player.Init();//プレイヤーの情報を初期化
 
 	//プレイヤー固有の初期化（今後場所を変更する）
-	GameMasterM->playerHitFlag = TRUE;//
+	GameMasterM->playerHitFlag = TRUE;//食らい判定をONに
 	GameMasterM->SetPlayerHP(STS_MAXPLAYERHP);//
 
 	//回避座標の軸の定義
@@ -807,10 +807,8 @@ void GameModelsLayer::UpdateWait()
 			}
 			else if (POINT_CLEAR == GameMasterM->stagePoint[GameMasterM->sPoint].pointType)//クリアしたら
 			{
-
-
 				//
-
+				GameMasterM->SetGameState(GSTATE_END);
 			}
 			else
 			{
@@ -1600,6 +1598,8 @@ void GameModelsLayer::ShootBullet(int enemy_num)
 			break;
 		}
 	}
+
+	//
 	if (num != -1)
 	{
 		//弾を一度初期化する
@@ -1620,7 +1620,7 @@ void GameModelsLayer::ShootBullet(int enemy_num)
 		double r = atan2f(unit[num].speedVec.z, unit[num].speedVec.x);
 		r = CC_RADIANS_TO_DEGREES(r);
 
-//		unit[num].sprite3d->setRotation3D(Vec3(-90.0f, 90.0f - r, 0.0f));//
+		//		unit[num].sprite3d->setRotation3D(Vec3(-90.0f, 90.0f - r, 0.0f));//
 		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
 
 		//正規化が終わったら、速度をかけて方向ベクトルの計算終了
@@ -1649,15 +1649,15 @@ void GameModelsLayer::ShootBullet(int enemy_num)
 void GameModelsLayer::UpdateBullets()
 {
 	//全ての敵弾ユニットを更新
-	for(int num = UNIT2_BULLET; num <= UNIT3_MAX; num++)
+	for (int num = UNIT2_BULLET; num <= UNIT3_MAX; num++)
 	{
 		//画面に出ている弾のみを更新
-		if(TRUE == unit[num].visible)
+		if (TRUE == unit[num].visible)
 		{
 			unit[num].Update(GameMasterM->loopTime);//座標と一緒に当たり判定を移動
 
 			//指定時間が経過したら消去処理
-			if(4000 <= unit[num].GetTime())
+			if (4000 <= unit[num].GetTime())
 			{
 				unit[num].speed = 0.0f;
 				unit[num].visible = FALSE;
@@ -2507,7 +2507,7 @@ void GameModelsLayer::ActionEMove(int num)
 	//目標地点との距離を求める
 	float d1 = tmpPos.distance(unit[num].targetPos[unit[num].nowTargetPos]);
 	//一定以上目的地に近付いたら
-	if(0.05f >= d1)
+	if(0.1f >= d1)
 	{
 		//エネミーのライフサイクルで場合分け
 		switch(unit[num].AILife)
