@@ -294,10 +294,10 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 		
 		for( int j = 0; j < EnemyMuzzleAnime; j++)
 		{
-			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 0, 270, parentData -> getRotation3D().y + 90));
+			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point1 -> addChild( enemyMuzzle[i] -> sprite3DR[j]);
 			
-			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, parentData -> getRotation3D().y + 90));
+			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point2 -> addChild( enemyMuzzle[i] -> sprite3DL[j]);
 		}
 		sound -> playSE( "Shot");

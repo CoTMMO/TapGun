@@ -41,6 +41,7 @@ GameUI* GameUI::getInstance()
 void GameUI::init( Layer* layer)
 {
 	auto cache = SpriteFrameCache::getInstance();
+	auto visibleSize = Director::getInstance() -> getVisibleSize();
 
 	hpParent = Node::create();
 	hp[0] = Sprite::createWithSpriteFrameName( "HPFrame.png");
@@ -170,6 +171,22 @@ void GameUI::init( Layer* layer)
 		p -> setVisible( false);
 		layer -> addChild( p);
 	}
+
+	firstShotFlag = false;
+	returnEscapeFlag = false;
+	returnEscapeNoShotFlag = false;
+	reticle[0] = Sprite::createWithSpriteFrameName( "reticle_idle.png");
+	reticle[1] = Sprite::createWithSpriteFrameName( "reticle_shot.png");
+
+	reticle[0] -> setOpacity( 50);
+
+	for( auto &p : reticle)
+	{
+		p -> setPosition( Vec2( visibleSize.width / 2, visibleSize.height / 2));
+		p -> setVisible( false);
+		p -> setScale( 0.5f);
+		layer -> addChild( p);
+	}
 }
 
 /**
@@ -188,7 +205,7 @@ void GameUI::update( void)
 	setHP( master -> GetPlayerHP());
 	setGameTime( master -> GetGameTime());
 	setBulletCount( master -> GetPlayerBullets());
-		
+	setReticlePoint();
 }
 
 /**
@@ -389,7 +406,60 @@ void GameUI::setBulletCount( int count)
 	bulletNumber[1][Bcount] -> setVisible( true);
 }
 
+void GameUI::setReticlePoint( void)
+{
+	static Vec2 pos;
 
+	auto visibleSize = Director::getInstance() -> getVisibleSize();
+	auto master = GameMaster::GetInstance();
+
+	if( master -> GetTouchState() == TSTATE_ON || master -> GetTouchState() == TSTATE_MOVE)
+	{
+		firstShotFlag = true;
+		pos = master -> GetTouchPos();
+	}
+
+	if( ( master -> GetPlayerState() == PSTATE_SHOT || master -> GetPlayerState() == PSTATE_IDLE) && firstShotFlag && !returnEscapeFlag)
+	{
+		if( returnEscapeNoShotFlag)
+		{
+			reticle[1] -> setVisible( false);
+			reticle[0] -> setVisible( true);
+			if( master -> GetTouchState() == TSTATE_ON || master -> GetTouchState() == TSTATE_MOVE)
+			{
+				returnEscapeNoShotFlag = false;
+			}
+		}
+		else
+		{
+			reticle[0] -> setVisible( false);
+			reticle[1] -> setVisible( true);
+		}
+
+		reticle[1] -> setPosition( pos.x, pos.y + visibleSize.height * master -> reticleAjust);
+		
+		if( reticle[1] -> getPositionY() > visibleSize.height) 
+		{
+			reticle[1] -> setPositionY( reticle[1] -> getPositionY() - ( reticle[1] -> getPositionY() - visibleSize.height));
+		}
+	}
+	else
+	{
+		reticle[1] -> setVisible( false);
+		reticle[0] -> setVisible( true);
+		if( master -> GetTouchState() == TSTATE_OFF && returnEscapeFlag)
+		{
+			returnEscapeFlag = false;
+			firstShotFlag = true;
+			returnEscapeNoShotFlag = true;
+			pos = Vec2( visibleSize.width / 2, visibleSize.height / 2 - visibleSize.height * master -> reticleAjust);
+		}
+		else
+		{
+			returnEscapeFlag = true;
+		}
+	}
+}
 
 
 /**
