@@ -422,10 +422,8 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[0].SetNextEnemy(2, -1, -1);
 		enemyTable->enemyData[0].alive = TRUE;
 		enemyTable->enemyData[0].SetAI(AI_APPEAR_RUN, AI_ATK_NONE, AI_MOVE_WALK, AI_LIFE_SWITCH);
-//		enemyTable->enemyData[0].SetAI(AI_APPEAR_SWALK, AI_ATK_NONE, AI_MOVE_WALK, AI_LIFE_SWITCH);
 		enemyTable->enemyData[0].sleepTime = 1000;
 		enemyTable->enemyData[0].hitpoint = 5;
-		//enemyTable->enemyData[0].stsAtkFrame[0] = 
 		enemyTable->enemyData[0].stsAtkFrame[1] = 2000;
 		enemyTable->enemyData[0].stsAtkFrame[2] = 2000;
 
@@ -435,10 +433,8 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[1].SetNextEnemy(3, -1, -1);
 		enemyTable->enemyData[1].alive = TRUE;
 		enemyTable->enemyData[1].SetAI(AI_APPEAR_RUN, AI_ATK_NONE, AI_MOVE_SWALK, AI_LIFE_SWITCH);
-//		enemyTable->enemyData[1].SetAI(AI_APPEAR_SWALK, AI_ATK_NONE, AI_MOVE_SWALK, AI_LIFE_SWITCH);
 		enemyTable->enemyData[1].sleepTime = 1000;
 		enemyTable->enemyData[1].hitpoint = 5;
-		//enemyTable->enemyData[0].stsAtkFrame[0] = 
 		enemyTable->enemyData[1].stsAtkFrame[1] = 4000;
 		enemyTable->enemyData[1].stsAtkFrame[2] = 4000;
 
@@ -450,9 +446,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[2].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[2].sleepTime = 1000;
 		enemyTable->enemyData[2].hitpoint = 5;
-		//enemyTable->enemyData[0].stsAtkFrame[0] = 
-		//enemyTable->enemyData[2].stsAtkFrame[1] = 1000;
-		enemyTable->enemyData[2].stsAtkFrame[2] = 4000;
+		enemyTable->enemyData[2].stsAtkFrame[2] = 3000;
 
 
 		enemyTable->enemyData[3].standbyPos = enemyTable->standbyPos[3];
@@ -462,9 +456,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[3].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[3].sleepTime = 1000;
 		enemyTable->enemyData[3].hitpoint = 5;
-		//enemyTable->enemyData[0].stsAtkFrame[0] = 
-		//enemyTable->enemyData[2].stsAtkFrame[1] = 1000;
-		enemyTable->enemyData[3].stsAtkFrame[2] = 4000;
+		enemyTable->enemyData[3].stsAtkFrame[2] = 2500;
 
 
 		enemyTable->enemyData[4].standbyPos = enemyTable->standbyPos[4];
@@ -474,9 +466,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[4].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[4].sleepTime = 1000;
 		enemyTable->enemyData[4].hitpoint = 5;
-		//enemyTable->enemyData[0].stsAtkFrame[0] = 
-		//enemyTable->enemyData[2].stsAtkFrame[1] = 1000;
-		enemyTable->enemyData[4].stsAtkFrame[2] = 5000;
+		enemyTable->enemyData[4].stsAtkFrame[2] = 2500;
 
 
 		//要チェック
@@ -487,7 +477,6 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[5].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_WALK, AI_LIFE_STOP);
 		enemyTable->enemyData[5].sleepTime = 1000;
 		enemyTable->enemyData[5].hitpoint = 5;
-		//enemyTable->enemyData[0].stsAtkFrame[0] = 
 		enemyTable->enemyData[5].stsAtkFrame[1] = 3000;
 		enemyTable->enemyData[5].stsAtkFrame[2] = 3000;
 
@@ -499,8 +488,6 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[6].SetAI(AI_APPEAR_SWALK, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
 		enemyTable->enemyData[6].sleepTime = 1000;
 		enemyTable->enemyData[6].hitpoint = 5;
-		//enemyTable->enemyData[0].stsAtkFrame[0] = 
-		//->enemyData[5].stsAtkFrame[1] = 1000;
 		enemyTable->enemyData[6].stsAtkFrame[2] = 3000;
 
 
@@ -997,7 +984,7 @@ void GameModelsLayer::ActionIdle()
 			player.motProcTime = 0;//モーションを再生してからの経過時間（ミリ秒）
 			player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
 			player.motStartTime = getNowTime();
-			player.setAnimEndTime(MACRO_FtoS(STS_HIDEWAIT));//回避モーションにかかる時間をセット
+			player.setAnimEndTime(MACRO_FtoMS(STS_HIDEWAIT));//回避モーションにかかる時間をセット
 
 		}
 	}
@@ -1206,7 +1193,7 @@ void GameModelsLayer::ActionDodge(void)
 			player.wrapper->setRotation3D(Vec3(0.0f, 90.0f, 0.0f));
 
 			//回避に合わせてカメラの座標を補正する
-			player.cameraAjust = Vec3(camTarget.x * MACRO_FtoS(STS_HIDEWAIT), camTarget.y * MACRO_FtoS(STS_HIDEWAIT), camTarget.z * MACRO_FtoS(STS_HIDEWAIT));//ループごとの移動量を計算
+			player.cameraAjust = Vec3(camTarget.x * MACRO_FtoMS(STS_HIDEWAIT), camTarget.y * MACRO_FtoMS(STS_HIDEWAIT), camTarget.z * MACRO_FtoMS(STS_HIDEWAIT));//ループごとの移動量を計算
 		}
 
 		//モーション用カウンターを初期化
@@ -1223,13 +1210,12 @@ void GameModelsLayer::ActionDodge(void)
 			GameMasterM->SetPlayerState(PSTATE_APPEAR);//隠れている状態に移行
 			//突撃モーションを再生
 
-			int startTime = MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime;//回避モーションの残り時間をもとに、突撃モーションの開始時間を計算
+			int startTime = MACRO_FtoMS(STS_HIDEWAIT) - player.motProcTime;//回避モーションの残り時間をもとに、突撃モーションの開始時間を計算
 
-			player.setAnimEndTime(MACRO_FtoS(STS_HIDEWAIT) - startTime);//アニメーション終了までの残りミリ秒数をセット
+			player.setAnimEndTime(MACRO_FtoMS(STS_HIDEWAIT) - startTime);//アニメーション終了までの残りミリ秒数をセット
 			player.sprite3d->stopALLAnimation();//モーション終了
-			player.sprite3d->startAnimation(h_shot, startTime, MACRO_FtoS(STS_HIDEWAIT));//
+			player.sprite3d->startAnimation(h_shot, (startTime * 0.001f), MACRO_FtoS(STS_HIDEWAIT) - (startTime * 0.001f));//
 
-			//
 			player.motStartTime = getNowTime();//現在時刻
 			player.motProcTime = startTime;//
 		}
@@ -1239,7 +1225,7 @@ void GameModelsLayer::ActionDodge(void)
 			if (PSIDE_LEFT == GameMasterM->playerSide)
 			{
 				//プレイヤーの座標の更新
-				float rot = lTime * 90.0f / (MACRO_FtoS(STS_HIDEWAIT));
+				float rot = lTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));
 
 				Vec3 tmp = player.wrapper->getRotation3D();
 				tmp.y -= rot;// *loopTime;
@@ -1256,7 +1242,7 @@ void GameModelsLayer::ActionDodge(void)
 			else
 			{
 				//プレイヤーの座標の更新
-				float rot = lTime * 90.0f / (MACRO_FtoS(STS_HIDEWAIT)) * 0.001f;//要チェック
+				float rot = lTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));//要チェック
 
 				Vec3 tmp = player.wrapper->getRotation3D();
 				tmp.y += rot;
@@ -1310,7 +1296,7 @@ void GameModelsLayer::ActionHide(void)
 	if (TSTATE_ON == GameMasterM->GetTouchState() || TSTATE_MOVE == GameMasterM->GetTouchState())
 	{
 		//回避に合わせてカメラの座標を補正する
-		player.cameraAjust = Vec3(camTarget.x * MACRO_FtoS(STS_HIDEWAIT), camTarget.y * MACRO_FtoS(STS_HIDEWAIT), camTarget.z * MACRO_FtoS(STS_HIDEWAIT));//ループごとの移動量を計算
+		player.cameraAjust = Vec3(camTarget.x * MACRO_FtoMS(STS_HIDEWAIT), camTarget.y * MACRO_FtoMS(STS_HIDEWAIT), camTarget.z * MACRO_FtoMS(STS_HIDEWAIT));//ループごとの移動量を計算
 	}
 	else if (TSTATE_RELEASE == GameMasterM->GetTouchState())//離されれば
 	{
@@ -1322,7 +1308,7 @@ void GameModelsLayer::ActionHide(void)
 		player.motStartTime = getNowTime();//スタートは現在時刻 * 0.001f//現在時刻を取得
 		player.motPreTime = getNowTime();//前フレームの時刻も現在時刻
 		player.motProcTime = 0;//経過時間は0
-		player.setAnimEndTime(MACRO_FtoS(STS_HIDEWAIT));//モーション終了までの残り時間を計算
+		player.setAnimEndTime(MACRO_FtoMS(STS_HIDEWAIT));//モーション終了までの残り時間を計算
 	}
 }
 
@@ -1389,7 +1375,7 @@ void GameModelsLayer::ActionAppear(void)
 		if (PSIDE_LEFT == GameMasterM->playerSide)
 		{
 			//回避フレームに比例してカメラの回転を変化させる
-			float rot = lTime * 90.0f / (MACRO_FtoS(STS_HIDEWAIT));
+			float rot = lTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));
 			Vec3 tmp = player.wrapper->getRotation3D();
 			tmp.y += rot;//
 			player.wrapper->setRotation3D(tmp);//プレイヤーの親ノード（回避軸）の角度を更新する
@@ -1399,14 +1385,14 @@ void GameModelsLayer::ActionAppear(void)
 
 			//回避に合わせてカメラの座標を補正する
 			player.cameraAjust = 
-				Vec3(camTarget.x * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime),
-				camTarget.y * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime),
-				camTarget.z * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime));//ループごとの移動量を計算
+				Vec3(camTarget.x * (MACRO_FtoMS(STS_HIDEWAIT) - player.motProcTime),
+				camTarget.y * (MACRO_FtoMS(STS_HIDEWAIT) - player.motProcTime),
+				camTarget.z * (MACRO_FtoMS(STS_HIDEWAIT) - player.motProcTime));//ループごとの移動量を計算
 		}
 		else
 		{
 			//回避フレームに比例してカメラの回転を変化させる
-			float rot = lTime * 90.0f / (MACRO_FtoS(STS_HIDEWAIT)) * 0.001f;
+			float rot = lTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT)) * 0.001f;
 			Vec3 tmp = player.wrapper->getRotation3D();
 			tmp.y -= rot;//
 			player.wrapper->setRotation3D(tmp);//プレイヤーの親ノード（回避軸）の角度を更新する
@@ -1415,9 +1401,9 @@ void GameModelsLayer::ActionAppear(void)
 			player.sprite3d->setRotation3D(tmp);//プレイヤー自身の角度を更新する
 
 			//回避に合わせてカメラの座標を補正する
-			player.cameraAjust = Vec3(camTarget.x * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime),
-				camTarget.y * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime),
-				camTarget.z * (MACRO_FtoS(STS_HIDEWAIT) - player.motProcTime)) * 0.001f;//ループごとの移動量を計算
+			player.cameraAjust = Vec3(camTarget.x * (MACRO_FtoMS(STS_HIDEWAIT) - player.motProcTime),
+				camTarget.y * (MACRO_FtoMS(STS_HIDEWAIT) - player.motProcTime),
+				camTarget.z * (MACRO_FtoMS(STS_HIDEWAIT) - player.motProcTime)) * 0.001f;//ループごとの移動量を計算
 		}
 	}
 }
@@ -2185,8 +2171,8 @@ Vec2 GameModelsLayer::calcCamPos3(float pRot, int pSide)
 		//ret.y = ret.y / STS_HIDEWAIT;
 
 		//1秒当たりの移動量を計算する
-		ret.x = ret.x / MACRO_FtoS(STS_HIDEWAIT);
-		ret.y = ret.y / MACRO_FtoS(STS_HIDEWAIT);
+		ret.x = ret.x / MACRO_FtoMS(STS_HIDEWAIT);
+		ret.y = ret.y / MACRO_FtoMS(STS_HIDEWAIT);
 	}
 	else
 	{
@@ -2201,8 +2187,8 @@ Vec2 GameModelsLayer::calcCamPos3(float pRot, int pSide)
 		//ret.y = ret.y / STS_HIDEWAIT;
 
 		//1秒当たりの移動量を計算する
-		ret.x = ret.x / MACRO_FtoS(STS_HIDEWAIT);
-		ret.y = ret.y / MACRO_FtoS(STS_HIDEWAIT);
+		ret.x = ret.x / MACRO_FtoMS(STS_HIDEWAIT);
+		ret.y = ret.y / MACRO_FtoMS(STS_HIDEWAIT);
 	}
 	return ret;
 }
@@ -2349,11 +2335,11 @@ void GameModelsLayer::setNextEnemy(int num)
 */
 int GameModelsLayer::CheckNextStage(void)
 {
-	if(GSTATE_PLAY == GameMasterM->GetGameState())
+	if (GSTATE_PLAY == GameMasterM->GetGameState())
 	{
-		for(int i = 0; i <= 100; i++)//
+		for (int i = 0; i <= 100; i++)//
 		{
-			if(TRUE == enemyTable->enemyData[i].alive)
+			if (TRUE == enemyTable->enemyData[i].alive)
 			{
 				//1体でも敵が生きていれば
 				return FALSE;
@@ -2583,7 +2569,7 @@ void GameModelsLayer::ActionEMove(int num)
 	//目標地点との距離を求める
 	float d1 = tmpPos.distance(unit[num].targetPos[unit[num].nowTargetPos]);
 	//一定以上目的地に近付いたら
-	if(0.15f >= d1)
+	if(0.19f >= d1)
 	{
 		//エネミーのライフサイクルで場合分け
 		switch(unit[num].AILife)
@@ -2795,7 +2781,7 @@ void GameModelsLayer::ActionEAttack(int num)
 			if(0 >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
 			{
 				Effect::getInstance() -> setEnemyMuzzle( unit[num].sprite3d, "Po_1", "Po_2");
-				unit[num].atkFrame = 0.35;//次の弾発射までの時間を設定
+				unit[num].atkFrame = 0.55;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
 			}
 			break;
@@ -2807,7 +2793,7 @@ void GameModelsLayer::ActionEAttack(int num)
 			{
 				Effect::getInstance() -> setEnemyMuzzle( unit[num].sprite3d, "Po_1", "Po_2");
 				//フレームが0になったら
-				unit[num].atkFrame = 0.35;//次の弾発射までの時間を設定
+				unit[num].atkFrame = 0.55;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
 				ShootBullet(num, unit[num].nowShot);
 			}

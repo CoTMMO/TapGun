@@ -116,7 +116,8 @@ namespace TapGun
 
 	//ミリ秒をフレームに変換/フレームをミリ秒に変換
 #define MACRO_StoF(second) (second * 60.0f * 0.001f)
-#define MACRO_FtoS(frame) (frame * 0.01666f * 1000)
+#define MACRO_FtoMS(frame) (frame * 0.01666f * 1000)
+#define MACRO_FtoS(frame) (frame * 0.01666f)
 
 
 	//プレイヤーが回避する時の軸の座標（プレイヤーから見た相対座標、左側時）
