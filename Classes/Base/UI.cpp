@@ -145,7 +145,7 @@ void GameUI::init( Layer* layer)
 		for( int k = 0; k < 3; k++)
 		{
 			char buf[64];
-			sprintf( buf, "kougeki_icon_%d.png", k + 1);
+			sprintf( buf, "enemy_attack_%02d.png", k + 1);
 			enemyAttack[i][k] = Sprite::createWithSpriteFrameName( buf);
 			enemyAttack[i][k] -> setVisible( false);
 			layer -> addChild( enemyAttack[i][k]);

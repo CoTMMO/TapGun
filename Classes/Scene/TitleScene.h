@@ -18,13 +18,7 @@ namespace TapGun
 	class TitleScene : public cocos2d::Layer
 	{
 	public:
-	static cocos2d::Scene* createScene();
-	private:
-			
-		
-		
-
-		CREATE_FUNC( TitleScene);
+		static cocos2d::Scene* createScene();
 
 		bool init();
 		void update( float delta);
@@ -36,6 +30,10 @@ namespace TapGun
 		void menuStartCallback( cocos2d::Ref* pSender);
 		void menuEndCallback( cocos2d::Ref* pSender);
 		void menuCreditCallback( cocos2d::Ref* pSender);
+
+		CREATE_FUNC( TitleScene);
+
+	private:		
 		enum SpriteName
 		{
 			BG,
@@ -73,6 +71,10 @@ namespace TapGun
 			Credit,
 			MenuNum,
 		};
+			
+
+		int logoWaitCount;
+		TeamLogoState teamLogoState;
 
 		MenuFlag menuFlag;
 		bool menuActionFlag;
@@ -90,6 +92,8 @@ namespace TapGun
 		void setSprite( void);
 		void setMenu( void);
 		void menuAction( void);
+		void loadPicture( void);
+		void loadModels( void);
 		void loadSound( void);
 
 		template<class P> static bool checkFlag( P* flag, const P number);

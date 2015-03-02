@@ -56,37 +56,20 @@ bool TitleScene::init()
 	menuFlag = TeamLogo;
 
 	// 各種パラメータを初期化
+	logoWaitCount = 0;
+	teamLogoState = LogoIn;
 	menuActionFlag = false;
 	alphaCount = 0;
 	logoAlphaFlag = false;
 	logoAlphaCount = 0;
 	logoAlphaWaitCount = 0;
-
-	// テクスチャアトラスの読み込み
-	auto cache = SpriteFrameCache::getInstance();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	cache -> addSpriteFramesWithFile( "Title.plist");
-	cache -> addSpriteFramesWithFile( "P_Hit.plist");
-	cache -> addSpriteFramesWithFile( "E_Hit.plist");
-	cache -> addSpriteFramesWithFile( "Logo.plist");
-	cache -> addSpriteFramesWithFile( "Number.plist");
-	cache -> addSpriteFramesWithFile( "HPGauge.plist");
-	cache -> addSpriteFramesWithFile( "continue.plist");
-	cache -> addSpriteFramesWithFile( "Reticle.plist");
-	cache -> addSpriteFramesWithFile( "kougeki_icon.plist");
-#else
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Title.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/P_Hit.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/E_Hit.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Logo.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Number.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/HPGauge.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Reticle.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/kougeki_icon.plist");
-#endif
 	
+	// リソースファイルの読み込みと初期化
+	loadPicture();
+	loadSound();
+	setSprite();
+	setMenu();
+
 	// タッチ入力受け取りイベントを作成
 	auto listener = EventListenerTouchOneByOne::create();
 	listener -> setSwallowTouches( _swallowsTouches);	
@@ -95,11 +78,6 @@ bool TitleScene::init()
 	listener -> onTouchEnded = CC_CALLBACK_2( TitleScene::onTouchEnded, this);
 	_eventDispatcher -> addEventListenerWithSceneGraphPriority( listener, this);
 	
-	// リソースファイルの読み込みと初期化
-	loadSound();
-	setSprite();
-	setMenu();
-
 	// update関数が呼ばれるようにスケジュールをセット
 	scheduleUpdate();
 
@@ -116,49 +94,10 @@ bool TitleScene::init()
 */
 void TitleScene::update( float delta)
 {
-	// リソースファイル読み込みフレームの制御カウンタ
-	static unsigned int frame = 0;
-
 	// サウンドクラスのインスタンスを取得
 	auto sound = Sound::getInstance();
 
-	// 各種モデルデータの読み込み
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	if( frame == ResourceLoader::Map)
-	{
-		ResourceLoader::getInstance() -> loadModel( "stage");
-	}
-	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
-	{
-		ResourceLoader::getInstance() -> loadModel( "enemy", "", "Enemy.anime");
-	}
-	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
-	{
-		ResourceLoader::getInstance() -> loadModel( "tama");
-	}
-	else if( frame == ResourceLoader::Player)
-	{
-		ResourceLoader::getInstance() -> loadModel( "player", "", "Player.anime");
-	}
-#else
-	if( frame == ResourceLoader::Map)
-	{
-		ResourceLoader::getInstance() -> loadModel( "Stage/stage");
-	}
-	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
-	{
-		ResourceLoader::getInstance() -> loadModel( "Enemy/enemy", "", "Enemy.anime");
-	}
-	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
-	{
-		ResourceLoader::getInstance() -> loadModel( "Bullet/tama");
-	}
-	else if( frame == ResourceLoader::Player)
-	{
-		ResourceLoader::getInstance() -> loadModel( "Player/player", "", "Player.anime");
-	}
-#endif
-	frame++;
+	loadModels();
 
 	// 現在の描画シーンフラグに従って描画処理
 	switch( menuFlag)
@@ -254,12 +193,6 @@ void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 */
 void TitleScene::teamLogoAction( void)
 {
-	// フェードイン・アウトの制御カウンタ
-	static int waitCount = 0;
-
-	// フェードイン・アウトの制御フラグ
-	static TeamLogoState teamLogoState = LogoIn;
-
 	if( teamLogoState == LogoIn)
 	{
 		alphaCount += AlphaValue;
@@ -268,11 +201,11 @@ void TitleScene::teamLogoAction( void)
 	}
 	else if( teamLogoState == LogoOut)
 	{
-		if( waitCount > WaitTime) { alphaCount -= AlphaValue; }
-		else { waitCount++; }
+		if( logoWaitCount > WaitTime) { alphaCount -= AlphaValue; }
+		else { logoWaitCount++; }
 		if( teamLogo -> getOpacity() == 0) 
 		{
-			waitCount = 0;
+			logoWaitCount = 0;
 			teamLogoState = Wait;
 			teamLogo -> setVisible( false);
 		}		
@@ -280,12 +213,12 @@ void TitleScene::teamLogoAction( void)
 	}
 	else if( teamLogoState == Wait)
 	{
-		if( waitCount > 50) 
+		if( logoWaitCount > 50) 
 		{ 
 			alphaCount = 0;
 			menuFlag = TitleLogoIn;
 		}
-		waitCount++;
+		logoWaitCount++;
 	}
 }
 
@@ -433,6 +366,100 @@ void TitleScene::menuCreditCallback( Ref* pSender)
 	auto scene = CreditScene::createScene();
 	auto tran = TransitionCrossFade::create( 1, scene);
 	Director::getInstance() -> replaceScene( tran);
+}
+
+/**
+*	各種画像データの読み込み
+*
+*	@author	minaka
+*	@param	cocos依存なので省略
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
+void TitleScene::loadPicture( void)
+{
+	static bool loadFlag = false;
+
+	if( loadFlag) { return; }
+
+	// テクスチャアトラスの読み込み
+	auto cache = SpriteFrameCache::getInstance();
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	cache -> addSpriteFramesWithFile( "Title.plist");
+	cache -> addSpriteFramesWithFile( "P_Hit.plist");
+	cache -> addSpriteFramesWithFile( "E_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Logo.plist");
+	cache -> addSpriteFramesWithFile( "Number.plist");
+	cache -> addSpriteFramesWithFile( "HPGauge.plist");
+	cache -> addSpriteFramesWithFile( "continue.plist");
+	cache -> addSpriteFramesWithFile( "Reticle.plist");
+	cache -> addSpriteFramesWithFile( "Enemy_Attack.plist");
+#else
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Title.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/P_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/E_Hit.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Logo.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Number.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/HPGauge.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Reticle.plist");
+	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Enemy_Attack.plist");
+#endif
+
+	loadFlag = true;
+}
+
+/**
+*	各種モデルデータの読み込み
+*
+*	@author	minaka
+*	@param	cocos依存なので省略
+*	@return なし
+*	@date	2/19 Ver 1.0
+*/
+void TitleScene::loadModels( void)
+{
+	// リソースファイル読み込みフレームの制御カウンタ
+	static unsigned int frame = 0;
+
+	// 各種モデルデータの読み込み
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	if( frame == ResourceLoader::Map)
+	{
+		ResourceLoader::getInstance() -> loadModel( "stage");
+	}
+	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
+	{
+		ResourceLoader::getInstance() -> loadModel( "enemy", "", "Enemy.anime");
+	}
+	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
+	{
+		ResourceLoader::getInstance() -> loadModel( "tama");
+	}
+	else if( frame == ResourceLoader::Player)
+	{
+		ResourceLoader::getInstance() -> loadModel( "player", "", "Player.anime");
+	}
+#else
+	if( frame == ResourceLoader::Map)
+	{
+		ResourceLoader::getInstance() -> loadModel( "Stage/stage");
+	}
+	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
+	{
+		ResourceLoader::getInstance() -> loadModel( "Enemy/enemy", "", "Enemy.anime");
+	}
+	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
+	{
+		ResourceLoader::getInstance() -> loadModel( "Bullet/tama");
+	}
+	else if( frame == ResourceLoader::Player)
+	{
+		ResourceLoader::getInstance() -> loadModel( "Player/player", "", "Player.anime");
+	}
+#endif
+	frame++;
 }
 
 /**

@@ -146,7 +146,9 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\Base\Unit.cpp" />
     <ClCompile Include="..\Classes\Object\Effect.cpp" />
     <ClCompile Include="..\Classes\Object\Muzzle.cpp" />
+    <ClCompile Include="..\Classes\Scene\ContinueLayer.cpp" />
     <ClCompile Include="..\Classes\Scene\CreditScene.cpp" />
+    <ClCompile Include="..\Classes\Scene\GameClearLayer.cpp" />
     <ClCompile Include="..\Classes\Scene\GameModelsLayer.cpp" />
     <ClCompile Include="..\Classes\Scene\GameScene.cpp" />
     <ClCompile Include="..\Classes\Scene\GameUILayer.cpp" />
@@ -173,7 +175,9 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\Base\Unit.h" />
     <ClInclude Include="..\Classes\Object\Effect.h" />
     <ClInclude Include="..\Classes\Object\Muzzle.h" />
+    <ClInclude Include="..\Classes\Scene\ContinueLayer.h" />
     <ClInclude Include="..\Classes\Scene\CreditScene.h" />
+    <ClInclude Include="..\Classes\Scene\GameClearLayer.h" />
     <ClInclude Include="..\Classes\Scene\GameModelsLayer.h" />
     <ClInclude Include="..\Classes\Scene\GameScene.h" />
     <ClInclude Include="..\Classes\Scene\GameUILayer.h" />
