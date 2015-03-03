@@ -17,11 +17,10 @@
 #include "Base/UI.h"
 #include "Base/Sprite3D.h"
 #include "Object/Effect.h"
-#include "System/Directory.h"
-#include "System/Errorfunc.h"
 #include "System/Sound.h"
 #include "Object/Effect.h"
 #include "System/ResourceLoader.h"
+#include "System/EnemySettingFile.h"
 #include "Scene/ContinueLayer.h"
 
 #endif
@@ -62,12 +61,15 @@ bool Test::init()
 	auto con = ContinueLayer::create();
 //	addChild( con);
 
-	auto sprit = _Sprite3D::create( "Enemy/enemy");
-	sprit -> setCullFace( GL_FRONT);
+	auto sprit = _Sprite3D::create( "Enemy/enemy", "Enemy.anime");
+//	sprit -> setCullFace( GL_FRONT);
 	sprit -> setPosition( 640, 0);
 	sprit -> setScale( 300.0f);
 	addChild( sprit);
-	
+	sprit -> startAnimationLoop( "stop");
+
+	auto tableFile = EnemySettingFile::getInstance();
+	tableFile -> loadTableFile( "test.csv");
 
 	//現在はタッチイベントのリスナーをここに用意しています
 	auto dispatcher = Director::getInstance()->getEventDispatcher();

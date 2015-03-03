@@ -13,7 +13,7 @@
 
 #endif
 
-//#define TEST_SCENE
+#define TEST_SCENE
 
 USING_NS_CC;
 using namespace TapGun;
@@ -42,17 +42,16 @@ bool AppDelegate::applicationDidFinishLaunching()
 		glview = GLViewImpl::create( "TapGun");
 		director -> setOpenGLView( glview);
 	}
-
+#if ( _DEBUG || DEBUG)
+	director -> setDisplayStats( true);
+#else
 	director -> setDisplayStats( false);
+#endif
 	glview -> setDesignResolutionSize( 1280, 800, ResolutionPolicy::SHOW_ALL);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	glview -> setFrameSize( 1280, 800);
 #endif
-
 	director -> setAnimationInterval( 1.0 / 60);
-//	director -> setAnimationInterval( 1.0 / 30);
-//	director->setAnimationInterval(1.0 / 120);
-
 #ifdef TEST_SCENE
 	auto scene = Test::createScene();
 #else

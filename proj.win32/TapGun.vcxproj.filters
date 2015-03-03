@@ -81,32 +81,20 @@
     <ClCompile Include="..\Classes\Stage\EnemyTable.cpp">
       <Filter>Source\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\System\Directory.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Errorfunc.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\ResourceLoader.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Script.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Shader.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Sound.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\System\Wrapper.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Scene\ContinueLayer.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scene\GameClearLayer.cpp">
       <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\System\ResourceLoader.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\System\Sound.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\System\EnemySettingFile.cpp">
+      <Filter>Source\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,32 +152,20 @@
     <ClInclude Include="..\Classes\Stage\EnemyTable.h">
       <Filter>Source\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\System\Directory.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Errorfunc.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\ResourceLoader.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Script.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Shader.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Sound.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\System\Wrapper.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Scene\ContinueLayer.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\GameClearLayer.h">
       <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\System\ResourceLoader.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\System\Sound.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\System\EnemySettingFile.h">
+      <Filter>Source\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
