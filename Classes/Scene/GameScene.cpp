@@ -458,6 +458,11 @@ void GameScene::update(float delta)
 */
 void GameScene::EndToTitle()
 {
+	//BGMを停止
+	auto sound = Sound::getInstance();
+	sound->stopBGM();
+	sound->releaseBGM();
+
 	removeFromParent();
 	auto scene = TitleScene::createScene();
 	auto tran = TransitionCrossFade::create(1, scene);
