@@ -43,15 +43,6 @@ void GameUI::init( Layer* layer)
 	auto cache = SpriteFrameCache::getInstance();
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
 
-	waitFlag = false;
-	waitTime = 0;
-	
-	timeFlag = false;
-	frame = 0;
-	
-	count01 = 0;
-	count001 = 0;
-	
 	hpParent = Node::create();
 	hp[0] = Sprite::createWithSpriteFrameName( "HPFrame.png");
 	hp[1] = Sprite::createWithSpriteFrameName( "HPGaugeBG.png");
@@ -228,6 +219,8 @@ void GameUI::update( void)
 void GameUI::setLogo( void)
 {
 	auto master = GameMaster::GetInstance();
+	static bool waitFlag = false;
+	static int waitTime = 0;
 
 	auto sound = Sound::getInstance();
 	static bool bgmFlag = false;
@@ -271,8 +264,13 @@ void GameUI::setLogo( void)
 	{
 		logo[LogoNumber::Action] -> setVisible( false);
 	}
+	else if(master->GetGameState() == GSTATE_CLEAR)
+	{
+		logo[LogoNumber::Wait]->setVisible(false);
+	}
 
-	if( master -> GetPlayerBullets() == 0)
+	//追加：ウェーブ中かつ残弾切れの時のみリロードUIを表示
+	if(master->GetGameState() == GSTATE_PLAY && master->GetPlayerBullets() == 0)
 	{
 		logo[LogoNumber::Reload] -> setVisible( true);
 	}
@@ -314,11 +312,18 @@ void GameUI::setGameTime( float time)
 {
 	auto master = GameMaster::GetInstance();
 
+	// 1/100秒の制御フラグ
+	static bool timeFlag = false;
+	// 1/10秒以下の制御カウンタ
+	static int frame = 0;
+
 	int timer = time * 0.001f;
 	int count100 = timer / 100;
 	int count10 = ((int)timer % 100);
 	int count1 = count10 - ((count10 / 10) * 10);
-	
+	static int count01 = 0;
+	static int count001 = 0;
+		
 	for( int i = 0; i < 10; i++)
 	{
 		if( timer / 100 == i) { continue; }
@@ -377,6 +382,23 @@ void GameUI::setGameTime( float time)
 		}
 		frame++;
 	}
+	else if(master->GetGameState() == GSTATE_TIMEOVER)//追加
+	{
+		//タイムオーバー時はコンマ以下の数字を0にする
+		for(int i = 0; i < 10; i++)
+		{
+			if(count01 / 10 == i) { continue; }
+			timeNumber[3][i]->setVisible(false);
+		}
+		timeNumber[3][0]->setVisible(true);
+
+		for(int i = 0; i < 10; i++)
+		{
+			if(count001 / 10 == i) { continue; }
+			timeNumber[4][i]->setVisible(false);
+		}
+		timeNumber[4][0]->setVisible(true);
+	}
 }
 
 /**
@@ -412,6 +434,14 @@ void GameUI::setReticlePoint( void)
 
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
 	auto master = GameMaster::GetInstance();
+
+	//追加：ウェーブ中以外はレティクル非表示
+	if(master->GetGameState() != GSTATE_PLAY && master->GetGameState() != GSTATE_PLAY_ACTION)
+	{
+		reticle[1]->setVisible(false);
+		reticle[0]->setVisible(false);
+		return;
+	}
 
 	if( master -> GetTouchState() == TSTATE_ON || master -> GetTouchState() == TSTATE_MOVE)
 	{
