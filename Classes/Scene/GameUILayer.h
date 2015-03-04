@@ -23,18 +23,18 @@ namespace TapGun
 	public:
 		virtual bool init();
 
-		void update(float delta);
-		void moveTime(float delta);
+		//void update(float delta);
+		//void moveTime(float delta);
 
 		void InitLayer();
 
 		void InitAllUI(void);
 		int SerchFreeUI(void);
-		void SetUI(void);
+//		void SetUI(void);
 		void UpdateLayer(void);
 		void MoveReticle(void);
 		void UpdateLifeBar(void);
-		void LoadUISprite(void);
+//		void LoadUISprite(void);
 
 		cocos2d::Sprite* UISprite[MAX_UI];
 		cocos2d::BillBoard* UIBillBoard[MAX_UI];

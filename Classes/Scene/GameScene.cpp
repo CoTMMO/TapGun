@@ -108,20 +108,15 @@ bool GameScene::init()
 
 	//setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 	int derk = 128;
-	auto ambient = AmbientLight::create (Color3B(derk,derk,derk));
+	auto ambient = AmbientLight::create(Color3B(derk, derk, derk));
 	addChild(ambient);
-	
+
 	int color = 255;
-	auto direction = DirectionLight::create( Vec3(0.0f, -5.0f, 0.0f), Color3B( color, color, color));
+	auto direction = DirectionLight::create(Vec3(0.0f, -5.0f, 0.0f), Color3B(color, color, color));
 	addChild(direction);
-	
+
 	this->scheduleUpdate();
 
-	//時間取得のための変数を初期化
-	//GameMasterS->nowTV = new timeval;
-	//GameMasterS->preTV = new timeval;
-	//gettimeofday(GameMasterS->nowTV, nullptr);
-	//gettimeofday(GameMasterS->preTV, nullptr);
 	GameMasterS->loopTime = 16;
 	//
 	GameMasterS->reticleAjust = 0.1f;//
@@ -214,20 +209,6 @@ void GameScene::update(float delta)
 	GameMasterS->UpdateTouchManager();//タッチ情報を更新
 
 
-	//1ループ前の時刻を取得
-	/*
-	GameMasterS->preTV->tv_sec = GameMasterS->nowTV->tv_sec;
-	GameMasterS->preTV->tv_usec = GameMasterS->nowTV->tv_usec;
-	*/
-
-	/*
-	//現在時刻を取得
-	gettimeofday(GameMasterS->nowTV, nullptr);
-	//現在時刻を計算
-	GameMasterS->preTime = GameMasterS->preTV->tv_sec * 1000.0f + GameMasterS->preTV->tv_usec * 0.001f;
-	GameMasterS->nowTime = GameMasterS->nowTV->tv_sec * 1000.0f + GameMasterS->nowTV->tv_usec * 0.001f;
-	*/
-
 	//ループにかかった時間を計測(秒)
 	GameMasterS->loopTime = delta * 1000;
 
@@ -244,7 +225,7 @@ void GameScene::update(float delta)
 		}
 		if (NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
 		{
-			gUILayer->LoadUISprite();//
+			//gUILayer->LoadUISprite();//
 		}
 
 		CreateCamera();
@@ -328,7 +309,6 @@ void GameScene::update(float delta)
 		gGameLayer->UpdateEnemy();//エネミーの更新
 		gGameLayer->UpdateBullets();//敵弾の更新
 		gGameLayer->CheckHit();//当たり判定とダメージのチェック
-
 
 		if (PSTATE_DEAD != GameMasterS->GetPlayerState())
 		{
@@ -432,6 +412,20 @@ void GameScene::update(float delta)
 	case GSTATE_GAMEOVER:
 		//タイトルに戻る
 		EndToTitle();
+		break;
+	case GSTATE_CLEAR:
+		//クリア時の処理
+		timeCount += GameMasterS->loopTime;//
+		if (timeCount >= TIME_DEAD_UI)
+		{
+			//一定時間経ったらゲーム終了へ
+			EndToTitle();
+		}
+		else
+		{
+			//
+		}
+
 		break;
 	case GSTATE_END:
 		//タイトルに戻る

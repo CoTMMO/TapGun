@@ -33,6 +33,14 @@ namespace TapGun
 		UNIT3_MAX = MAX_UNIT
 	};
 
+	//enum _WAIT_FLAG_
+	//{
+	//	WAIT0_START,
+	//	WAIT1_START = 1,
+	//	UNIT2_BULLET = 21,
+	//	UNIT3_MAX = MAX_UNIT
+	//};
+
 	typedef struct
 	{
 		cocos2d::Node* gNode;
@@ -54,15 +62,6 @@ namespace TapGun
 
 		EnemyTable enemyTable[100];//敵の出現テーブル
 
-		//timeval* nowTV;//現在時刻
-		//timeval* preTV;//
-		//float nowTime;//現在時刻（秒）
-		//float preTime;//前フレームの時刻（秒）
-
-		//Muzzle muzzle;//プレイヤーのマズル
-
-		//Node* gNode;
-		//Node* lNode;
 		CalcNode cNode;
 		cocos2d::Vec3 camTarget;//回避時のカメラの移動先座標
 		cocos2d::Vec3 camCenter;//回避時のカメラの移動前座標
@@ -97,10 +96,6 @@ namespace TapGun
 
 		void SetEnemy(void);//
 
-		void update(float delta);//現在使用しない
-		void moveTime(float delta);//現在使用しない
-
-		//
 		void ClearEnemies();//敵を全て非表示にする（ゲームオーバー状態にする前に使用する）
 		void KillPlayer();//プレイヤーを死亡状態にする（タイムオーバー死亡前に使用する）
 
