@@ -69,6 +69,7 @@ namespace TapGun
 		virtual bool init();//レイヤーのインスタンス生成
 		//初期化系
 		void LoadModels(void);//スプライトを生成
+		void SetLights(void);//ライトをセット
 		void InitLayer(void);//レイヤーの変数初期化
 		void InitAllModels();//モデル全体の初期化
 		void InitPlayer(int stage_num);//プレイヤーの初期化

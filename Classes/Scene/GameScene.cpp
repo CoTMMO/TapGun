@@ -107,13 +107,6 @@ bool GameScene::init()
 	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	//setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
-	int derk = 128;
-	auto ambient = AmbientLight::create(Color3B(derk, derk, derk));
-	addChild(ambient);
-
-	int color = 255;
-	auto direction = DirectionLight::create(Vec3(0.0f, -5.0f, 0.0f), Color3B(color, color, color));
-	addChild(direction);
 
 	this->scheduleUpdate();
 
@@ -231,6 +224,11 @@ void GameScene::update(float delta)
 		CreateCamera();
 		InitCamera();
 
+		if(NULL != gGameLayer)//現在は子レイヤーをクリエイトしたかを確認する
+		{
+			gGameLayer->SetLights();//ライトのセット
+		}
+
 		break;
 	case GSTATE_INIT:
 
@@ -305,17 +303,12 @@ void GameScene::update(float delta)
 		break;
 	case GSTATE_PLAY:
 
-		gGameLayer->UpdatePlayer();//プレイヤーの更新
-		gGameLayer->UpdateEnemy();//エネミーの更新
-		gGameLayer->UpdateBullets();//敵弾の更新
-		gGameLayer->CheckHit();//当たり判定とダメージのチェック
-
-		if (PSTATE_DEAD != GameMasterS->GetPlayerState())
+		if(PSTATE_DEAD != GameMasterS->GetPlayerState())
 		{
 			//死亡していない場合
 			//ゲーム内時間の更新はここで行う
 			GameMasterS->gameActionTime -= GameMasterS->loopTime;
-			if (GameMasterS->gameActionTime <= 0)
+			if(GameMasterS->gameActionTime <= 0)
 			{
 				//ゲームの残り時間が0になったらゲームオーバー
 				GameMasterS->SetGameState(GSTATE_TIMEOVER);//
@@ -331,6 +324,12 @@ void GameScene::update(float delta)
 			gGameLayer->ClearEnemies();//全ての敵を非表示にする
 			break;
 		}
+
+
+		gGameLayer->UpdatePlayer();//プレイヤーの更新
+		gGameLayer->UpdateEnemy();//エネミーの更新
+		gGameLayer->UpdateBullets();//敵弾の更新
+		gGameLayer->CheckHit();//当たり判定とダメージのチェック
 
 		if (NULL != gUILayer)//現在は初期化チェック確認する
 		{
@@ -458,7 +457,7 @@ void GameScene::EndToTitle()
 
 	removeFromParent();
 	auto scene = TitleScene::createScene();
-	auto tran = TransitionCrossFade::create(1, scene);
+	auto tran = TransitionFade::create(1, scene, ccc3(0, 0, 0));
 	Director::getInstance()->replaceScene(tran);
 }
 

@@ -185,6 +185,40 @@ void GameModelsLayer::LoadModels()
 
 
 /**
+*	ライトのセット
+*
+*	@author	sasebon
+*	@param	なし
+*	@return	なし
+*	@date	2/5 Ver 1.0
+*/
+void GameModelsLayer::SetLights()
+{
+	//ライトをレイヤーにセット
+	auto c = GameMasterM->GetCamera3D();
+
+	int dark = 128;
+	auto ambient = AmbientLight::create(Color3B(dark, dark, dark));
+	ambient->setLightFlag(cocos2d::LightFlag::LIGHT2);//数字は適当
+	c->addChild(ambient);
+
+	int color = 255;
+	auto direction = DirectionLight::create(Vec3(-5.0f, -5.0f, 3.0f), Color3B(color, color, color));
+	direction->setPosition3D(Vec3(50.0f, 100.0f, -100.0f));
+	direction->setLightFlag(cocos2d::LightFlag::LIGHT3);//数字は適当
+
+	c->addChild(direction);
+
+	//
+	//unit[UNIT0_MAP].sprite3d->setLightMask(2);
+	//unit[UNIT0_MAP].sprite3d->setLightMask(4);
+}
+
+
+
+
+
+/**
 *	全モデル初期化
 *
 *	@author	sasebon
