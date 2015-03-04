@@ -37,7 +37,6 @@ namespace TapGun
 		AI_APPEAR_RUN,//走りながら登場
 		AI_APPEAR_WALK,//歩き
 		AI_APPEAR_SWALK,//横歩き
-
 		AI_APPEAR_SJUMP,//サイドジャンプ
 		AI_APPEAR_ACRO,//アクロバティック
 		AI_APPEAR_NUM
