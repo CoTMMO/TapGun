@@ -20,21 +20,22 @@ private:
 
 	struct WaveData
 	{
-		int Num;					// “G‚ÌŽ¯•Ê”Ô†‚Å‚·BWave‚²‚Æ‚É0”Ô‚©‚çŽn‚ß‚Ä‚­‚¾‚³‚¢
-		cocos2d::Vec3 startPos;		// “G‚ª‰B‚ê‚Ä‚¢‚éÀ•W‚Å‚·
-		float sleeptime;			// ‘O‚Ì“G‚ª“|‚ê‚Ä‚©‚çA‚±‚Ì“G‚ªo‚Ä‚­‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ‚Å‚·
-		cocos2d::Vec3 targetPos[3];	// ‚±‚Ì“G‚Ì–Ú•W’n“_‚Å‚·B‘S‚Ä‚ðŽg‚¤•K—v‚Í‚ ‚è‚Ü‚¹‚ñB
-		int waitToAtack;			// –Ú•W’n“_‚É“ž’…‚µ‚Ä‚©‚çUŒ‚‚·‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ‚Å‚·
-		int waitToMove[3];			// UŒ‚I—¹‚µ‚Ä‚©‚çŽŸ‚Ìs“®‚ðŠJŽn‚·‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔiƒAƒCƒhƒ‹ŽžŠÔj‚Å‚·Bƒ~ƒŠ•b‚Å‚·B
-		int NextEnemies[3];			// ‚±‚Ì“G‚ª“|‚ê‚Ä‚©‚çAŽŸ‚Éo‚Ä‚­‚é“G‚Å‚·B3‘Ì‚Ü‚Å‰Â”\‚Å‚·B
+		int Num;					// ï¿½Gï¿½ÌŽï¿½ï¿½Ê”Ôï¿½ï¿½Å‚ï¿½ï¿½BWaveï¿½ï¿½ï¿½Æ‚ï¿½0ï¿½Ô‚ï¿½ï¿½ï¿½ï¿½nï¿½ß‚Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		cocos2d::Vec3 startPos;		// ï¿½Gï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½Å‚ï¿½
+		int sleepTime;			// ï¿½Oï¿½Ì“Gï¿½ï¿½ï¿½|ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Ì“Gï¿½ï¿½ï¿½oï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Ü‚Å‚Ì‘Ò‚ï¿½ï¿½ï¿½ï¿½Ô‚Å‚ï¿½
+		cocos2d::Vec3 targetPos[3];	// ï¿½ï¿½ï¿½Ì“Gï¿½Ì–Ú•Wï¿½nï¿½_ï¿½Å‚ï¿½ï¿½Bï¿½Sï¿½Ä‚ï¿½ï¿½gï¿½ï¿½ï¿½Kï¿½vï¿½Í‚ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B
+		int waitToAtack;			// ï¿½Ú•Wï¿½nï¿½_ï¿½É“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Å‚Ì‘Ò‚ï¿½ï¿½ï¿½ï¿½Ô‚Å‚ï¿½
+		int waitToMove[3];			// ï¿½Uï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½çŽŸï¿½Ìsï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Å‚Ì‘Ò‚ï¿½ï¿½ï¿½ï¿½Ôiï¿½Aï¿½Cï¿½hï¿½ï¿½ï¿½ï¿½ï¿½Ôjï¿½Å‚ï¿½ï¿½Bï¿½~ï¿½ï¿½ï¿½bï¿½Å‚ï¿½ï¿½B
+		int nextEnemies[3];			// ï¿½ï¿½ï¿½Ì“Gï¿½ï¿½ï¿½|ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Éoï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Gï¿½Å‚ï¿½ï¿½B3ï¿½Ì‚Ü‚Å‰Â”\ï¿½Å‚ï¿½ï¿½B
 
-		int AIAppear;				// oŒ»Žž‚Ìƒ‚[ƒVƒ‡ƒ“‚Å‚·
-		int AIMove[3];				// ˆÚ“®Žž‚Ìƒ‚[ƒVƒ‡ƒ“‚Å‚·
-		int AIAtk[3];				// UŒ‚Žž‚Ìƒ‚[ƒVƒ‡ƒ“‚Å‚·
-		int AILifeCycle;			//
+		int aiAppear;				// ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½
+		int aiMove[3];				// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½
+		int aiAtk[3];				// ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½
+		int aiLifeCycle;			//
 	};
 
-	WaveData* dataList[10];			// Žd—lã10‘ÌˆÈã‚Ì“G‚ÍoŒ»‚µ‚È‚¢‚Ì‚Å 10
+	unsigned int fileLineCount;
+	WaveData* dataList[10];			// ï¿½dï¿½lï¿½ï¿½10ï¿½ÌˆÈï¿½ï¿½Ì“Gï¿½Íoï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ì‚ï¿½ 10
 };
 
 }

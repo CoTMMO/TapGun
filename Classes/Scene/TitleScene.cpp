@@ -475,9 +475,15 @@ void TitleScene::loadSound( void)
 	auto sound = Sound::getInstance();
 
 	sound -> loadBGM( "Title");
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	sound -> loadSE( "MoveSE");
+	sound -> loadSE( "Shot");
+	sound -> loadSE( "Reload");
+#else
 	sound -> loadSE( "Title/MoveSE");
 	sound -> loadSE( "Gun/Shot");
 	sound -> loadSE( "Gun/Reload");
+#endif
 }
 
 // 以下フラグ制御関数

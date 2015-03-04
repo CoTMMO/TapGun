@@ -94,8 +94,8 @@ void GameUILayer::LoadUISprite()
 #else
 	fileName1 = "Graph/Pictures/reticle.png";
 #endif
-	UIBillBoard[UIKIND_RETICLE] = cocos2d::BillBoard::createWithTexture(
-		Sprite::createWithSpriteFrameName( "reticle_idle.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
+//	UIBillBoard[UIKIND_RETICLE] = cocos2d::BillBoard::createWithTexture(
+//		Sprite::createWithSpriteFrameName( "reticle_idle.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
 
 }
 

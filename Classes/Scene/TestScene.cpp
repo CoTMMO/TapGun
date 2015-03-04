@@ -7,10 +7,11 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #include "Sprite3D.h"
-#include "Errorfunc.h"
 #include "Sound.h"
 #include "UI.h"
 #include "Effect.h"
+#include "ContinueLayer.h"
+#include "EnemySettingFile.h"
 
 #else
 
@@ -58,10 +59,10 @@ bool Test::init()
 
 	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
 
-	auto con = ContinueLayer::create();
+//	auto con = ContinueLayer::create();
 //	addChild( con);
 
-	auto sprit = _Sprite3D::create( "Enemy/enemy", "Enemy.anime");
+	auto sprit = _Sprite3D::create( "enemy", "Enemy.anime");
 //	sprit -> setCullFace( GL_FRONT);
 	sprit -> setPosition( 640, 0);
 	sprit -> setScale( 300.0f);
@@ -69,7 +70,7 @@ bool Test::init()
 	sprit -> startAnimationLoop( "stop");
 
 	auto tableFile = EnemySettingFile::getInstance();
-	tableFile -> loadTableFile( "test.csv");
+	tableFile -> loadTableFile( "Book1.csv");
 
 	//現在はタッチイベントのリスナーをここに用意しています
 	auto dispatcher = Director::getInstance()->getEventDispatcher();
