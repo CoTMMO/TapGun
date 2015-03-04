@@ -1,40 +1,40 @@
-player/mot_player_aidling_left.c3b,idle_l
-player/mot_player_aidling_left.c3t,idle_l
-player/mot_player_idling_right.c3b,idle_r
-player/mot_player_idling_right.c3t,idle_r
+Player/mot_player_aidling_left.c3b,idle_l
+Player/mot_player_aidling_left.c3t,idle_l
+Player/mot_player_idling_right.c3b,idle_r
+Player/mot_player_idling_right.c3t,idle_r
 
-player/mot_player_dei1.c3b,dei1
-player/mot_player_dei1.c3t,dei1
-player/mot_player_dei2.c3b,dei2
-player/mot_player_dei2.c3t,dei2
+Player/mot_player_dei1.c3b,dei1
+Player/mot_player_dei1.c3t,dei1
+Player/mot_player_dei2.c3b,dei2
+Player/mot_player_dei2.c3t,dei2
 
-player/mot_player_hide_reload_left_ver3.c3b,h_reload_l
-player/mot_player_hide_reload_left_ver3.c3t,h_reload_l
-player/mot_player_hide_reload_right_ver2.c3b,h_reload_r
-player/mot_player_hide_reload_right_ver2.c3t,h_reload_r
+Player/mot_player_hide_reload_left_ver3.c3b,h_reload_l
+Player/mot_player_hide_reload_left_ver3.c3t,h_reload_l
+Player/mot_player_hide_reload_right_ver2.c3b,h_reload_r
+Player/mot_player_hide_reload_right_ver2.c3t,h_reload_r
 
-player/mot_player_hit1.c3b,hit1
-player/mot_player_hit1.c3t,hit1
-player/mot_player_hitleft1_0218.c3b,hit_l
-player/mot_player_hitleft1_0218.c3t,hit_l
+Player/mot_player_hit1.c3b,hit1
+Player/mot_player_hit1.c3t,hit1
+Player/mot_player_hitleft1_0218.c3b,hit_l
+Player/mot_player_hitleft1_0218.c3t,hit_l
 
-player/mot_player_hitright1_0218.c3b,hit_r
-player/mot_player_hitright1_0218.c3t,hit_r
+Player/mot_player_hitright1_0218.c3b,hit_r
+Player/mot_player_hitright1_0218.c3t,hit_r
 
-player/mot_player_hitleft2_0218.c3b,recv_l
-player/mot_player_hitleft2_0218.c3t,recv_l
-player/mot_player_hitright2_0218.c3b,recv_l
-player/mot_player_hitright2_0218.c3t,recv_l
+Player/mot_player_hitleft2_0218.c3b,recv_l
+Player/mot_player_hitleft2_0218.c3t,recv_l
+Player/mot_player_hitright2_0218.c3b,recv_l
+Player/mot_player_hitright2_0218.c3t,recv_l
 
-player/mot_player_run.c3b,run
-player/mot_player_run.c3t,run
+Player/mot_player_run.c3b,run
+Player/mot_player_run.c3t,run
 
-player/mot_player_shot_left.c3b,shot_l
-player/mot_player_shot_left.c3t,shot_l
-player/mot_player_shot_right_ver2.c3b,shot_r
-player/mot_player_shot_right_ver2.c3t,shot_r
+Player/mot_player_shot_left.c3b,shot_l
+Player/mot_player_shot_left.c3t,shot_l
+Player/mot_player_shot_right_ver2.c3b,shot_r
+Player/mot_player_shot_right_ver2.c3t,shot_r
 
-player/mot_player_hide_shot_left.c3b,h_shot_l
-player/mot_player_hide_shot_left.c3t,h_shot_l
-player/mot_player_hide_shot_right_ver2.c3b,h_shot_r
-player/mot_player_hide_shot_right_ver2.c3t,h_shot_r
+Player/mot_player_hide_shot_left.c3b,h_shot_l
+Player/mot_player_hide_shot_left.c3t,h_shot_l
+Player/mot_player_hide_shot_right_ver2.c3b,h_shot_r
+Player/mot_player_hide_shot_right_ver2.c3t,h_shot_r

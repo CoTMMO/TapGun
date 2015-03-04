@@ -5,9 +5,11 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #include "EnemySettingFile.h"
+#include "Enemy.h"
 
 #else
 
+#include "Stage/Enemy.h"
 #include "System/EnemySettingFile.h"
 
 #endif

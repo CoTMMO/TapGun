@@ -81,7 +81,7 @@ bool Test::init()
 	scheduleUpdate();
 	//	schedule( schedule_selector(Test::moveTime), 0.016f);
 
-	pl = _Sprite3D::create("player/player", "Player.anime");
+	pl = _Sprite3D::create("Player/player", "Player.anime");
 
 	pl->setPosition3D(Vec3(0, 0, 3));
 	pl->setRotation3D(Vec3(0, 0, 0));
