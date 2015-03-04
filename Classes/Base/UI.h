@@ -115,6 +115,15 @@ namespace TapGun
 		bool returnEscapeFlag;
 		bool returnEscapeNoShotFlag;
 		
+		bool waitFlag;
+		int waitTime;
+		
+		bool timeFlag;	// 1/100秒の制御フラグ
+		int frame;		// 1/10秒以下の制御カウンタ
+		
+		int count01;
+		int count001;
+		
 		cocos2d::Node *hpParent;
 		cocos2d::Sprite *hp[HPGauge];
 		cocos2d::Node *timeParent;

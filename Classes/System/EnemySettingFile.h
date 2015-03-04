@@ -18,6 +18,7 @@ public:
 private:
 	EnemySettingFile() {}
 
+	
 	struct WaveData
 	{
 		int Num;					// �G�̎��ʔԍ��ł��BWave���Ƃ�0�Ԃ����n�߂Ă�������

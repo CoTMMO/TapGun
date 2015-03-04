@@ -43,6 +43,15 @@ void GameUI::init( Layer* layer)
 	auto cache = SpriteFrameCache::getInstance();
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
 
+	waitFlag = false;
+	waitTime = 0;
+	
+	timeFlag = false;
+	frame = 0;
+	
+	count01 = 0;
+	count001 = 0;
+	
 	hpParent = Node::create();
 	hp[0] = Sprite::createWithSpriteFrameName( "HPFrame.png");
 	hp[1] = Sprite::createWithSpriteFrameName( "HPGaugeBG.png");
@@ -219,8 +228,6 @@ void GameUI::update( void)
 void GameUI::setLogo( void)
 {
 	auto master = GameMaster::GetInstance();
-	static bool waitFlag = false;
-	static int waitTime = 0;
 
 	auto sound = Sound::getInstance();
 	static bool bgmFlag = false;
@@ -307,18 +314,11 @@ void GameUI::setGameTime( float time)
 {
 	auto master = GameMaster::GetInstance();
 
-	// 1/100秒の制御フラグ
-	static bool timeFlag = false;
-	// 1/10秒以下の制御カウンタ
-	static int frame = 0;
-
 	int timer = time * 0.001f;
 	int count100 = timer / 100;
 	int count10 = ((int)timer % 100);
 	int count1 = count10 - ((count10 / 10) * 10);
-	static int count01 = 0;
-	static int count001 = 0;
-		
+	
 	for( int i = 0; i < 10; i++)
 	{
 		if( timer / 100 == i) { continue; }
