@@ -107,7 +107,14 @@ bool GameScene::init()
 	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	//setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
-
+	int derk = 128;
+	auto ambient = AmbientLight::create (Color3B(derk,derk,derk));
+	addChild(ambient);
+	
+	int color = 255;
+	auto direction = DirectionLight::create( Vec3(0.0f, -5.0f, 0.0f), Color3B( color, color, color));
+	addChild(direction);
+	
 	this->scheduleUpdate();
 
 	//時間取得のための変数を初期化
