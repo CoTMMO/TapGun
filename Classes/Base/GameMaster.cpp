@@ -157,8 +157,8 @@ void GameMaster::InitParam()
 	//W
 	stagePoint[POINT_W1].pPos = Vec3(6.856f, 0.0f, -3.849f);//
 	stagePoint[POINT_W1].pRot = Vec3(0.0f, 165.0f, 0.0f);
-	stagePoint[POINT_W1].cPos = Vec3(6.363f, 1.0f, -1.101f);//
-	stagePoint[POINT_W1].cRot = Vec3(MACRO_CROT_X(87.167f), MACRO_CROT_Y(-23.778f), 0.0f);
+	stagePoint[POINT_W1].cPos = Vec3(6.363f - 6.856f, 1.539f, -1.101f - (-3.849f)) + Vec3(0.8f, 0.0f, 0.25f);//
+	stagePoint[POINT_W1].cRot = Vec3(87.167f - 90.0f, -23.778f + 180.0f - 165.0f, 0.0f) + Vec3(0.0f, 0.0f, 0.0f);
 	stagePoint[POINT_W1].pointType = PO_BATTLE;
 	stagePoint[POINT_W1].playerSide = PSIDE_LEFT;
 	stagePoint[POINT_W1].hidePoint = setHidePoint(stagePoint[POINT_W1]);//カメラの回避座標をセット

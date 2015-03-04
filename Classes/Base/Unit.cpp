@@ -128,7 +128,7 @@ void Unit::SetCollision(void)
 	//当たり判定の定義（仮）
 	aabbBody = sprite3d->getAABB();
 
-	colisionNode->setPosition3D(Vec3(0.0f, 1.0f, 0.0f));
+	colisionNode->setPosition3D(Vec3(0.0f, 0.8f, 0.0f));
 
 	//当たり判定の移動
 	Vec3 collision_center = colisionNode->getPosition3D() + sprite3d->getPosition3D();

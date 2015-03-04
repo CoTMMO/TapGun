@@ -169,7 +169,6 @@ void GameModelsLayer::LoadModels()
 		unit[i].wrapper->addChild(unit[i].sprite3d);
 		addChild(unit[i].wrapper);
 		unit[i].wrapper->addChild(unit[i].node1);
-		//		unit[i].sprite3d->addChild(unit[i].colisionNode);//当たり判定の基準ノードを3dスプライトに紐付け
 	}
 
 	//座標計算用ノード
@@ -293,7 +292,7 @@ int GameModelsLayer::InitEnemy(int stage_num)
 		unit[i].Init(i, UKIND_ENEMY);
 		unit[i].visible = FALSE;
 		unit[i].sprite3d->setVisible(false);
-		unit[i].collisionPos = Vec3(0.8f, 1.5f, 0.8f);//範囲を指定して
+		unit[i].collisionPos = Vec3(0.9f, 1.6f, 0.9f);//範囲を指定して
 		unit[i].SetCollision();//
 		unit[i].eState = ESTATE_NONE;
 
@@ -764,13 +763,19 @@ void GameModelsLayer::UpdateWait()
 				   else if(PO_BATTLE == GameMasterM->stagePoint[GameMasterM->sPoint].pointType)
 				   {
 					   //プレイヤーとカメラの位置関係を計算
-					   Vec3 cP = GameMasterM->stagePoint[GameMasterM->sPoint].cPos - GameMasterM->stagePoint[GameMasterM->sPoint].pPos;
-					   Vec3 cR = (GameMasterM->stagePoint[GameMasterM->sPoint].cRot) - GameMasterM->stagePoint[GameMasterM->sPoint].pRot;
+					   //Vec3 cP = GameMasterM->stagePoint[GameMasterM->sPoint].cPos - GameMasterM->stagePoint[GameMasterM->sPoint].pPos;
+					   //Vec3 cR = (GameMasterM->stagePoint[GameMasterM->sPoint].cRot) - GameMasterM->stagePoint[GameMasterM->sPoint].pRot;
 
 					   if(PSIDE_LEFT == GameMasterM->stagePoint[GameMasterM->sPoint].playerSide)
 					   {
-						   changeCameraPos = Vec3(C_SETX_L - W_SETX, C_SETY_L - W_SETY, C_SETZ_L - W_SETZ) * 0.05f;
-						   changeCameraRot = Vec3(C_ROTX_L - W_ROTX, C_ROTY_L - W_ROTY, C_ROTZ_L - W_ROTZ)* 0.05f;
+						   Vec3 cP = GameMasterM->stagePoint[GameMasterM->sPoint].cPos;
+						   Vec3 cR = GameMasterM->stagePoint[GameMasterM->sPoint].cRot;
+						   //changeCameraPos = Vec3(C_SETX_L - W_SETX, C_SETY_L - W_SETY, C_SETZ_L - W_SETZ) * 0.05f;
+						   //changeCameraRot = Vec3(C_ROTX_L - W_ROTX, C_ROTY_L - W_ROTY, C_ROTZ_L - W_ROTZ)* 0.05f;
+						   changeCameraPos = (cP - Vec3(W_SETX, W_SETY, W_SETZ)) * 0.05f;
+						   changeCameraRot = (cR - Vec3(W_ROTX, W_ROTY, W_ROTZ))* 0.05f;
+						   //changeCameraPos = cP * 0.05f;
+						   //changeCameraRot = cR * 0.05f;
 					   }
 					   else
 					   {
@@ -1405,7 +1410,21 @@ void GameModelsLayer::ActionHide(void)
 		player.motProcTime = 0;//経過時間は0
 		player.setAnimEndTime(MACRO_FtoMS(STS_HIDEWAIT));//モーション終了までの残り時間を計算
 		auto sound = Sound::getInstance();
-		sound->stopSE("Gun/Reload");
+		sound->stopSE("Reload");
+	}
+	else
+	{
+		//プレイヤーが隠れ状態になるタイミングで指を離した場合、このステートに入る
+		//指を離しているので飛び出し状態に移行
+
+		GameMasterM->SetPlayerState(PSTATE_APPEAR);
+		player.sprite3d->startAnimation(h_shot);
+
+		//モーション管理用時間の初期化
+		player.motProcTime = 0;//経過時間は0
+		player.setAnimEndTime(MACRO_FtoMS(STS_HIDEWAIT));//モーション終了までの残り時間を計算
+		auto sound = Sound::getInstance();
+		sound->stopSE("Reload");
 	}
 }
 
@@ -1842,6 +1861,7 @@ void  GameModelsLayer::CheckHit(void)
 		Vec3 cPos = Vec3(pos.x, tmpPos.y, pos.y);//yは
 		Vec2 tPos = GameMasterM->GetTouchPosInView();//タッチ座標を取得
 
+		//レティクルの位置を加味したタッチ座標に修正
 		tPos.y -= GameMasterM->reticleAjust * s.height;//レティクルの状態を
 		if(tPos.y < 0.0f)
 		{
