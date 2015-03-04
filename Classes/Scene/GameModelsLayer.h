@@ -92,7 +92,7 @@ namespace TapGun
 		void CheckHit(void);//当たり判定処理
 
 		//ゲーム遷移チェック
-		int CheckNextStage(void);
+		int CheckNextWave(void);
 
 		void SetEnemy(void);//
 

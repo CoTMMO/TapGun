@@ -322,7 +322,7 @@ void GameScene::update(float delta)
 				gGameLayer->ClearEnemies();//全ての敵を非表示にする
 				gGameLayer->KillPlayer();//プレイヤーを死亡状態にする
 			}
-			gGameLayer->CheckNextStage();//ウェーブ終了のチェック
+			gGameLayer->CheckNextWave();//ウェーブ終了のチェック
 		}
 		else
 		{
@@ -555,7 +555,15 @@ void GameScene::UpdateCamera()
 
 			//カメラの回転は注視点基準なのでVec3(0,0,0)
 			break;
-
+		case GSTATE_CLEAR:
+			cameraPos = gGameLayer->player.wrapper->getPosition3D() + gGameLayer->player.sprite3d->getPosition3D();
+			cameraRot = gGameLayer->player.sprite3d->getRotation3D();
+			//プレイヤーの座標にカメラのノードを置く
+			GameMasterS->SetCameraNodePos(cameraPos);
+			//カメラを公転させる
+			cameraRot.y -= 180.0f;//プレイヤーは180度回転させているので補正を行う
+			GameMasterS->SetCameraNodeRot(cameraRot);
+			break;
 		default:
 			cameraPos = gGameLayer->player.wrapper->getPosition3D() + gGameLayer->player.sprite3d->getPosition3D();
 			cameraRot = gGameLayer->player.wrapper->getRotation3D() + gGameLayer->player.sprite3d->getRotation3D();

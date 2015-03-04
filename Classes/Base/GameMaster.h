@@ -233,8 +233,10 @@ namespace TapGun
 
 		POINT_L2a,
 		POINT_L2b,
+		POINT_L2c,
+		POINT_L2d,
+
 		//POINT_W2,
-		//		POINT_L2,
 
 		//POINT_L3_1,
 		//POINT_W3,
