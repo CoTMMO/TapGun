@@ -888,7 +888,38 @@ void GameModelsLayer::UpdatePlayer(void)
 	//タッチ座標をもとに攻撃や回避の処理を行う
 	//この関数内では、タッチ状態とタッチフラグの更新は行わないこと。
 
-	//1：プレイヤーの状態を取得して場合分け
+
+
+	//1：プレイヤーの無敵時間の更新
+	if(0 < GameMasterM->mutekiTime&& FALSE == GameMasterM->playerHitFlag)
+	{
+		//無敵時間が有効で、かつプレイヤーが回避状態でなければ処理を実行
+		switch(GameMasterM->GetPlayerState())
+		{
+		case PSTATE_IDLE://アイドル状態
+		case PSTATE_SHOT://攻撃中
+			//一定時間が経過したら食らい判定をONにする
+			GameMasterM->mutekiTime -= GameMasterM->loopTime;
+			if(0 >= GameMasterM->mutekiTime)
+			{
+				GameMasterM->mutekiTime = 0;
+				GameMasterM->playerHitFlag = TRUE;
+			}
+			break;
+		case PSTATE_DODGE://隠れ中
+			//回避に入った瞬間に無敵時間を0にする
+			//(ただし回避中なので無敵のまま)
+			GameMasterM->mutekiTime = 0;
+			break;
+		case PSTATE_HIDE://隠れている
+			ActionHide();
+			break;
+		default:
+			break;
+		}
+	}
+
+	//2：プレイヤーの状態を取得して場合分け
 	switch(GameMasterM->GetPlayerState())
 	{
 	case PSTATE_IDLE://アイドル状態
@@ -923,8 +954,8 @@ void GameModelsLayer::UpdatePlayer(void)
 		break;
 	}
 
-	//もともとこちらが1だったので、問題が起これば元に戻す
-	//2：プレイヤーのフレーム・座標更新
+	//もともとこちらが2だったので、問題が起これば元に戻す
+	//3：プレイヤーのフレーム・座標更新
 	player.Update(GameMasterM->loopTime);
 	//マズルの更新
 	auto ef = Effect::getInstance();
@@ -1510,11 +1541,11 @@ void GameModelsLayer::ActionRecover(void)
 	std::string idle;
 	if(PSIDE_LEFT == GameMasterM->playerSide)
 	{
-		idle = "idel_l";
+		idle = "idle_l";
 	}
 	else
 	{
-		idle = "idel_r";
+		idle = "idle_r";
 	}
 
 
@@ -1529,8 +1560,8 @@ void GameModelsLayer::ActionRecover(void)
 			player.sprite3d->stopAllActions();
 			player.sprite3d->startAnimationLoop(idle);
 
-			GameMasterM->playerHitFlag = TRUE;//当たり判定を戻す
-
+			//GameMasterM->playerHitFlag = TRUE;//このタイミングでは食らい判定を戻さない
+			GameMasterM->mutekiTime = STS_MUTEKITIME;//無敵時間をセット
 			//モーション管理用の時間を初期化
 			player.motProcTime = 0;//モーションを再生してからの経過時間（秒）
 		}
@@ -1956,12 +1987,14 @@ void  GameModelsLayer::CheckHit(void)
 		}
 	}
 
-	if(FALSE == GameMasterM->playerHitFlag && (PSTATE_DAMAGED == GameMasterM->GetPlayerState() || PSTATE_RECOVER == GameMasterM->GetPlayerState())
+	if((FALSE == GameMasterM->playerHitFlag && (PSTATE_DAMAGED == GameMasterM->GetPlayerState() || PSTATE_RECOVER == GameMasterM->GetPlayerState()))
+		|| (FALSE == GameMasterM->playerHitFlag && 0 <= GameMasterM->mutekiTime && (PSTATE_SHOT == GameMasterM->GetPlayerState() || PSTATE_IDLE == GameMasterM->GetPlayerState()))
 		)
 	{
-		//当たり判定がオフの時も、プレイヤーが食らいモーションを受けているときは弾とプレイヤーの当たり判定を処理する
 		//（演出のための処理）
-		//プレイヤーの当たり判定が存在する場合
+		//当たり判定がオフの時かつ、食らい状態または復帰状態
+		//当たり判定がオフの時かつ、無敵時間が残っている状態かつ、アイドル状態またはショット状態
+
 		//全ての敵弾ユニットを更新
 		for(int i = UNIT2_BULLET; i < UNIT3_MAX; i++)
 		{
@@ -2775,7 +2808,7 @@ void GameModelsLayer::ActionEAttack(int num)
 			if(0 >= unit[num].atkFrame && STS_ENEMY_MAXSHOT > unit[num].nowShot)
 			{
 				Effect::getInstance() -> setEnemyMuzzle( unit[num].sprite3d, "Po_1", "Po_2");
-				unit[num].atkFrame = 0.55;//次の弾発射までの時間を設定
+				unit[num].atkFrame = STS_SSHOT_SPAN;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
 			}
 			break;
@@ -2787,7 +2820,7 @@ void GameModelsLayer::ActionEAttack(int num)
 			{
 				Effect::getInstance() -> setEnemyMuzzle( unit[num].sprite3d, "Po_1", "Po_2");
 				//フレームが0になったら
-				unit[num].atkFrame = 0.55;//次の弾発射までの時間を設定
+				unit[num].atkFrame = STS_SSHOT_SPAN;//次の弾発射までの時間を設定
 				unit[num].nowShot++;
 				ShootBullet(num, unit[num].nowShot);
 			}
@@ -2846,7 +2879,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->startAnimation("shot");
 
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレームとして扱う
+		unit[num].atkFrame = STS_SSHOT_START;//弾を発射するまでの残りフレームとして扱う
 		break;
 	case AI_ATK_SSHOT://立ち撃ちを行う
 
@@ -2855,7 +2888,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->startAnimation("shot");
 
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレームとして扱う
+		unit[num].atkFrame = STS_SSHOT_START;//弾を発射するまでの残りフレームとして扱う
 		break;
 	case AI_ATK_SJUMP://サイドジャンプ射撃//要チェック
 
@@ -2865,7 +2898,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレーム
+		unit[num].atkFrame = STS_SSHOT_START;//弾を発射するまでの残りフレーム
 
 		break;
 	case AI_ATK_ACRO://アクロバティック//要チェック
@@ -2876,7 +2909,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレーム
+		unit[num].atkFrame = STS_SSHOT_START;//弾を発射するまでの残りフレーム
 
 		break;
 	default:
@@ -2886,7 +2919,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
-		unit[num].atkFrame = 1000;//弾を発射するまでの残りフレーム
+		unit[num].atkFrame = STS_SSHOT_START;//弾を発射するまでの残りフレーム
 		break;
 	}
 }

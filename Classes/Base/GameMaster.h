@@ -15,7 +15,7 @@ namespace TapGun
 #define STS_MAXPLAYERHP 6//プレイヤーの最大HP
 #define STS_RAPIDSPEED 8//プレイヤーの連射速度（フレーム）
 #define STS_MAXBULLETS 30//プレイヤーの最大弾数
-#define STS_MUTEKIFRAME (120 / 60.0f) //無敵時間
+#define STS_MUTEKITIME 2000 //無敵時間(ミリ秒)
 
 #define STS_RUNSPEED 0.005f//プレイヤーのウェイト時の速度
 #define STS_HIDEWAIT 25//回避モーションが終了するまでの全体フレーム
@@ -45,6 +45,8 @@ namespace TapGun
 #define POS_ENEMY_RPOZ 0.1f//敵の右の銃のポイント
 
 #define STS_EBULLET_SPEED 0.019f//敵の弾の速度
+#define STS_SSHOT_START 1000//SShot時の弾の発射開始までの待ち時間
+#define STS_SSHOT_SPAN 68//SShot時の弾の発射開始までの待ち時間
 
 #define BATTLE_FEILD_X 0.8//タッチで攻撃可能な画面割合
 
@@ -128,11 +130,10 @@ namespace TapGun
 #define HIDECAMERA_X 1.1f
 #define HIDECAMERA_Y -1.1f
 
-	//時間
+//ゲーム関連時間
 #define TIME_MAXTIME 180000//ゲーム本編の最大時間（ミリ秒）
 #define TIME_ACTION_UI 1800//ActionのUIを表示する時間（ミリ秒）
 #define TIME_DEAD_UI 3000//死亡時のカメラ表示する時間（ミリ秒）
-
 #define TIME_OP 6000//ActionのUIを表示する時間（ミリ秒）
 
 #define TIME_WROT 300//
@@ -285,9 +286,7 @@ namespace TapGun
 		int playerHitFlag;//プレイヤーの無敵状態のフラグ（TRUE/FALSE）
 
 		int flgPlayerATK;//プレイヤーの攻撃処理判定を行うか（TRUE/FALSE）
-
-		//		float hideFrame;//回避フレーム
-		float mutekiFrame;//無敵時間
+		int mutekiTime;//無敵時間(ミリ秒)
 
 		float reticleAjust;//指の位置とレティクルの位置の差（画面に対する割合）
 

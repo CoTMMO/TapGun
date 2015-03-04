@@ -125,6 +125,7 @@ void GameMaster::InitParam()
 	gameState = GSTATE_INIT;
 	wave = 0;
 	playerHP = 0;
+	mutekiTime = 0;
 
 	touchState = TSTATE_OFF;
 	touchFlag = TFLAG_OFF;
