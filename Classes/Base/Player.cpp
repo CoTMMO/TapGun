@@ -161,11 +161,11 @@ void Player::SetAnimation(const std::string& animeName, const int speed)
 *	アニメーション終了までの時間をセット
 *
 *	@author	sasebon
-*	@param	なし
+*	@param	ミリ秒
 *	@return	なし
 *	@date	1/20 Ver 1.0
 */
-void Player::setAnimEndTime(float time)
+void Player::setAnimEndTime(int time)
 {
 	//フレームではありません
 	animEndTime = time;

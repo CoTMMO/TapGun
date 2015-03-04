@@ -50,7 +50,7 @@ bool GameUILayer::init()
 void GameUILayer::InitLayer(void)
 {
 	InitAllUI();
-	SetUI();
+//	SetUI();
 	GameUI::getInstance() -> init( this);
 }
 
@@ -84,20 +84,19 @@ int GameUILayer::SerchFreeUI()
 *	@return	なし
 *	@date	2/5 Ver 1.0
 */
-void GameUILayer::LoadUISprite()
-{
-	std::string fileName1;
-
-	//レティクルの生成
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	fileName1 = "reticle.png";
-#else
-	fileName1 = "Graph/Pictures/reticle.png";
-#endif
-	UIBillBoard[UIKIND_RETICLE] = cocos2d::BillBoard::createWithTexture(
-		Sprite::createWithSpriteFrameName( "reticle_idle.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
-
-}
+//void GameUILayer::LoadUISprite()
+//{
+//	std::string fileName1;
+//
+//	//レティクルの生成
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+//	fileName1 = "reticle.png";
+//#else
+//	fileName1 = "Graph/Pictures/reticle.png";
+//#endif
+////	UIBillBoard[UIKIND_RETICLE] = cocos2d::BillBoard::createWithTexture(
+////		Sprite::createWithSpriteFrameName( "reticle_idle.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
+//}
 
 
 /**
@@ -108,70 +107,10 @@ void GameUILayer::LoadUISprite()
 *	@return	なし
 *	@date	1/8 Ver 1.0
 */
-void GameUILayer::SetUI()
-{
-	auto s = Director::getInstance()->getWinSize();//スクリーンサイズを取得
-//
-//	//レティクルの設定
-//	UIBillBoard[UIKIND_RETICLE]->setPosition(s.width / 2, s.height / 2);
-//	UIBillBoard[UIKIND_RETICLE]->setScale(0.4f);
-//	addChild(UIBillBoard[UIKIND_RETICLE]);
-//
-//	Ui[UIKIND_RETICLE].Init(UIKIND_RETICLE, UIKIND_RETICLE);
-//	valid[UIKIND_RETICLE] = TRUE;
-//
-//	//ウェイトUIの設定
-//	UIBillBoard[UIKIND_WAIT]->setPosition(s.width / 2, s.height / 2);
-//	UIBillBoard[UIKIND_WAIT]->setScale(0.1f);
-//	UIBillBoard[UIKIND_WAIT]->setVisible(false);
-//	addChild(UIBillBoard[UIKIND_WAIT]);
-//
-//	Ui[UKIND_BULLET_B].Init(UKIND_BULLET_B, UKIND_BULLET_B);
-//	valid[UKIND_BULLET_B] = TRUE;
-//
-//	//アクションUIの設定
-//	UIBillBoard[UIKIND_ACTION]->setPosition(s.width / 2, s.height / 2);
-//	UIBillBoard[UIKIND_ACTION]->setScale(0.1f);
-//	UIBillBoard[UIKIND_ACTION]->setVisible(false);
-//	addChild(UIBillBoard[UIKIND_ACTION]);
-//
-//	Ui[UIKIND_ACTION].Init(UIKIND_ACTION, UIKIND_ACTION);
-//	valid[UIKIND_ACTION] = TRUE;
-//
-//
-//	//リロードアラートの設定
-//	UIBillBoard[UIKIND_RELOAD]->setPosition(s.width / 2, s.height / 2);
-//	UIBillBoard[UIKIND_RELOAD]->setScale(0.1f);
-//	addChild(UIBillBoard[UIKIND_RELOAD]);
-//	UIBillBoard[UIKIND_RELOAD]->setVisible(false);
-//
-//	Ui[UIKIND_RELOAD].Init(UIKIND_RELOAD, UIKIND_RELOAD);
-//	valid[UIKIND_RELOAD] = TRUE;
-
-
-	Sprite* sprite[4];
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	//	sprite[0] = Sprite::create("four4096.png");
-	//	sprite[1] = Sprite::create("time.png");
-	//	sprite[2] = Sprite::create("kaihiai.png");
-	//	sprite[3] = Sprite::create("timelogo.png");
-#else
-	//	sprite[0] = Sprite::create("Graph/Pictures/four2048.png");
-	//	sprite[1] = Sprite::create("Graph/Pictures/time.png");
-	//	sprite[2] = Sprite::create("Graph/Pictures/kaihiai.png");
-	//	sprite[3] = Sprite::create("Graph/Pictures/timelogo.png");
-#endif
-	//	sprite[0]->setPosition(Vec2(285, 695));
-	//	sprite[0]->setScale(0.3f);
-
-	//	sprite[1]->setPosition(Vec2(1085, 760));
-	//	sprite[2]->setPosition(Vec2(100, 150));
-	//	sprite[3]->setPosition(Vec2(250, 80));
-
-	//	addChild(sprite[0]);
-
-	//	for(auto &p : sprite) addChild(p);
-}
+//void GameUILayer::SetUI()
+//{
+//	auto s = Director::getInstance()->getWinSize();//スクリーンサイズを取得
+//}
 
 
 
@@ -266,140 +205,4 @@ void GameUILayer::MoveReticle(void)
 			break;
 		}
 	}
-
-
-	
-
-	//リロードアラートの挙動
-	//プレイヤーの状態を取得して場合分け
-	switch (GameMasterL->GetPlayerState())
-	{
-	case PSTATE_SHOT:
-	case PSTATE_IDLE:
-	case PSTATE_DAMAGED:
-	case PSTATE_DODGE:
-	case PSTATE_APPEAR://隠れた状態から出る
-		
-		/*
-		if(GameMasterL->nowBullets <= 0)
-		{
-		UIBillBoard[UIKIND_RELOAD]->setVisible(true);
-		}
-		else
-		{
-		UIBillBoard[UIKIND_RELOAD]->setVisible(false);
-		}
-		*/
-		break;
-	case PSTATE_HIDE://隠れている
-		//			UIBillBoard[UIKIND_RELOAD]->setVisible(false);
-		break;
-	case PSTATE_RUN://走っている（Wait時）
-		//			UIBillBoard[UIKIND_RELOAD]->setVisible(false);
-		break;
-	case PSTATE_DEAD://死亡
-		//ウェイト時と死亡時はGSTATE_PLAYではないので、他のステート時は一括でUIの非表示を管理した方がよい
-		//現在はここにも記述しておく
-		//			UIBillBoard[UIKIND_RELOAD]->setVisible(false);
-		break;
-	}
-
-
-	//ウェイトUIの挙動
-	//プレイヤーの状態を取得して場合分け
-	switch (GameMasterL->GetPlayerState())
-	{
-		//		case PSTATE_SHOT:
-		//		case PSTATE_IDLE:
-		//		case PSTATE_DAMAGED:
-		//		case PSTATE_DODGE:
-		//		case PSTATE_APPEAR://隠れた状態から出る
-		//		case PSTATE_HIDE://隠れている
-		//		case PSTATE_DEAD://死亡
-		//			LogoUI::getInstance() -> resetLogo( LogoUI::Wait);
-		////			UIBillBoard[UIKIND_WAIT]->setVisible(false);
-		//			break;
-		//		case PSTATE_RUN://走っている（Wait時）
-		//			static int count = 0;
-		//			if( count % 60 == 0)
-		//			{
-		//				LogoUI::getInstance() -> setLogo( LogoUI::Wait);				
-		//			}
-		//			count++;
-		////			UIBillBoard[UIKIND_WAIT]->setVisible(true);
-		//			break;
-	}
-
-	//ウェイトUIとアクションUIの挙動
-	//ゲームの状態を取得して場合分け
-	switch (GameMasterL->GetGameState())
-	{
-
-	case GSTATE_INIT://
-		break;
-	case GSTATE_WAIT://ウェイト時
-	{
-		static int count = 0;
-		if (count % 60 == 0)
-		{
-		}
-		count++;
-		//			UIBillBoard[UIKIND_WAIT]->setVisible(true);
-	}
-		break;
-	case GSTATE_PLAY_SET://戦闘開始前の待ち時間（敵の配置にのみ使用する）
-		break;
-	case GSTATE_PLAY_ACTION://戦闘開始前の待ち時間（ActionのUIを描画するときに使用する）
-		break;
-	case GSTATE_PLAY:
-		break;
-	case GSTATE_PAUSE:
-		break;
-	case GSTATE_CONTINUE:
-		break;
-	case GSTATE_GAMEOVER:
-		break;
-	case GSTATE_EVENT://ムービーイベントなどを進行させるときに使用する？（現在未使用）
-		break;
-	default:
-		break;
-	}
-
-
-	//アクションUIの挙動
-	//プレイヤーの状態を取得して場合分け
-	switch (GameMasterL->GetPlayerState())
-	{
-	case PSTATE_SHOT:
-	case PSTATE_IDLE:
-	case PSTATE_DAMAGED:
-	case PSTATE_DODGE:
-	case PSTATE_APPEAR://隠れた状態から出る
-	case PSTATE_HIDE://隠れている
-	case PSTATE_RUN://走っている（Wait時）
-	case PSTATE_DEAD://死亡
-
-		break;
-	}
-
 }
-
-
-
-/*
-現在は親シーンのupdateで更新系の関数を呼び出しているので、レイヤー固有のmoveTime関数は使用していません
-*/
-void GameUILayer::moveTime(float delta)
-{
-
-}
-
-
-/*
-現在は親シーンのupdateで更新系の関数を呼び出しているので、レイヤー固有のUpdate関数は使用していません
-*/
-void GameUILayer::update(float delta)
-{
-
-}
-

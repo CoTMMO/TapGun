@@ -17,14 +17,13 @@ namespace TapGun
 #define STS_MAXBULLETS 30//プレイヤーの最大弾数
 #define STS_MUTEKIFRAME (120 / 60.0f) //無敵時間
 
-#define STS_RUNSPEED 0.004f//プレイヤーのウェイト時の速度
-
-#define STS_HIDEWAIT (25.0f)//回避モーションが終了するまでの全体フレーム
+#define STS_RUNSPEED 0.005f//プレイヤーのウェイト時の速度
+#define STS_HIDEWAIT 25//回避モーションが終了するまでの全体フレーム
 #define STS_HIDESTART 1//回避ボタンを押してから回避モーションが始まるまでの時間
 #define STS_MUTEKISTART 0//回避モーションが始まってから無敵時間に移行するまでの時間
 #define STS_APPEARSTART 1//回避ボタンを離してから突撃モーションが始まるまでの時間
 #define STS_MUTEKIEND (STS_HIDEWAIT - STS_MUTEKISTART)//突撃モーションが始まってから無敵時間が終了するまでの時間
-#define STS_RELOADSTART (12.0f)//回避モーションが始まってからリロードが行われるまでの時間
+#define STS_RELOADSTART 12//回避モーションが始まってからリロードが行われるまでの時間
 
 
 
@@ -165,6 +164,7 @@ namespace TapGun
 		GSTATE_CONTINUE_END,//コンティニュー終了後の初期化
 
 		GSTATE_GAMEOVER,//
+		GSTATE_CLEAR,//
 		GSTATE_END,//ゲームシーンを終了してタイトルへ戻る
 
 		GSTATE_EVENT,//ムービーイベントなどを進行させるときに使用する？（現在未使用）
@@ -211,12 +211,14 @@ namespace TapGun
 		TFLAG_NUM
 	};
 
+	//
 	enum _STAGE_POINT_DEF_
 	{
-		POINT_NONE,//使用しない
-		POINT_BATTLE,//バトルマス
-		POINT_CHANGE,//方向転換
-		POINT_FINISH,
+		PO_NONE,//使用しない
+		PO_START,//スタート地点
+		PO_BATTLE,//バトルマス
+		PO_CHANGE,//方向転換
+		PO_FINISH,
 	};
 
 	enum _STAGE_POINT_
@@ -227,9 +229,9 @@ namespace TapGun
 		POINT_START,
 		//POINT_L1_0,は使用しない
 		POINT_W1,
-		//		POINT_L1,
 
-		//		POINT_L2_1a,
+		POINT_L2a,
+		POINT_L2b,
 		//POINT_W2,
 		//		POINT_L2,
 
@@ -262,10 +264,12 @@ namespace TapGun
 		//タイム
 		int gameActionTime;//ウェーブの残り時間（ミリ秒）
 
+		/*
 		timeval* nowTV;//現在時刻(timeval)
 		timeval* preTV;//前フレームまでの時刻(timeval)
 		int nowTime;//現在時刻（ミリ秒）
 		int preTime;//1ループ前の時刻（ミリ秒）
+		*/
 		int loopTime;//ループに要した時間（ミリ秒）
 
 		int shotFlag;//プレイヤーの攻撃アニメーション用フラグ(5フレーム以上タッチしているかどうか)

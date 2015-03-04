@@ -76,8 +76,8 @@ void ResourceLoader::sprite3DLoadCallback( _Sprite3D* sprite3D, void* param, con
 		models[count[1]] -> setTexture( "tex_teki.png");
 		models[count[1]] -> getMeshByName( "gun") -> setTexture( "tex_boy_guns.png");
 #else
-		models[count[1]] -> setTexture( "Graph/Models/enemy/tex_teki.png");
-		models[count[1]] -> getMeshByName( "gun") -> setTexture( "Graph/Models/enemy/tex_boy_guns.png");
+		models[count[1]] -> setTexture( "Graph/Models/Enemy/tex_teki.png");
+		models[count[1]] -> getMeshByName( "gun") -> setTexture( "Graph/Models/Enemy/tex_boy_guns.png");
 #endif
 		count[1]++;
 	}
@@ -112,12 +112,12 @@ void ResourceLoader::sprite3DLoadCallback( _Sprite3D* sprite3D, void* param, con
 		models[count[3]] -> getMeshByName( "mug") -> setTexture( "tex_gun.png");
 		models[count[3]] -> getMeshByName( "Cylinder014") -> setTexture( "tex_gun.png");
 #else
-		models[count[3]] -> setTexture( "Graph/Models/player/tex_player_1.png");
-		models[count[3]] -> getMeshByName( "me") -> setTexture( "Graph/Models/player/tex_player_2.png");
-		models[count[3]] -> getMeshByName( "body_3") -> setTexture( "Graph/Models/player/tex_player_2.png");
-		models[count[3]] -> getMeshByName( "gun") -> setTexture( "Graph/Models/player/tex_gun.png");
-		models[count[3]] -> getMeshByName( "mug") -> setTexture( "Graph/Models/player/tex_gun.png");
-		models[count[3]] -> getMeshByName( "Cylinder014") -> setTexture( "Graph/Models/player/tex_gun.png");
+		models[count[3]] -> setTexture( "Graph/Models/Player/tex_player_1.png");
+		models[count[3]] -> getMeshByName( "me") -> setTexture( "Graph/Models/Player/tex_player_2.png");
+		models[count[3]] -> getMeshByName( "body_3") -> setTexture( "Graph/Models/Player/tex_player_2.png");
+		models[count[3]] -> getMeshByName( "gun") -> setTexture( "Graph/Models/Player/tex_gun.png");
+		models[count[3]] -> getMeshByName( "mug") -> setTexture( "Graph/Models/Player/tex_gun.png");
+		models[count[3]] -> getMeshByName( "Cylinder014") -> setTexture( "Graph/Models/Player/tex_gun.png");
 #endif
 	}
 	else

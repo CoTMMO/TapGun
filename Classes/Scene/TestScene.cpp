@@ -7,7 +7,6 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #include "Sprite3D.h"
-#include "Errorfunc.h"
 #include "Sound.h"
 #include "UI.h"
 #include "Effect.h"
@@ -17,8 +16,6 @@
 #include "Base/UI.h"
 #include "Base/Sprite3D.h"
 #include "Object/Effect.h"
-#include "System/Directory.h"
-#include "System/Errorfunc.h"
 #include "System/Sound.h"
 #include "Object/Effect.h"
 #include "System/ResourceLoader.h"
@@ -43,6 +40,8 @@ TestTT *ts;
 Sprite *hp[8];
 bool flag[8];
 
+_Sprite3D* pl;
+
 Scene* Test::createScene()
 {
 	auto scene = Scene::create();
@@ -53,41 +52,49 @@ Scene* Test::createScene()
 
 bool Test::init()
 {
-	if ( !Layer::init()) { return false; }
+	if (!Layer::init()) { return false; }
 
-	auto cache = SpriteFrameCache::getInstance();
-
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
-
-	auto con = ContinueLayer::create();
-//	addChild( con);
-
-	auto sprit = _Sprite3D::create( "Enemy/enemy");
-	sprit -> setCullFace( GL_FRONT);
-	sprit -> setPosition( 640, 0);
-	sprit -> setScale( 300.0f);
-	addChild( sprit);
-	
-
-	//現在はタッチイベントのリスナーをここに用意しています
-	auto dispatcher = Director::getInstance()->getEventDispatcher();
-
-	listener = EventListenerTouchOneByOne::create();
-	listener -> onTouchBegan = CC_CALLBACK_2( Test::onTouchBegan, this);
-	listener -> onTouchMoved = CC_CALLBACK_2( Test::onTouchMoved, this);
-	listener -> onTouchEnded = CC_CALLBACK_2( Test::onTouchEnded, this);
-
-	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	//	auto cache = SpriteFrameCache::getInstance();
+	//
+	//	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
+	//
+	//	auto con = ContinueLayer::create();
+	////	addChild( con);
+	//
+	//	auto sprit = _Sprite3D::create( "Enemy/enemy");
+	//	sprit -> setCullFace( GL_FRONT);
+	//	sprit -> setPosition( 640, 0);
+	//	sprit -> setScale( 300.0f);
+	//	addChild( sprit);
+	//	
+	//
+	//	//現在はタッチイベントのリスナーをここに用意しています
+	//	auto dispatcher = Director::getInstance()->getEventDispatcher();
+	//
+	//	listener = EventListenerTouchOneByOne::create();
+	//	listener -> onTouchBegan = CC_CALLBACK_2( Test::onTouchBegan, this);
+	//	listener -> onTouchMoved = CC_CALLBACK_2( Test::onTouchMoved, this);
+	//	listener -> onTouchEnded = CC_CALLBACK_2( Test::onTouchEnded, this);
+	//
+	//	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	scheduleUpdate();
-	schedule( schedule_selector(Test::moveTime), 0.016f);
+	//	schedule( schedule_selector(Test::moveTime), 0.016f);
 
+	pl = _Sprite3D::create("player/player", "Player.anime");
+
+	pl->setPosition3D(Vec3(0, 0, 3));
+	pl->setRotation3D(Vec3(0, 0, 0));
+	pl->setScale(300);
+	addChild(pl);
 	return true;
 }
 
 void Test::update( float delta)
 {
-
+	Vec3 rot = pl->getRotation3D();
+	rot.y += delta * 100.0f;
+	pl->setRotation3D(rot);
 }
 
 void Test::moveTime( float delta)
