@@ -74,7 +74,7 @@ namespace TapGun
 		int AIAtk;//エネミーの攻撃モーション
 		int AILife;//AIの生き方
 
-		int nextEnemy;//このエネミーが倒れたときに次に出てくるエネミーの番号
+		//int nextEnemy;//このエネミーが倒れたときに次に出てくるエネミーの番号
 		int nextEnemies[3];//このエネミーを倒した次に出てくるエネミーの番号
 
 		//パラメータ

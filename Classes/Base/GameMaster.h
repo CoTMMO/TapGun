@@ -35,7 +35,7 @@ namespace TapGun
 #define STS_ENEMY_WALKSPEED 0.002f//敵の歩き速度
 #define STS_ENEMY_SWALKSPEED 0.0005f//敵の横歩き速度
 #define STS_ENEMY_SJUMPSPEED 0.005f//敵の
-#define STS_ENEMY_ACROSPEED 0.001f//敵の
+#define STS_ENEMY_ACROSPEED 0.003f//敵の
 
 #define POS_ENEMY_LPOX -0.3f//敵の左の銃のポイント
 #define POS_ENEMY_LPOY 1.25f//敵の左の銃のポイント
