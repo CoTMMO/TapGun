@@ -7,7 +7,6 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #include "Sprite3D.h"
-#include "Errorfunc.h"
 #include "Sound.h"
 #include "UI.h"
 #include "Effect.h"
@@ -17,8 +16,6 @@
 #include "Base/UI.h"
 #include "Base/Sprite3D.h"
 #include "Object/Effect.h"
-#include "System/Directory.h"
-#include "System/Errorfunc.h"
 #include "System/Sound.h"
 #include "Object/Effect.h"
 #include "System/ResourceLoader.h"

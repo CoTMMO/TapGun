@@ -54,10 +54,10 @@ namespace TapGun
 
 		EnemyTable enemyTable[100];//敵の出現テーブル
 
-		timeval* nowTV;//現在時刻
-		timeval* preTV;//
-		float nowTime;//現在時刻（秒）
-		float preTime;//前フレームの時刻（秒）
+		//timeval* nowTV;//現在時刻
+		//timeval* preTV;//
+		//float nowTime;//現在時刻（秒）
+		//float preTime;//前フレームの時刻（秒）
 
 		//Muzzle muzzle;//プレイヤーのマズル
 
@@ -149,7 +149,7 @@ namespace TapGun
 		int ChangeCamera(int num);
 
 		//計算用
-		int getNowTime();
+		//int getNowTime();
 		float getCross(cocos2d::Vec3 v1, cocos2d::Vec3 v2);
 	};
 }

@@ -118,11 +118,11 @@ bool GameScene::init()
 	this->scheduleUpdate();
 
 	//時間取得のための変数を初期化
-	GameMasterS->nowTV = new timeval;
-	GameMasterS->preTV = new timeval;
-	gettimeofday(GameMasterS->nowTV, nullptr);
-	gettimeofday(GameMasterS->preTV, nullptr);
-	GameMasterS->loopTime = 16.666f;
+	//GameMasterS->nowTV = new timeval;
+	//GameMasterS->preTV = new timeval;
+	//gettimeofday(GameMasterS->nowTV, nullptr);
+	//gettimeofday(GameMasterS->preTV, nullptr);
+	GameMasterS->loopTime = 16;
 	//
 	GameMasterS->reticleAjust = 0.1f;//
 
@@ -180,18 +180,6 @@ void GameScene::CreateCamera()
 		GameMasterS->InitCamera3D();//カメラを初期化（ノードにaddChildもする）
 		gGameLayer->setCameraMask(CAMFLAG_3D);
 
-		////プレイヤーの座標取得はとりあえずこのような形で記述しています
-		//Vec3 cameraPos = gGameLayer->player.wrapper->getPosition3D() - gGameLayer->player.sprite3d->getPosition3D();
-
-		////ノードを意識する座標
-		//GameMasterS->SetCameraNodePos(cameraPos);//ノードは常にプレイヤーの座標に一致
-		//GameMasterS->SetCameraNodeRot(gGameLayer->player.sprite3d->getRotation3D());//ノード回転もプレイヤーをもとに設定
-
-		//GameMasterS->SetCamera3DPos(Vec3(C_SETX_L, C_SETY_L, C_SETZ_L));//プレイヤー（親ノード）とカメラの位置関係をセット
-		//GameMasterS->SetCamera3DRot(Vec3(C_ROTX_L, C_ROTY_L, C_ROTZ_L));
-
-		//GameMasterS->GetCameraNode();
-		//GameMasterS->Get3DCamInstance();
 		addChild(GameMasterS->GetCamNodeInstance());
 	}
 }
@@ -227,17 +215,21 @@ void GameScene::update(float delta)
 
 
 	//1ループ前の時刻を取得
+	/*
 	GameMasterS->preTV->tv_sec = GameMasterS->nowTV->tv_sec;
 	GameMasterS->preTV->tv_usec = GameMasterS->nowTV->tv_usec;
+	*/
 
+	/*
 	//現在時刻を取得
 	gettimeofday(GameMasterS->nowTV, nullptr);
 	//現在時刻を計算
 	GameMasterS->preTime = GameMasterS->preTV->tv_sec * 1000.0f + GameMasterS->preTV->tv_usec * 0.001f;
 	GameMasterS->nowTime = GameMasterS->nowTV->tv_sec * 1000.0f + GameMasterS->nowTV->tv_usec * 0.001f;
+	*/
 
 	//ループにかかった時間を計測(秒)
-	GameMasterS->loopTime = (GameMasterS->nowTime - GameMasterS->preTime);
+	GameMasterS->loopTime = delta * 1000;
 
 	//現在のゲームの状態でゲーム分岐
 	switch (GameMasterS->GetGameState())
@@ -289,7 +281,7 @@ void GameScene::update(float delta)
 		else
 		{
 			UpdateCamera();//モデルの移動をもとにカメラ移動
-			timeCount = 0.0f;
+			timeCount = 0;
 		}
 
 		break;
@@ -309,7 +301,7 @@ void GameScene::update(float delta)
 		//敵の配置を行う
 		gGameLayer->SetEnemy();
 		GameMasterS->SetGameState(GSTATE_PLAY_ACTION);
-		timeCount = 0.0f;
+		timeCount = 0;
 		break;
 	case GSTATE_PLAY_ACTION:
 
@@ -319,7 +311,7 @@ void GameScene::update(float delta)
 		if (timeCount >= TIME_ACTION_UI)
 		{
 			//一定時間経過したらウェーブを開始する
-			timeCount = 0.0f;
+			timeCount = 0;
 			GameMasterS->SetGameState(GSTATE_PLAY);
 		}
 		else

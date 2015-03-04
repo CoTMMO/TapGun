@@ -262,10 +262,12 @@ namespace TapGun
 		//タイム
 		int gameActionTime;//ウェーブの残り時間（ミリ秒）
 
+		/*
 		timeval* nowTV;//現在時刻(timeval)
 		timeval* preTV;//前フレームまでの時刻(timeval)
 		int nowTime;//現在時刻（ミリ秒）
 		int preTime;//1ループ前の時刻（ミリ秒）
+		*/
 		int loopTime;//ループに要した時間（ミリ秒）
 
 		int shotFlag;//プレイヤーの攻撃アニメーション用フラグ(5フレーム以上タッチしているかどうか)

@@ -188,10 +188,10 @@ void GameModelsLayer::LoadModels()
 
 	//とりあえずここで時間の初期化//要チェック
 	//timeval構造体の初期化
-	nowTV = new timeval();
-	preTV = new timeval();
-	memset(nowTV, 0, sizeof(timeval));
-	memset(preTV, 0, sizeof(timeval));
+	//nowTV = new timeval();
+	//preTV = new timeval();
+	//memset(nowTV, 0, sizeof(timeval));
+	//memset(preTV, 0, sizeof(timeval));
 }
 
 
@@ -247,9 +247,7 @@ void GameModelsLayer::InitPlayer(int wave_num)
 	GameMasterM->SetPlayerBullets(STS_MAXBULLETS);//
 
 	//最初はアイドル状態から始まるので、時間を取得せずともよい
-	player.motStartTime = 0.0f;
 	player.motProcTime = 0.0f;
-	player.motPreTime = 0.0f;
 }
 
 
@@ -965,8 +963,8 @@ void GameModelsLayer::ActionIdle()
 
 				//モーション管理用の時間を初期化
 				player.motProcTime = 0;//モーションを再生してからの経過時間（ミリ秒）
-				player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-				player.motStartTime = getNowTime();
+//				player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
+//				player.motStartTime = getNowTime();
 
 
 				GameMasterM->rapidFrame = 0.0f;
@@ -982,8 +980,6 @@ void GameModelsLayer::ActionIdle()
 
 			//モーション管理用の時間を初期化
 			player.motProcTime = 0;//モーションを再生してからの経過時間（ミリ秒）
-			player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-			player.motStartTime = getNowTime();
 			player.setAnimEndTime(MACRO_FtoMS(STS_HIDEWAIT));//回避モーションにかかる時間をセット
 
 		}
@@ -1003,11 +999,8 @@ void GameModelsLayer::ActionIdle()
 void GameModelsLayer::ActionShot()
 {
 	//モーションを再生してからの経過時間をある程度正確に取得するため、関数内で時間計算を行っています
-	player.motProcTime = getNowTime() - player.motStartTime;//モーションを再生してからの経過時間（ミリ秒）
-	int lTime = getNowTime() - player.motPreTime;
-	player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-
-	GameMasterM->rapidFrame += MACRO_StoF(lTime);//
+	player.motProcTime += GameMasterM->loopTime;//モーションを再生してからの経過時間（ミリ秒）
+	GameMasterM->rapidFrame += MACRO_StoF(GameMasterM->loopTime);//
 
 	//プレイヤーの向きに応じて呼び出すアニメーションを変更する
 	//とりあえずここで文字列作成
@@ -1128,9 +1121,7 @@ void GameModelsLayer::ActionShot()
 void GameModelsLayer::ActionDodge(void)
 {
 	//モーションを再生してからの経過時間をある程度正確に取得するため、関数内で時間計算を行っています
-	player.motProcTime = getNowTime() - player.motStartTime;//モーションを再生してからの経過時間（ミリ秒）
-	int lTime = getNowTime() - player.motPreTime;
-	player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
+	player.motProcTime += GameMasterM->loopTime;//モーションを再生してからの経過時間（ミリ秒）
 
 	//プレイヤーの向きに応じて呼び出すアニメーションを変更する
 	//とりあえずここで文字列作成
@@ -1197,9 +1188,7 @@ void GameModelsLayer::ActionDodge(void)
 		}
 
 		//モーション用カウンターを初期化
-		player.motProcTime = 0.0f;//経過時間を0に初期化
-		player.motPreTime = getNowTime();
-		player.motStartTime = getNowTime();
+		player.motProcTime = 0;//経過時間を0に初期化
 	}
 	else
 	{
@@ -1216,7 +1205,6 @@ void GameModelsLayer::ActionDodge(void)
 			player.sprite3d->stopALLAnimation();//モーション終了
 			player.sprite3d->startAnimation(h_shot, (startTime * 0.001f), MACRO_FtoS(STS_HIDEWAIT) - (startTime * 0.001f));//
 
-			player.motStartTime = getNowTime();//現在時刻
 			player.motProcTime = startTime;//
 		}
 		else if (TSTATE_MOVE == state || TSTATE_ON == state)//ホールド状態
@@ -1225,7 +1213,7 @@ void GameModelsLayer::ActionDodge(void)
 			if (PSIDE_LEFT == GameMasterM->playerSide)
 			{
 				//プレイヤーの座標の更新
-				float rot = lTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));
+				float rot = GameMasterM->loopTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));
 
 				Vec3 tmp = player.wrapper->getRotation3D();
 				tmp.y -= rot;// *loopTime;
@@ -1242,7 +1230,7 @@ void GameModelsLayer::ActionDodge(void)
 			else
 			{
 				//プレイヤーの座標の更新
-				float rot = lTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));//要チェック
+				float rot = GameMasterM->loopTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));//要チェック
 
 				Vec3 tmp = player.wrapper->getRotation3D();
 				tmp.y += rot;
@@ -1305,8 +1293,6 @@ void GameModelsLayer::ActionHide(void)
 		//		player.InitFrame();//フレームをリフレッシュ
 
 		//モーション管理用時間の初期化
-		player.motStartTime = getNowTime();//スタートは現在時刻 * 0.001f//現在時刻を取得
-		player.motPreTime = getNowTime();//前フレームの時刻も現在時刻
 		player.motProcTime = 0;//経過時間は0
 		player.setAnimEndTime(MACRO_FtoMS(STS_HIDEWAIT));//モーション終了までの残り時間を計算
 	}
@@ -1323,10 +1309,7 @@ void GameModelsLayer::ActionHide(void)
 void GameModelsLayer::ActionAppear(void)
 {
 	//モーションを再生してからの経過時間をある程度正確に取得するため、関数内で時間計算を行っています
-	player.motProcTime = getNowTime() - player.motStartTime;//モーションを再生してからの経過時間（ミリ秒）
-	int lTime = getNowTime() - player.motPreTime;//1ループにかかった時間を計算
-	player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-
+	player.motProcTime += GameMasterM->loopTime;//モーションを再生してからの経過時間（ミリ秒）
 
 	//プレイヤーの向きに応じて呼び出すアニメーションを変更する
 	//とりあえずここで文字列作成
@@ -1375,7 +1358,7 @@ void GameModelsLayer::ActionAppear(void)
 		if (PSIDE_LEFT == GameMasterM->playerSide)
 		{
 			//回避フレームに比例してカメラの回転を変化させる
-			float rot = lTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));
+			float rot = GameMasterM->loopTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT));
 			Vec3 tmp = player.wrapper->getRotation3D();
 			tmp.y += rot;//
 			player.wrapper->setRotation3D(tmp);//プレイヤーの親ノード（回避軸）の角度を更新する
@@ -1392,7 +1375,7 @@ void GameModelsLayer::ActionAppear(void)
 		else
 		{
 			//回避フレームに比例してカメラの回転を変化させる
-			float rot = lTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT)) * 0.001f;
+			float rot = GameMasterM->loopTime * 90.0f / (MACRO_FtoMS(STS_HIDEWAIT)) * 0.001f;
 			Vec3 tmp = player.wrapper->getRotation3D();
 			tmp.y -= rot;//
 			player.wrapper->setRotation3D(tmp);//プレイヤーの親ノード（回避軸）の角度を更新する
@@ -1419,9 +1402,7 @@ void GameModelsLayer::ActionAppear(void)
 void GameModelsLayer::ActionDamaged(void)
 {
 	//モーションを再生してからの経過時間をある程度正確に取得するため、関数内で時間計算を行っています
-	player.motProcTime = getNowTime() - player.motStartTime;//モーションを再生してからの経過時間（秒）
-	int lTime = getNowTime() - player.motPreTime;//1ループにかかった時間を計算
-	player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
+	player.motProcTime += GameMasterM->loopTime;//モーションを再生してからの経過時間（秒）
 
 	//プレイヤーの向きに応じて呼び出すアニメーションを変更する
 	//とりあえずここで文字列作成
@@ -1448,8 +1429,6 @@ void GameModelsLayer::ActionDamaged(void)
 
 		//
 		player.motProcTime = 0;//モーションを再生してからの経過時間（秒）
-		player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-		player.motStartTime = getNowTime();//PreTimeに現在時刻を代入
 	}
 	else
 	{
@@ -1469,10 +1448,7 @@ void GameModelsLayer::ActionDamaged(void)
 void GameModelsLayer::ActionRecover(void)
 {
 	//モーションを再生してからの経過時間をある程度正確に取得するため、関数内で時間計算を行っています
-	player.motProcTime = getNowTime() - player.motStartTime;//モーションを再生してからの経過時間（秒）
-	int lTime = getNowTime() - player.motPreTime;//1ループにかかった時間を計算
-	player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-
+	player.motProcTime += GameMasterM->loopTime;//モーションを再生してからの経過時間（秒）
 
 	//プレイヤーの向きに応じて呼び出すアニメーションを変更する
 	//とりあえずここで文字列作成
@@ -1502,8 +1478,6 @@ void GameModelsLayer::ActionRecover(void)
 
 			//モーション管理用の時間を初期化
 			player.motProcTime = 0;//モーションを再生してからの経過時間（秒）
-			player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-			player.motStartTime = getNowTime();//StartTimeに現在時刻を代入
 		}
 		else
 		{
@@ -1515,8 +1489,6 @@ void GameModelsLayer::ActionRecover(void)
 
 			//
 			player.motProcTime = 0;//モーションを再生してからの経過時間（秒）
-			player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-			player.motStartTime = getNowTime();//PreTimeに現在時刻を代入
 
 			//座標と角度をセットしてカメラの座標を補正
 			ChangeCamera(2);
@@ -1555,10 +1527,7 @@ void GameModelsLayer::ActionDead(void)
 {
 	//
 	//モーションを再生してからの経過時間をある程度正確に取得するため、関数内で時間計算を行っています
-	player.motProcTime = getNowTime() - player.motStartTime;//モーションを再生してからの経過時間（秒）
-	int lTime = getNowTime() - player.motPreTime;//1ループにかかった時間を計算
-	player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-
+	player.motProcTime += GameMasterM->loopTime;//モーションを再生してからの経過時間（秒）
 }
 
 
@@ -1926,8 +1895,6 @@ void  GameModelsLayer::CheckHit(void)
 					//タイムとフレームの初期化
 					//モーション管理用の時間を初期化
 					player.motProcTime = 0;//モーションを再生してからの経過時間（秒）
-					player.motPreTime = getNowTime();//PreTimeに現在時刻を代入
-					player.motStartTime = getNowTime();//StartTimeに現在時刻を代入
 
 					//一度でも攻撃を受けるとブレーク
 					break;
@@ -2415,30 +2382,6 @@ void GameModelsLayer::KillPlayer()
 
 	//その他必要な処理があればここに追記します
 }
-
-
-/**
-*	現在時刻を取得（ミリ秒）
-*
-*	@author	sasebon
-*	@param	なし
-*	@return	現在時刻（ミリ秒）
-*	@date	2/5 Ver 1.0
-*/
-int GameModelsLayer::getNowTime(void)
-{
-	//現在時刻を取得
-	gettimeofday(nowTV, nullptr);
-	//時間差を計算
-	nowTime = (nowTV->tv_sec * 1000.0f + nowTV->tv_usec * 0.001f);
-
-	return nowTime;
-}
-
-
-
-
-
 
 
 //
