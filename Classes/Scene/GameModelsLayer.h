@@ -4,21 +4,11 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Unit.h"
-#include "Player.h"
-//#include "muzzle.h"
-#include "EnemyTable.h"
-
-#else
-
 #include "Base/Unit.h"
 #include "Base/Player.h"
 //#include "Object/muzzle.h"
 #include "Stage/EnemyTable.h"
 
-#endif
 
 //#define DEBUG_CENTER//デバッグ用。回転軸を示すモデルを描画
 

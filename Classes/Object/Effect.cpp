@@ -1,16 +1,8 @@
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Effect.h"
-#include "Sound.h"
-
-#else
-
 #include "Object/Effect.h"
 #include "System/Sound.h"
 
-#endif
 
 USING_NS_CC;
 using namespace std;

@@ -1,16 +1,7 @@
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "EnemyTable.h"
-#include "Unit.h"
-
-#else
-
 #include "Stage/EnemyTable.h"
 #include "Base/Unit.h"
-
-#endif
 
 USING_NS_CC;
 using namespace TapGun;

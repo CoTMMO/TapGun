@@ -1,17 +1,8 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Sprite3D.h"
-#include "ResourceLoader.h"
-
-#else
-
-#include "Base/Sprite3D.h"
 #include "System/ResourceLoader.h"
-
-#endif
+#include "Base/Sprite3D.h"
 
 USING_NS_CC;
 using namespace std;
@@ -32,11 +23,6 @@ void ResourceLoader::loadModel( const string& fileName)
 void ResourceLoader::loadModel( const string& modelPath, const string& texturePath)
 {
 	_Sprite3D::createAsync( modelPath, texturePath, CC_CALLBACK_2( ResourceLoader::sprite3DLoadCallback, this, modelPath), nullptr);
-}
-
-void ResourceLoader::loadModel( const string& modelPath, const string& texturePath, const string& animaPath)
-{
-	_Sprite3D::createAsync( modelPath, texturePath, animaPath, CC_CALLBACK_2( ResourceLoader::sprite3DLoadCallback, this, modelPath), nullptr);
 }
 
 _Sprite3D* ResourceLoader::getSprite3D( int count)

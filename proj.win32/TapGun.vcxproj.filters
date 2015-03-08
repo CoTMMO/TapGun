@@ -25,6 +25,9 @@
     <Filter Include="Source\System">
       <UniqueIdentifier>{ee00c4b2-1664-4903-b7fe-8b35854a2d76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Platform">
+      <UniqueIdentifier>{5751c64c-43c6-4874-9f59-b1bb3f9479ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,9 +42,6 @@
     <ClCompile Include="..\Classes\Base\Player.cpp">
       <Filter>Source\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Base\Sprite.cpp">
-      <Filter>Source\Base</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Base\Sprite3D.cpp">
       <Filter>Source\Base</Filter>
     </ClCompile>
@@ -52,9 +52,6 @@
       <Filter>Source\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Object\Effect.cpp">
-      <Filter>Source\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Object\Muzzle.cpp">
       <Filter>Source\Object</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scene\CreditScene.cpp">
@@ -96,6 +93,12 @@
     <ClCompile Include="..\Classes\System\EnemySettingFile.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Platform\Win32_Func.cpp">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Platform\Android_Func.cpp">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -110,9 +113,6 @@
     <ClInclude Include="..\Classes\Base\Player.h">
       <Filter>Source\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Base\Sprite.h">
-      <Filter>Source\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Base\Sprite3D.h">
       <Filter>Source\Base</Filter>
     </ClInclude>
@@ -123,9 +123,6 @@
       <Filter>Source\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Object\Effect.h">
-      <Filter>Source\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Object\Muzzle.h">
       <Filter>Source\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\CreditScene.h">
@@ -166,6 +163,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\System\EnemySettingFile.h">
       <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Platform\Win32_Func.h">
+      <Filter>Source\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Platform.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Platform\Android_Func.h">
+      <Filter>Source\Platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,5 @@
 ﻿#include"Unit.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-
-#else
-
-
-#endif
 
 USING_NS_CC;
 using namespace TapGun;

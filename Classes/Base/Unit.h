@@ -6,16 +6,8 @@
 #include <stdio.h>
 #include <fstream>
 
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Sprite3D.h"
-
-#else
-
 #include "Base/Sprite3D.h"
 
-#endif
 
 #define MAX_UNIT 70
 

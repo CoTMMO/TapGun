@@ -1,16 +1,8 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include"GameMaster.h"
-
-#else
-
 #include"Base/GameMaster.h"
  
-#endif
-
 //#define CN//カメラノードを使用するテスト
 USING_NS_CC;
 using namespace TapGun;

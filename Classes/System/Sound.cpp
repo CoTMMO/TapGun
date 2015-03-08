@@ -2,15 +2,8 @@
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Sound.h"
-
-#else
-
+#include "Platform.h"
 #include "System/Sound.h"
-
-#endif
 
 USING_NS_CC;
 using namespace std;
@@ -42,13 +35,7 @@ Sound* Sound::getInstance( void)
  */
 int Sound::loadBGM( const string& fileName)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	Sound::getInstance() -> bgmFileName = fileName + ".mp3";
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	Sound::getInstance() -> bgmFileName = "Sound/BGM/" + fileName + ".ogg";
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	Sound::getInstance() -> bgmFileName = "Sound/BGM/" + fileName + ".mp3";
-#endif
+	Sound::getInstance() -> bgmFileName = FileAccess::getInstance() -> getBGMPath( fileName);
 	SimpleAudioEngine::getInstance() -> preloadBackgroundMusic( Sound::getInstance() -> bgmFileName.c_str());
 	return 0;
 }
@@ -249,13 +236,7 @@ int Sound::loadSE( const std::string& fileName)
 	string str = static_cast<string>(fileName);
 	
 	if( str.size() < 4) return -1;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	data -> filePath = fileName + ".mp3";
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	data -> filePath = "Sound/SE/" + fileName + ".ogg";
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	data -> filePath = "Sound/SE/" + fileName + ".mp3";
-#endif
+	data -> filePath = FileAccess::getInstance() -> getSEPath( fileName).c_str();
 	SimpleAudioEngine::getInstance() -> preloadEffect( data -> filePath.c_str());
 
 	while( int point = str.rfind( '/', str.size()) != -1)
@@ -491,13 +472,7 @@ int Sound::loadVoice( const std::string& fileName)
 	string str = static_cast<string>(fileName);
 	
 	if( str.size() < 4) return -1;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	data -> filePath = fileName + ".mp3";
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	data -> filePath = "Sound/Voice/" + fileName + ".ogg";
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	data -> filePath = "Sound/Voice/" + fileName + ".mp3";
-#endif
+	data -> filePath = FileAccess::getInstance() -> getVoicePath( fileName).c_str();
 	SimpleAudioEngine::getInstance() -> preloadEffect( data -> filePath.c_str());
 	
 	while( int point = str.rfind( '/', str.size()) != -1)

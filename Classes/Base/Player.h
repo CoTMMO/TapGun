@@ -6,18 +6,7 @@
 #include <stdio.h>
 #include <fstream>
 
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Sprite3D.h"
-#include "Muzzle.h"
-
-#else
-
 #include "Base/Sprite3D.h"
-#include "Object/Muzzle.h"
-
-#endif
 
 namespace TapGun
 {

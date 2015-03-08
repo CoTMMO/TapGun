@@ -4,15 +4,8 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Sprite3D.h"
-
-#else
-
 #include "Base/Sprite3D.h"
 
-#endif
 
 namespace TapGun
 {
@@ -68,7 +61,7 @@ namespace TapGun
 	public:
 		cocos2d::Vec3 standbyPos;//
 		cocos2d::Vec3 targetPos[3];
-		
+
 		int SetAI(int appear, int atk, int move, int life);
 		void SetNextEnemy(int num1, int num2, int num3);
 		void SetTargetPos(cocos2d::Vec3 pos[3]);

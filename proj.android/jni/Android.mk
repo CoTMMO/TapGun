@@ -19,6 +19,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/Base/Unit.cpp \
 				   ../../Classes/Base/Sprite3D.cpp \
 				\
+				   ../../Classes/Platform/Android_Func.cpp \
+				\
 				   ../../Classes/Object/Effect.cpp \
 				\
 				   ../../Classes/Scene/ContinueLayer.cpp \

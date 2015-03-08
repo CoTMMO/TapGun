@@ -4,15 +4,7 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Sprite3D.h"
-
-#else
-
 #include "Base/Sprite3D.h"
-
-#endif
 
 namespace TapGun
 {
@@ -36,7 +28,6 @@ namespace TapGun
 
 		void loadModel( const std::string& fileName);
 		void loadModel( const std::string& modelPath, const std::string& texturePath);
-		void loadModel( const std::string& modelPath, const std::string& texturePath, const std::string& animePath);
 
 		_Sprite3D* getSprite3D( int count);
 

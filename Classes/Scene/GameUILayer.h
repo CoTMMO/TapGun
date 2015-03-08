@@ -4,15 +4,7 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "UI.h"
-
-#else
-
 #include "Base/UI.h"
-
-#endif
 
 #define MAX_UI UIKIND_NUM
 

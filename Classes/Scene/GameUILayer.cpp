@@ -1,17 +1,8 @@
 
 #include "GameUILayer.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "GameMaster.h"
-#include "UI.h"
-
-#else
-
 #include "Base/GameMaster.h"
 #include "Base/UI.h"
-
-#endif
 
 
 USING_NS_CC;

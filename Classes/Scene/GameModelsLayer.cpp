@@ -1,23 +1,10 @@
 #include "GameModelsLayer.h"
 
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "GameMaster.h"
-#include "Sprite3D.h"
-#include "Sound.h"
-#include "ResourceLoader.h"
-#include "Effect.h"
-
-#else
-
 #include "Base/Sprite3D.h"
 #include "Base/GameMaster.h"
 #include "System/Sound.h"
 #include "System/ResourceLoader.h"
 #include "Object/Effect.h"
-
-#endif
 
 
 USING_NS_CC;

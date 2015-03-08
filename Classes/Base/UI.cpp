@@ -1,17 +1,8 @@
 
 #include "UI.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "GameMaster.h"
-#include "Sound.h"
-
-#else
-
 #include "Base/GameMaster.h"
 #include "System/Sound.h"
-
-#endif
 
 using namespace TapGun;
 USING_NS_CC;

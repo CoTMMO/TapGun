@@ -2,124 +2,196 @@
 #include <fstream>
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "EnemySettingFile.h"
-#include "Enemy.h"
-
-#else
-
+#include "Platform.h"
 #include "Stage/Enemy.h"
 #include "System/EnemySettingFile.h"
-
-#endif
 
 USING_NS_CC;
 using namespace std;
 using namespace TapGun;
 
-EnemySettingFile* EnemySettingFile::getInstance( void)
+/**
+*	敵設定ファイルの読み込みと設定用オブジェクトの生成
+*
+*	@author	minaka
+*	@param	fileName 設定ファイル名
+*	@return	正常終了 : 生成したオブジェクトへのポインタ  失敗 : nullptr
+*/
+EnemySettingFile* EnemySettingFile::create( const string& fileName)
 {
-	static EnemySettingFile* p = nullptr;
-	if( !p) { p = new EnemySettingFile; }
-	return p;
-}
+	// オブジェクト生成
+	auto settingFile = new (nothrow) EnemySettingFile();
+	// ファイルパス制御クラスのインスタンスを取得
+	auto access = FileAccess::getInstance();
+	// 設定ファイルを入力ストリームに設定
+	stringstream file( access -> getFileStream( access -> getEnemySettingFilePath( fileName)));
 
-void EnemySettingFile::loadTableFile( const string& fileName)
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	std::string dir = FileUtils::getInstance() -> fullPathForFilename( fileName);
-	ifstream file( dir, ios::in);
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	string filePath = "Parameter/EnemySettingFile/" + fileName;
-	string fileData = FileUtilsAndroid::getInstance() -> getStringFromFile( filePath);
-	stringstream file(fileData);
-#else
-	string filePath = "Parameter/EnemySettingFile/" + fileName;
-	ifstream file( filePath, ios::in);
-#endif
-	if( file.fail()) { return; }
-
-	int loadCount = 0;
-	string str;
-	for( fileLineCount = 1; getline( file, str); fileLineCount++)
+	// エラー判定
+	if( file.fail())
 	{
-		if( fileLineCount > 6)
+		log( "Animation File Load Error");
+		return nullptr;
+	}
+	
+	string str;						// ファイルから取得した文字列を格納
+	string tmp;						// 読み込んだ文字列の一時保存
+	istringstream stream(str);		// 文字列を編集可能に
+	WaveData* data = new WaveData;	// 読み込んだ情報を格納する構造体を生成
+	Vec3 vector;					// ファイルに存在するベクトル情報を一時保存
+
+	// 読み込み行カウンタと読み込みブロックカウンタを初期化しファイル終端までループ
+	for( settingFile -> fileLineCount = 1, settingFile -> loadCount = 0; getline( file, str); settingFile -> fileLineCount++)
+	{
+		// 1ブロック分のデータを読み込んだ場合
+		if( settingFile -> fileLineCount > BLOCK_LINE_COUNT)
 		{
-			dataList[loadCount];
-			loadCount++;
-			fileLineCount = 1;
+			// 配列に読み込んだデータを保存
+			settingFile -> dataList[settingFile -> loadCount] = data;
+			// 読み込みブロックカウンタを増加
+			settingFile -> loadCount++;
+			// 読み込み行番号を初期化
+			settingFile -> fileLineCount = 1;
 		}
 
-		istringstream stream( str);
-		string tmp;
-		WaveData* data = new WaveData;
-		int x;
-		int y;
-		int z;
-
-		switch( fileLineCount)
+		if( settingFile -> loadCount >= WAVE_ENEMY_COUNT)
 		{
-		case 1:
+			log( "Enemy Seting File Block Num Over");
+			return settingFile;
+		}
+
+		switch( settingFile -> fileLineCount)			// 現在の行番号で処理を分岐
+		{
+		case 1:							// 奇数行にはデータが存在しないファイル構成なのでスキップ
 		case 3:
 		case 5:
 			break;
 
 		case 2:
-			getline( stream, tmp, ',');
-			data -> Num = atoi( tmp.c_str());
+			// ウェーブナンバーを取得
+			// カンマ区切りでデータを取得 (以下同じ処理はコメント省略)
+			getline( stream, tmp, ',');	
+			// 読み込んだ文字列を数値に変換し保存 (以下類似処理はコメント省略)
+			data -> Num = atoi( tmp.c_str());	
 
-			getline( stream, tmp, ',');
+			// 出現地点座標を取得
+			// データ取得
+			getline( stream, tmp, ',');	
+			// 元データに存在する ""(" の2文字を削除
 			tmp.erase( 0, 2);
-			x = atoi( tmp.c_str());
-			getline( stream, tmp, ',');
-			y = atoi( tmp.c_str());
-			getline( stream, tmp, ',');
-			z = atoi( tmp.c_str());
-			data -> startPos = Vec3( x, y, z);
+			vector.x = atoi( tmp.c_str());
 
+			getline( stream, tmp, ',');
+			vector.y = atoi( tmp.c_str());
+
+			getline( stream, tmp, ',');
+			vector.z = atoi( tmp.c_str());
+
+			// 取得したデータVec3形式で格納
+			data -> startPos = vector;
+
+			// 待機時間を取得
 			getline( stream, tmp, ',');
 			data -> sleepTime = atoi( tmp.c_str());
 
-			for( int i = 0; i < 3; i++)
+			// 目標地点座標を取得 (最大3か所)
+			for( int i = 0; i < TARGET_POS_COUNT; i++)
 			{
 				getline( stream, tmp, ',');
+				// 元データに存在する ""(" の2文字を削除
 				tmp.erase( 0, 2);
-				x = atoi( tmp.c_str());
+				vector.x = atoi( tmp.c_str());
 				getline( stream, tmp, ',');
-				y = atoi( tmp.c_str());
+				vector.y = atoi( tmp.c_str());
 				getline( stream, tmp, ',');
-				z = atoi( tmp.c_str());
-				data -> targetPos[i] = Vec3( x, y, z);
+				vector.z = atoi( tmp.c_str());
+				data -> targetPos[i] = vector;
 			}
+
+			// 攻撃に移るまでの待機時間を取得
 			getline( stream, tmp, ',');
 			data -> waitToAtack = atoi( tmp.c_str());
 			break;
 
 		case 4:
+			// 戦闘の','まではデータ無しなので空読み
 			getline( stream, tmp, ',');
-			for( int i = 0; i < 3; i++)
+
+			// 一連の行動終了から次の行動開始までの待機時間を取得
+			for( int i = 0; i < WAIT_TO_MOVE_COUNT; i++)
 			{
 				getline( stream, tmp, ',');
-				x = atoi( tmp.c_str());
-				data -> waitToMove[i] = x;
+				data -> waitToMove[i] = atoi( tmp.c_str());
 			}
-			for( int i = 0; i < 3; i++)
+
+			// 自分が倒された後に出現する敵の配列番号を取得
+			for( int i = 0; i < NEXT_ENEMYS_COUNT; i++)
 			{
 				getline( stream, tmp, ',');
-				x = atoi( tmp.c_str());
-				data -> nextEnemies[i] = x;
+				data -> nextEnemies[i] = atoi( tmp.c_str());
 			}
 			break;
 
 		case 6:
+			// 戦闘の','まではデータ無しなので空読み
 			getline( stream, tmp, ',');
 
+			// 出現時のモーション名を取得
+			getline( stream, tmp, ',');
+
+			// 取得した文字列を元に番号を検索し格納
+			data -> aiAppear = getModelNumber( tmp);
+
+			// 移動時のモーション名を取得し設定
+			for( int i = 0; i < AI_MOVE_COUNT; i++)
+			{
+				// 移動時のモーション名を取得
+				getline( stream, tmp, ',');
+				// 取得した文字列を元に番号を検索し格納
+				data -> aiMove[i] = getModelNumber( tmp);
+			}
+
+			// 攻撃時のモーション名を取得し設定
+			for( int i = 0; i < AI_ATTACK_COUNT; i++)
+			{
+				// 攻撃時のモーション名を取得
+				getline( stream, tmp, ',');
+				// 取得した文字列を元に番号を検索し格納
+				data -> aiAtk[i] = getModelNumber( tmp);
+			}
+
+			// 攻撃時のモーション名を取得
+			getline( stream, tmp, ',');
+			// 取得した文字列を元に番号を検索し格納
+			data -> aiLifeCycle = getModelNumber( tmp);
 			break;
 
 		default:
 			break;
 		}
 	}
-	return;
+	return settingFile;
+}
+
+/**
+*	アニメーション名を指す文字列から数値を検索する
+*
+*	@author	minaka
+*	@param	dataString 元アニメーション名
+*	@return	検索結果の数値　発見できなかった場合は : -999
+*/
+int EnemySettingFile::getModelNumber( const string& dataString)
+{
+	// モーション名に合わせた数値を格納
+	if( dataString == "")
+	{
+		return 0;
+	}
+	else if( dataString == "")
+	{
+		return 0;
+	}
+	else
+	{
+		return -999;
+	}
 }

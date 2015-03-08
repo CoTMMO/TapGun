@@ -1,17 +1,9 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "TitleScene.h"
-#include "CreditScene.h"
-
-#else
-
 #include "Scene/TitleScene.h"
 #include "Scene/CreditScene.h"
 
-#endif
 
 USING_NS_CC;
 using namespace std;

@@ -4,14 +4,6 @@
 #include "TestScene.h"
 #include "SimpleAudioEngine.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Sprite3D.h"
-#include "Sound.h"
-#include "UI.h"
-#include "Effect.h"
-
-#else
 
 #include "Base/UI.h"
 #include "Base/Sprite3D.h"
@@ -21,7 +13,6 @@
 #include "System/ResourceLoader.h"
 #include "Scene/ContinueLayer.h"
 
-#endif
 
 USING_NS_CC;
 //using namespace ADX2;
@@ -66,7 +57,7 @@ bool Test::init()
 	//	sprit -> setPosition( 640, 0);
 	//	sprit -> setScale( 300.0f);
 	//	addChild( sprit);
-	//	
+	//
 	//
 	//	//現在はタッチイベントのリスナーをここに用意しています
 	//	auto dispatcher = Director::getInstance()->getEventDispatcher();
@@ -80,6 +71,7 @@ bool Test::init()
 
 	scheduleUpdate();
 	//	schedule( schedule_selector(Test::moveTime), 0.016f);
+
 
 	pl = _Sprite3D::create("Player/player", "Player.anime");
 

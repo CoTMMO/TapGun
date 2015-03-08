@@ -3,17 +3,6 @@
 
 //各レイヤーを管理するソースコードをインクルードしておく
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "TitleScene.h"
-#include "GameModelsLayer.h"
-#include "GameUILayer.h"
-#include "ContinueLayer.h"
-#include "GameMaster.h"
-#include "Sound.h"
-
-#else
-
 #include "Scene/TitleScene.h"
 #include "Scene/GameModelsLayer.h"
 #include "Scene/GameUILayer.h"
@@ -21,7 +10,6 @@
 #include "Base/GameMaster.h"
 #include "System/Sound.h"
 
-#endif
 
 USING_NS_CC;
 using namespace TapGun;

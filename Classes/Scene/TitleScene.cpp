@@ -1,25 +1,13 @@
 
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-
-#include "Sprite3D.h"
-#include "TitleScene.h"
-#include "GameScene.h"
-#include "CreditScene.h"
-#include "ResourceLoader.h"
-#include "Sound.h"
-
-#else
-
+#include "Platform.h"
 #include "Base/Sprite3D.h"
 #include "Scene/TitleScene.h"
 #include "Scene/GameScene.h"
 #include "Scene/CreditScene.h"
 #include "System/ResourceLoader.h"
 #include "System/Sound.h"
-
-#endif
 
 USING_NS_CC;
 using namespace TapGun;
@@ -384,28 +372,19 @@ void TitleScene::loadPicture( void)
 
 	// テクスチャアトラスの読み込み
 	auto cache = SpriteFrameCache::getInstance();
+	// ファイルパス制御クラスのインスタンスを取得
+	auto access = FileAccess::getInstance();
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	cache -> addSpriteFramesWithFile( "Title.plist");
-	cache -> addSpriteFramesWithFile( "P_Hit.plist");
-	cache -> addSpriteFramesWithFile( "E_Hit.plist");
-	cache -> addSpriteFramesWithFile( "Logo.plist");
-	cache -> addSpriteFramesWithFile( "Number.plist");
-	cache -> addSpriteFramesWithFile( "HPGauge.plist");
-	cache -> addSpriteFramesWithFile( "continue.plist");
-	cache -> addSpriteFramesWithFile( "Reticle.plist");
-	cache -> addSpriteFramesWithFile( "Enemy_Attack.plist");
-#else
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Title.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/P_Hit.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/E_Hit.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Logo.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Number.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/HPGauge.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/continue.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Reticle.plist");
-	cache -> addSpriteFramesWithFile( "Graph/Pictures/SpriteSheet/Enemy_Attack.plist");
-#endif
+	// スプライトシートを一括読み込み
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/Title.plist"));
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/P_Hit.plist"));
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/E_Hit.plist"));
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/Logo.plist"));
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/Number.plist"));
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/HPGauge.plist"));
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/continue.plist"));
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/Reticle.plist"));
+	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/Enemy_Attack.plist"));
 
 	loadFlag = true;
 }
@@ -424,31 +403,13 @@ void TitleScene::loadModels( void)
 	static unsigned int frame = 0;
 
 	// 各種モデルデータの読み込み
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	if( frame == ResourceLoader::Map)
-	{
-		ResourceLoader::getInstance() -> loadModel( "stage");
-	}
-	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
-	{
-		ResourceLoader::getInstance() -> loadModel( "enemy", "", "Enemy.anime");
-	}
-	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
-	{
-		ResourceLoader::getInstance() -> loadModel( "tama");
-	}
-	else if( frame == ResourceLoader::Player)
-	{
-		ResourceLoader::getInstance() -> loadModel( "player", "", "Player.anime");
-	}
-#else
 	if( frame == ResourceLoader::Map)
 	{
 		ResourceLoader::getInstance() -> loadModel( "Stage/stage");
 	}
 	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
 	{
-		ResourceLoader::getInstance() -> loadModel( "Enemy/enemy", "", "Enemy.anime");
+		ResourceLoader::getInstance() -> loadModel( "Enemy/enemy", "Enemy.anime");
 	}
 	else if( frame >= ResourceLoader::BulletStart && frame <= ResourceLoader::BulletEnd)
 	{
@@ -456,9 +417,8 @@ void TitleScene::loadModels( void)
 	}
 	else if( frame == ResourceLoader::Player)
 	{
-		ResourceLoader::getInstance() -> loadModel( "Player/player", "", "Player.anime");
+		ResourceLoader::getInstance() -> loadModel( "Player/player", "Player.anime");
 	}
-#endif
 	frame++;
 }
 
