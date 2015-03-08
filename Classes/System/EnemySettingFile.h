@@ -11,6 +11,13 @@ class EnemySettingFile
 public:
 	static EnemySettingFile* create( const std::string& fileName);
 
+	struct WaveData;
+	enum _DATA_LIST_COUNT 
+	{ 
+		WAVE_ENEMY_COUNT	= 10, 
+	};
+	WaveData* dataList[WAVE_ENEMY_COUNT];			// ?��d?��l?��?��10?��̈ȏ�?��̓G?��͏o?��?��?��?��?��Ȃ�?��̂� 10
+
 private:
 	EnemySettingFile() {}
 	static int getModelNumber( const std::string& dataString);
@@ -24,7 +31,6 @@ private:
 		NEXT_ENEMYS_COUNT	= 3,
 		AI_MOVE_COUNT		= 3,
 		AI_ATTACK_COUNT		= 3,
-		WAVE_ENEMY_COUNT	= 10,
 	};
 
 	struct WaveData
@@ -45,7 +51,6 @@ private:
 
 	unsigned int loadCount;
 	unsigned int fileLineCount;
-	WaveData* dataList[WAVE_ENEMY_COUNT];			// ?��d?��l?��?��10?��̈ȏ�?��̓G?��͏o?��?��?��?��?��Ȃ�?��̂� 10
 };
 
 }
