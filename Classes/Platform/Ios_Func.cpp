@@ -14,56 +14,59 @@ using namespace TapGun;
  */
 static string getFilePath( const string& fileName)
 {
-	string str = fileName;		// ローカルにコピー
-	do {
-		// ディレクトリ区切りを検索
-		int point = str.rfind( '/', str.size());
-		// 区切りなしの場合は終了
-		if( point == string::npos) { break; }
-		// 区切り文字より前の文字列を削除
-		str.erase( 0, str.size() - ( str.size() - point));
-		// もう一度ディレクトリ区切りを検索
-		point = str.rfind( '/', str.size());
-	}while( point != string::npos);	// 区切り文字がある限りループ
+	int	point = fileName.rfind( '/', fileName.size());	// ディレクトリ区切りを検索
+	string str = fileName.substr( point + 1);			// 必要な部分のみ切り取り
 	return str;
 }
 
 // 以下の関数は他のプラットフォームとの互換性維持用
 
-string getModelPath( const string& fileName)
+FileAccess::FileAccess() {}
+
+FileAccess* FileAccess::getInstance( void)
+{
+	static FileAccess *p = nullptr;
+	if( !p) { p = new FileAccess; }
+	return p;
+}
+
+string FileAccess::getModelPath( const string& fileName)
 {
 	return getFilePath( fileName);
 }
 
-string getPicturePath( const string& fileName)
+string FileAccess::getPicturePath( const string& fileName)
 {
 	return getFilePath( fileName);
 }
 
-string getParameterPath( const string& fileName)
+string FileAccess::getAnimationPath( const string& fileName)
 {
 	return getFilePath( fileName);
 }
 
-string getBGMPath( const string& fileName)
+string FileAccess::getEnemySettingFilePath( const string& fileName)
 {
 	return getFilePath( fileName);
 }
 
-string getSEPath( const string& fileName)
+string FileAccess::getBGMPath( const string& fileName)
 {
 	return getFilePath( fileName);
 }
 
-string getVoicePath( const string& fileName)
+string FileAccess::getSEPath( const string& fileName)
 {
 	return getFilePath( fileName);
 }
 
-ifstream getFileStream( const string& fileName)
+string FileAccess::getVoicePath( const string& fileName)
 {
-	string str = FileUtils::getInstance() -> fullPathForFilename( TapGun::getParameterPath( fileName));
-	ifstream file( str, ios::in);
-	if( file.fail()) { return nullptr; }
-	return file;
+	return getFilePath( fileName);
+}
+
+string FileAccess::getFileStream( const string& fileName)
+{
+	string fileData = FileUtils::getInstance() -> getStringFromFile( fileName);
+	return fileData;
 }
