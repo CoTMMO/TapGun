@@ -99,6 +99,9 @@
     <ClCompile Include="..\Classes\Platform\Android_Func.cpp">
       <Filter>Source\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scene\GameModelsLayerE.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

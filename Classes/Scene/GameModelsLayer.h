@@ -6,11 +6,7 @@
 
 #include "Base/Unit.h"
 #include "Base/Player.h"
-//#include "Object/muzzle.h"
 #include "Stage/EnemyTable.h"
-
-
-//#define DEBUG_CENTER//デバッグ用。回転軸を示すモデルを描画
 
 namespace TapGun
 {
@@ -22,14 +18,6 @@ namespace TapGun
 		UNIT2_BULLET = 21,
 		UNIT3_MAX = MAX_UNIT
 	};
-
-	//enum _WAIT_FLAG_
-	//{
-	//	WAIT0_START,
-	//	WAIT1_START = 1,
-	//	UNIT2_BULLET = 21,
-	//	UNIT3_MAX = MAX_UNIT
-	//};
 
 	typedef struct
 	{
@@ -56,56 +44,273 @@ namespace TapGun
 		cocos2d::Vec3 camTarget;//回避時のカメラの移動先座標
 		cocos2d::Vec3 camCenter;//回避時のカメラの移動前座標
 
-		virtual bool init();//レイヤーのインスタンス生成
-		//初期化系
-		void LoadModels(void);//スプライトを生成
+		int enemyStuck;//各ステージごとの残り敵数
+
+
+		/**
+		*	ゲーム本編のモデルレイヤーの初期化
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	初期化成功／不可のbool値
+		*	@date	1/8 Ver 1.0
+		*/
+		virtual bool init();
+
+		/**
+		*	ゲーム本編のスプライトの生成
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	2/4 Ver 1.0
+		*/
+		void LoadModels(void);
+
+
+		/**
+		*	ライトのセット
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	2/5 Ver 1.0
+		*/
 		void SetLights(void);//ライトをセット
-		void InitLayer(void);//レイヤーの変数初期化
+
+		/**
+		*	ゲーム本編のUIレイヤーの各種数値初期化
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/8 Ver 1.0
+		*/
+		void InitLayer(void);
+
+
 		void InitAllModels();//モデル全体の初期化
-		void InitPlayer(int stage_num);//プレイヤーの初期化
+
+		/**
+		*	プレイヤー初期化
+		*
+		*	@author	sasebon
+		*	@param	ステージ番号
+		*	@return	なし
+		*	@date	1/8 Ver 1.0
+		*/
+		void InitPlayer(int stage_num);
+
+
 		int InitEnemy(int stage_num);//エネミー初期化
 		void InitBullet(void);
-		int InitMap(int stage_num);//マップの初期化
+
+		/**
+		*	ステージオブジェクトの初期化
+		*
+		*	@author	sasebon
+		*	@param	ステージ番号
+		*	@return	正常:1 初期化失敗:-1
+		*	@date	1/8 Ver 1.0
+		*/
+		int InitMap(int stage_num);
 
 		void checkNextEnemy(int enemyNum);//
 
 		cocos2d::Vec2 calcRot(float pRot, int pSide);//角度計算
-		cocos2d::Vec2 calcCamPos(float pRot, int pSide);//角度計算
-		cocos2d::Vec2 calcCamPos2(float pRot, int pSide);//角度計算
-		cocos2d::Vec2 calcCamPos3(float pRot, int pSide);//角度計算
 
-		//更新系
-		//		void UpdateLayer();//レイヤー更新（親シーンから呼び出される）
+
+		/**
+		*	カメラの回避座標計算
+		*
+		*	@author	sasebon
+		*	@param	プレイヤー回転量（角度）、プレイヤーの左右の位置
+		*	@return	移動後の座標
+		*	@date	2/4 Ver 1.0
+		*/
+		cocos2d::Vec2 calcCamPos(float pRot, int pSide);
+
+		/**
+		*	カメラの回避座標計算
+		*
+		*	@author	sasebon
+		*	@param	プレイヤー回転量（角度）、プレイヤーの左右の位置
+		*	@return	移動後の座標
+		*	@date	2/4 Ver 1.0
+		*/
+		cocos2d::Vec2 calcCamPos2(float pRot, int pSide);
+
+		/**
+		*	カメラの回避座標計算
+		*
+		*	@author	sasebon
+		*	@param	プレイヤー回転量（角度）、プレイヤーの左右の位置
+		*	@return	移動後の座標
+		*	@date	2/4 Ver 1.0
+		*/
+		cocos2d::Vec2 calcCamPos3(float pRot, int pSide);
+
+
+		/**
+		*	ウェイト状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/23 Ver 1.0
+		*/
 		void UpdateWait(void);//
+
+		/**
+		*	プレイヤーの更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/8 Ver 1.0
+		*/
 		void UpdatePlayer(void);//
 		void UpdateEnemy(void);
 		void UpdateBullets(void);
-		void CheckHit(void);//当たり判定処理
 
-		//ゲーム遷移チェック
+		/**
+		*	プレイヤーの攻撃の当たり判定処理
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	3/9 Ver 1.0
+		*/
+		void CheckPlayerAtk(void);
+
+
+		void CheckEnemyAtk(void);//当たり判定処理（エネミーの攻撃）
+
+		/**
+		*	ウェーブ終了のチェック
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	ウェーブ中:1 ウェーブ終了:-1
+		*	@date	2/5 Ver 1.0
+		*/
 		int CheckNextWave(void);
+
 
 		void SetEnemy(void);//
 
+		/**
+		*	画面外の敵の全消去
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	2/5 Ver 1.0
+		*/
 		void ClearEnemies();//敵を全て非表示にする（ゲームオーバー状態にする前に使用する）
-		void KillPlayer();//プレイヤーを死亡状態にする（タイムオーバー死亡前に使用する）
+
+		/**
+		*	プレイヤーの状態を死亡状態に変更
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	ウェーブ中:1 ウェーブ終了:-1
+		*	@date	2/5 Ver 1.0
+		*/
+		void KillPlayer();
 
 		CREATE_FUNC(GameModelsLayer);
 
 	private:
 
-		//敵のAIセット
-
-
-		//プレイヤーの更新
+		/**
+		*	プレイヤーの攻撃状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionShot(void);
+
+		/**
+		*	プレイヤーのアイドル状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionIdle(void);
+
+		/**
+		*	プレイヤーの避け最中の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionDodge(void);
+
+		/**
+		*	プレイヤーの隠れ状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionHide(void);
+
+		/**
+		*	プレイヤーの飛び出し状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionAppear(void);
+
+		/**
+		*	プレイヤーの食らい状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionDamaged(void);
+
+		/**
+		*	プレイヤーの起き上がり状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionRecover(void);
+
+		/**
+		*	プレイヤーのウェイト状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionRun(void);
+
+		/**
+		*	プレイヤーの死亡状態の更新
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/21 Ver 1.0
+		*/
 		void ActionDead(void);
 
 		//エネミーの更新
@@ -122,20 +327,36 @@ namespace TapGun
 		void SetEnemyAtk(int num);
 		void SetEnemyMove(int num);
 
-		//敵の処理
+
+		/**
+		*	次の敵を出現させる
+		*
+		*	@author	sasebon
+		*	@param	敵Unitの配列番号
+		*	@return	なし
+		*	@date	2/5 Ver 1.0
+		*/
 		void setNextEnemy(int num);
 
 		//
 		void ShootBullet(int enemy_num);//
 		void ShootBullet(int enemy_num, int count);//
-		int SearchFreeEnemy();//空きユニットの検索
-		int enemyStuck;//各ステージごとの残り敵数
+
+		/**
+		*	非表示の敵（Unit）を検索
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	敵Unitの配列番号
+		*	@date	2/12 Ver 1.0
+		*/
+		int SearchFreeEnemy();
+
 
 		//カメラの設定
 		int ChangeCamera(int num);
 
 		//計算用
-		//int getNowTime();
 		float getCross(cocos2d::Vec3 v1, cocos2d::Vec3 v2);
 	};
 }

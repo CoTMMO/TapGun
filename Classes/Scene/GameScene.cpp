@@ -317,7 +317,8 @@ void GameScene::update(float delta)
 		gGameLayer->UpdatePlayer();//プレイヤーの更新
 		gGameLayer->UpdateEnemy();//エネミーの更新
 		gGameLayer->UpdateBullets();//敵弾の更新
-		gGameLayer->CheckHit();//当たり判定とダメージのチェック
+		gGameLayer->CheckPlayerAtk();//当たり判定とダメージのチェック
+		gGameLayer->CheckEnemyAtk();//当たり判定とダメージのチェック
 
 		if (NULL != gUILayer)//現在は初期化チェック確認する
 		{

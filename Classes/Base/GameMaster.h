@@ -45,6 +45,7 @@ namespace TapGun
 #define POS_ENEMY_RPOZ 0.1f//敵の右の銃のポイント
 
 #define STS_EBULLET_SPEED 0.019f//敵の弾の速度
+#define STS_EBULLET_VANISH_TIME 3000//敵の弾の速度
 #define STS_SSHOT_START 1000//SShot時の弾の発射開始までの待ち時間
 #define STS_SSHOT_SPAN 68//SShot時の弾の発射開始までの待ち時間
 

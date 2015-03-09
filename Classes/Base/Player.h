@@ -11,13 +11,13 @@
 namespace TapGun
 {
 
-	//この定義は今後異なるヘッダファイルに移し替えます
+//この定義は今後異なるヘッダファイルに移し替えます
 #define FALSE -1
 #define TRUE 1
 
 
 	//プレイヤークラス
-	class Player// : public P_Muzzle
+	class Player
 	{
 	public:
 
@@ -53,6 +53,8 @@ namespace TapGun
 		cocos2d::Node* leftNode;//回転軸の基準ノード
 		cocos2d::Node* rightNode;//回転軸の基準ノード
 		cocos2d::Node* centerNode;//プレイヤーの当たり判定高さ（敵弾が目標とする高さ）
+		cocos2d::Node* CamTargetNode;//プレイヤー基準でのカメラ注視点ノード（ウェイト中に使用する）
+		cocos2d::Node* CamEyeNode;//プレイヤー基準でのカメラ視点ノード（ウェイト中に使用する）
 
 		cocos2d::Animation3D* animation;
 		cocos2d::Animate3D* animate;
