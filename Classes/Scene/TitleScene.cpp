@@ -6,12 +6,13 @@
 #include "Scene/TitleScene.h"
 #include "Scene/GameScene.h"
 #include "Scene/CreditScene.h"
+#include "System/EnemySettingFile.h"
 #include "System/ResourceLoader.h"
 #include "System/Sound.h"
 
 USING_NS_CC;
 using namespace TapGun;
- 
+
 /**
 *	タイトルシーンの作成
 *
@@ -39,10 +40,12 @@ Scene* TitleScene::createScene()
 bool TitleScene::init()
 {
 	if (!Layer::init()) { return false; }
-	
+
 	// 描画シーンのフラグをチームロゴに設定
 	menuFlag = TeamLogo;
 
+	auto data = EnemySettingFile::create( "EnemyData.csv");
+	
 	// 各種パラメータを初期化
 	logoWaitCount = 0;
 	teamLogoState = LogoIn;
@@ -51,7 +54,7 @@ bool TitleScene::init()
 	logoAlphaFlag = false;
 	logoAlphaCount = 0;
 	logoAlphaWaitCount = 0;
-	
+
 	// リソースファイルの読み込みと初期化
 	loadPicture();
 	loadSound();
@@ -60,12 +63,12 @@ bool TitleScene::init()
 
 	// タッチ入力受け取りイベントを作成
 	auto listener = EventListenerTouchOneByOne::create();
-	listener -> setSwallowTouches( _swallowsTouches);	
+	listener -> setSwallowTouches( _swallowsTouches);
 	listener -> onTouchBegan = CC_CALLBACK_2( TitleScene::onTouchBegan, this);
 	listener -> onTouchMoved = CC_CALLBACK_2( TitleScene::onTouchMoved, this);
 	listener -> onTouchEnded = CC_CALLBACK_2( TitleScene::onTouchEnded, this);
 	_eventDispatcher -> addEventListenerWithSceneGraphPriority( listener, this);
-	
+
 	// update関数が呼ばれるようにスケジュールをセット
 	scheduleUpdate();
 
@@ -106,8 +109,8 @@ void TitleScene::update( float delta)
 
 	case TitleLogoOK:
 		sprite[Menu] -> setVisible( true);
-		if( logoAlphaFlag) 
-		{ 
+		if( logoAlphaFlag)
+		{
 			sprite[Menu] -> setOpacity( logoAlphaCount);
 			if( logoAlphaCount == 0) { logoAlphaWaitCount++; }
 			else { logoAlphaCount -= 5; }
@@ -118,7 +121,7 @@ void TitleScene::update( float delta)
 			if( logoAlphaCount == 250) { logoAlphaWaitCount++; }
 			else { logoAlphaCount += 5; }
 		}
-		if( ( logoAlphaCount == 250 && logoAlphaWaitCount == 20) || ( logoAlphaCount == 0 && logoAlphaWaitCount == 5)) 
+		if( ( logoAlphaCount == 250 && logoAlphaWaitCount == 20) || ( logoAlphaCount == 0 && logoAlphaWaitCount == 5))
 		{
 			logoAlphaFlag = !logoAlphaFlag;
 			logoAlphaWaitCount = 0;
@@ -157,14 +160,14 @@ void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 	auto sound = Sound::getInstance();
 
 	if( menuFlag == TitleLogoOK)
-	{ 
+	{
 		menuFlag = MenuIn;
 		sprite[Logo] -> runAction( MoveTo::create( 1, Point( 3000, sprite[Logo] -> getPositionY())));
 		auto action = Blink::create( 0.2, 3);
 		sound -> playSE( "MoveSE");
-		auto func = CallFunc::create( [&](void) -> void 
-		{ 
-			sprite[Menu] -> setVisible( false); 
+		auto func = CallFunc::create( [&](void) -> void
+		{
+			sprite[Menu] -> setVisible( false);
 			menuAction();
 		});
 		sprite[Menu] -> runAction( Sequence::create( action, func, NULL));
@@ -191,18 +194,18 @@ void TitleScene::teamLogoAction( void)
 	{
 		if( logoWaitCount > WaitTime) { alphaCount -= AlphaValue; }
 		else { logoWaitCount++; }
-		if( teamLogo -> getOpacity() == 0) 
+		if( teamLogo -> getOpacity() == 0)
 		{
 			logoWaitCount = 0;
 			teamLogoState = Wait;
 			teamLogo -> setVisible( false);
-		}		
+		}
 		teamLogo -> setOpacity( alphaCount);
 	}
 	else if( teamLogoState == Wait)
 	{
-		if( logoWaitCount > 50) 
-		{ 
+		if( logoWaitCount > 50)
+		{
 			alphaCount = 0;
 			menuFlag = TitleLogoIn;
 		}
@@ -234,7 +237,7 @@ void TitleScene::setSprite( void)
 	sprite[Frame] = Sprite::createWithSpriteFrameName( "title_waku.png");
 	sprite[Logo] = Sprite::createWithSpriteFrameName( "title_log.png");
 	sprite[Menu] = Sprite::createWithSpriteFrameName( "title_touchscreen.png");
-	
+
 	for( auto &p : sprite)
 	{
 		p -> setPosition( Vec2( visibleSize.width / 2, visibleSize.height / 2));
@@ -256,19 +259,19 @@ void TitleScene::setMenu( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
 
-	auto item = MenuItemSprite::create( Sprite::createWithSpriteFrameName( "title_start.png"), 
+	auto item = MenuItemSprite::create( Sprite::createWithSpriteFrameName( "title_start.png"),
 				Sprite::createWithSpriteFrameName( "title_start_push.png"), CC_CALLBACK_1( TitleScene::menuStartCallback, this));
 	menu[Start] = Menu::create( item, NULL);
 	menu[Start] -> setPosition( Vec2( -1200, visibleSize.height - 270));
 	addChild( menu[Start]);
 
-	item = MenuItemSprite::create( Sprite::createWithSpriteFrameName( "title_end.png"), 
+	item = MenuItemSprite::create( Sprite::createWithSpriteFrameName( "title_end.png"),
 				Sprite::createWithSpriteFrameName( "title_end_push.png"), CC_CALLBACK_1( TitleScene::menuEndCallback, this));
 	menu[End] = Menu::create( item, NULL);
 	menu[End] -> setPosition( Vec2( -1200, visibleSize.height / 2));
 	addChild( menu[End]);
-	
-	item = MenuItemSprite::create( Sprite::createWithSpriteFrameName( "title_credit.png"), 
+
+	item = MenuItemSprite::create( Sprite::createWithSpriteFrameName( "title_credit.png"),
 				Sprite::createWithSpriteFrameName( "title_credit_push.png"), CC_CALLBACK_1( TitleScene::menuCreditCallback, this));
 	menu[Credit] = Menu::create( item, NULL);
 	menu[Credit] -> setPosition( Vec2( -1200, visibleSize.height - 530));
@@ -402,10 +405,13 @@ void TitleScene::loadModels( void)
 	// リソースファイル読み込みフレームの制御カウンタ
 	static unsigned int frame = 0;
 
+	// ファイルパス制御クラスのインスタンスを取得
+	auto access = FileAccess::getInstance();
+
 	// 各種モデルデータの読み込み
 	if( frame == ResourceLoader::Map)
 	{
-		ResourceLoader::getInstance() -> loadModel( "Stage/stage");
+		ResourceLoader::getInstance() -> loadModel( access -> getModelPath( "Stage/stage"));
 	}
 	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
 	{
@@ -433,17 +439,13 @@ void TitleScene::loadModels( void)
 void TitleScene::loadSound( void)
 {
 	auto sound = Sound::getInstance();
+    // ファイルパス制御クラスのインスタンスを取得
+    auto access = FileAccess::getInstance();
 
 	sound -> loadBGM( "Title");
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	sound -> loadSE( "MoveSE");
-	sound -> loadSE( "Shot");
-	sound -> loadSE( "Reload");
-#else
 	sound -> loadSE( "Title/MoveSE");
 	sound -> loadSE( "Gun/Shot");
 	sound -> loadSE( "Gun/Reload");
-#endif
 }
 
 // 以下フラグ制御関数

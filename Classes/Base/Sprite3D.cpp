@@ -20,68 +20,26 @@ USING_NS_CC;
 using namespace std;
 using namespace TapGun;
 
-/**
-*	3Dスプライトの作成
-*
-*	@author	minaka
-*	@param	firstPath リソースファイル名
-*	@return	作成したスプライトへのポインタ
-*/
 _Sprite3D* _Sprite3D::create( const string& firstPath)
 {
 	return createObject( firstPath.c_str(), nullptr);
 }
 
-/**
-*	3Dスプライトの作成
-*
-*	@author	minaka
-*	@param	firstPath リソースファイル名
-*	@param	secondPath リソースファイル名
-*	@return	作成したスプライトへのポインタ
-*/
 _Sprite3D* _Sprite3D::create( const string& firstPath, const string& secondPath)
 {
 	return createObject( firstPath.c_str(), secondPath.c_str());
 }
 
-/**
-*	3Dスプライトの作成 (非同期読み込み)
-*
-*	@author	minaka
-*	@param	firstPath リソースファイル名
-*	@param	callback コールバック関数
-*	@param	callbackparam　コールバック関数の引数
-*	@return	作成したスプライトへのポインタ
-*/
 void _Sprite3D::createAsync( const string& modelPath, const function<void(_Sprite3D*, void*)>& callback, void* callbackparam)
 {
 	createObjectAsync( modelPath.c_str(), "", callback, callbackparam);
 }
 
-/**
-*	3Dスプライトの作成 (非同期読み込み)
-*
-*	@author	minaka
-*	@param	firstPath リソースファイル名
-*	@param	secondPath リソースファイル名
-*	@param	callback コールバック関数
-*	@param	callbackparam　コールバック関数の引数
-*	@return	作成したスプライトへのポインタ
-*/
 void _Sprite3D::createAsync( const string& modelPath, const string& texturePath, const function<void(_Sprite3D*, void*)>& callback, void* callbackparam)
 {
 	createObjectAsync( modelPath.c_str(), texturePath.c_str(), callback, callbackparam);
 }
 
-/**
-*	3Dスプライトの実体作成
-*
-*	@author	minaka
-*	@param	firstPath リソースファイル名
-*	@param	secondPath リソースファイル名
-*	@return	作成したスプライトへのポインタ
-*/
 _Sprite3D* _Sprite3D::createObject( const char* firstPath, const char* secondPath)
 {
 	string filePath;							// ファイルのディレクトリパスを格納
@@ -148,13 +106,6 @@ _Sprite3D* _Sprite3D::createObject( const char* firstPath, const char* secondPat
 	return sprite;
 }
 
-/**
-*	モデルデータの読み込み (cocos2d-xより移植)
-*
-*	@author	minaka
-*	@param	path モデルデータへのパス
-*	@return	bool 読み込み成功フラグ 成功 : true 失敗 : false
-*/
 bool _Sprite3D::loadFromCache( const string& path)
 {
 	auto spritedata = Sprite3DCache::getInstance() -> getSpriteData( path);
@@ -180,16 +131,6 @@ bool _Sprite3D::loadFromCache( const string& path)
 	return false;
 }
 
-/**
-*	3Dスプライトの非同期作成
-*
-*	@author	minaka
-*	@param	firstPath リソースファイル名
-*	@param	secondPath リソースファイル名
-*	@param	callback コールバック関数
-*	@param	callbackparam　コールバック関数の引数
-*	@return	なし
-*/
 void _Sprite3D::createObjectAsync( const char* firstPath, const char* secondPath, const function<void(_Sprite3D*, void*)>& callback, void* callbackparam)
 {
 	string filePath;							// ファイルのディレクトリパスを格納
@@ -221,7 +162,6 @@ void _Sprite3D::createObjectAsync( const char* firstPath, const char* secondPath
 				if( sprite -> loadFromCache( filePath))
 				{
 					sprite -> autorelease();
-//					if( !str[i].empty()) { sprite -> setTexture( texturePath); }
 					callback( sprite, callbackparam);
 					Flag[ResouceType::NoExt] = true;
 					break;
@@ -272,13 +212,6 @@ void _Sprite3D::createObjectAsync( const char* firstPath, const char* secondPath
 	}
 }
 
-/**
-*	非同期読み込み処理 (cocos2d-xより移植)
-*
-*	@author	minaka
-*	@param	param 作成済みスプライト
-*	@return	なし
-*/
 void _Sprite3D::afterAsyncLoad( void* param)
 {
 	_Sprite3D::AsyncLoadParam* asyncParam = (_Sprite3D::AsyncLoadParam*)param;
@@ -328,13 +261,6 @@ void _Sprite3D::afterAsyncLoad( void* param)
 	}
 }
 
-/**
-*	ファイルパスの拡張子判定
-*
-*	@author	minaka
-*	@param	filePath 判定するファイルパス
-*	@return	ResouceType 拡張子別の定数
-*/
 ResouceType _Sprite3D::checkResourcePath( const string& filePath)
 {
 	string str = filePath;	// ローカルにコピー
@@ -351,14 +277,6 @@ ResouceType _Sprite3D::checkResourcePath( const string& filePath)
 	else if( str == ".anime") return ResouceType::Anime;
 }
 
-/**
-*	3Dモデルデータ用アニメーション設定ファイルの読み込み
-*
-*	@author	minaka
-*	@param	fileName モデルデータ名
-*	@return	正常終了:0 エラー発生:-1
-*	@date	1/3	Ver 1.0
-*/
 int _Sprite3D::load3DModelAnimeData( const string& fileName)
 {
 	// ファイルパス制御クラスのインスタンスを取得
@@ -394,13 +312,6 @@ int _Sprite3D::load3DModelAnimeData( const string& fileName)
 	return 0;
 }
 
-/**
-*	3Dモデルデータ用アニメーション設定ファイルの読み込み
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::createAnimation( const string& animeName, float startTime, float endTime, bool loopFlag, bool reverseFlag)
 {
 	string str = modelAnimeList[animeName];
@@ -436,176 +347,78 @@ int _Sprite3D::createAnimation( const string& animeName, float startTime, float 
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーション再生
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::startAnimation( const string& animeName)
 {
 	if( createAnimation( animeName, NULL, NULL, false, false)) { return -1; }
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーション再生（ループ）
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::startAnimationLoop( const string& animeName)
 {
 	if( createAnimation( animeName, NULL, NULL, true, false)) { return -1; }
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーション逆再生
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::startAnimationReverse( const string& animeName)
 {
 	if( createAnimation( animeName, NULL, NULL, false, true)) { return -1; }
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーション逆再生（ループ）
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::startAnimationReverseLoop( const string& animeName)
 {
 	if( createAnimation( animeName, NULL, NULL, true, true)) { return -1; }
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーショントリミング再生
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@param	startTime トリミング開始フレーム
-*	@param	endTime トリミング終了フレーム
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::startAnimation( const string& animeName, float startTime, float endTime)
 {
 	if( createAnimation( animeName, startTime, endTime, false, false)) { return -1; }
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーショントリミング再生（ループ）
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@param	startTime トリミング開始フレーム
-*	@param	endTime トリミング終了フレーム
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::startAnimationLoop( const string& animeName, float startTime, float endTime)
 {
 	if( createAnimation( animeName, startTime, endTime, true, false)) { return -1; }
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーショントリミング逆再生
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@param	startTime トリミング開始フレーム
-*	@param	endTime トリミング終了フレーム
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::startAnimationReverse( const string& animeName, float startTime, float endTime)
 {
 	if( createAnimation( animeName, startTime, endTime, false, true)) { return -1; }
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーショントリミング逆再生（ループ）
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@param	startTime トリミング開始フレーム
-*	@param	endTime トリミング終了フレーム
-*	@return	正常終了:0 エラー発生:-1
-*/
 int _Sprite3D::startAnimationReverseLoop( const string& animeName, float startTime, float endTime)
 {
 	if( createAnimation( animeName, startTime, endTime, true, true)) { return -1; }
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーション停止
-*
-*	@author	minaka
-*	@param	animeName アニメーション名
-*	@return	正常終了:0
-*	@date	1/3	Ver 1.0
-*/
 int _Sprite3D::stopAnimation( void)
 {
 	stopAction( animate);
 	return 0;
 }
 
-/**
-*	全てのアニメーションを停止
-*
-*	@author	minaka
-*	@return	正常終了:0
-*	@date	1/3	Ver 1.0
-*/
 int _Sprite3D::stopALLAnimation( void)
 {
 	stopAllActions();
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーション再生速度を設定
-*
-*	@author	minaka
-*	@param	speed アニメーション速度
-*	@return	正常終了:0
-*/
 int _Sprite3D::setAnimationSpeed( float speed)
 {
 	animate -> setSpeed( speed);
 	return 0;
 }
 
-/**
-*	3Dモデルのアニメーション状態チェック
-*
-*	@author	minaka
-*	@return	アニメーション中ではない:0　アニメーション中:1
-*/
 int _Sprite3D::checkAnimationState( void)
 {
 	if( numberOfRunningActions() == 0 ) { return 0; }
 	else { return 1; }
 }
 
-/**
-*	3Dモデルのアニメーション情報解放
-*
-*	@author	minaka
-*	@date	1/3	Ver 1.0
-*/
 void _Sprite3D::releaseAnimation( void)
 {
 	map< const string, string>().swap( modelAnimeList);

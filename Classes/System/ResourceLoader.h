@@ -32,12 +32,20 @@ namespace TapGun
 		_Sprite3D* getSprite3D( int count);
 
 	private:
+		enum ModelTypeCount
+		{
+			TypeMap,
+			TypeEnemy,
+			TypeBullet,
+			TypePlayer,
+			TypeCountNum,
+		};
 
-		ResourceLoader() { for( auto &p : loadFlag) { p = false; } }
-		~ResourceLoader() {}
+		ResourceLoader();
 		void sprite3DLoadCallback( _Sprite3D* sprite3D, void* param, const std::string& fileName);
 
 		bool loadFlag[ModelMax];
+		int typeCount[TypeCountNum];
 		_Sprite3D* models[ModelMax];
 	};
 }
