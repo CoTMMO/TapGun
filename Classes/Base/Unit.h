@@ -94,7 +94,7 @@ namespace TapGun
 		float speed;//移動速度（移動量）
 		cocos2d::Vec3 speedVec;//移動ベクトル（speedをもとに計算する）
 		cocos2d::Vec3 targetPos[3];//移動時の目標座標
-		int nowTargetPos;//何番目の目標座標に向けて走るかの設定
+		int nowTarget;//何番目の目標座標に向けて走るかの設定
 
 		cocos2d::Vec3 collisionPos;//OBBの辺の長さ（現在は１つのみ定義）
 

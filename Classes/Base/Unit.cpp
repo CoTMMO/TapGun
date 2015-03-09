@@ -28,7 +28,7 @@ void Unit::Init( void)
 	targetPos[0] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
 	targetPos[1] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
 	targetPos[2] = Vec3(-999.0f, -999.0f, -999.0f);//移動目標
-	nowTargetPos = 0;
+	nowTarget = 0;
 
 	collisionPos = Vec3(0, 0, 0);//当たり判定（OBB）の各辺
 	tableNum = -1;

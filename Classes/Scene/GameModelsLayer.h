@@ -348,7 +348,9 @@ namespace TapGun
 
 
 		void SetEnemyAtk(int num);
-		void SetEnemyMove(int num);
+
+		//flag 0はAI_MOVE,flag 1はAI_APPEAR
+		void SetEnemyMove(int num,int flag);
 
 
 		/**
