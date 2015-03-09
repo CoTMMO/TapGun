@@ -46,10 +46,10 @@ void EnemyTable::InitAll()
 		enemyData[i].hitpoint = 0;
 
 
-		enemyData[i].AIappear = AI_APPEAR_NUM;//出現パターン
-		enemyData[i].AIAtk = AI_ATK_NUM;
-		enemyData[i].AIMove = AI_MOVE_NUM;
-		enemyData[i].AILife = AI_LIFE_NUM;
+		enemyData[i].AIappear = -999;//出現パターン
+		enemyData[i].AIAtk = -999;
+		enemyData[i].AIMove = -999;
+		enemyData[i].AILife = -999;
 
 		//
 		for(int j = 0; j < 3; j++)

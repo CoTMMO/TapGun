@@ -523,7 +523,7 @@ void GameModelsLayer::SetEnemy(void)
 		enemyTable->enemyData[7].SetTargetPos(enemyTable->targetPos[7]);
 		enemyTable->enemyData[7].SetNextEnemy(9, -1, -1);
 		enemyTable->enemyData[7].alive = TRUE;
-		enemyTable->enemyData[7].SetAI(AI_APPEAR_SJUMP, AI_ATK_SJUMP, AI_MOVE_NONE, AI_LIFE_STOP);//サイドジャンプモーションをアニメーション管理で分割します
+		enemyTable->enemyData[7].SetAI(AI_APPEAR_SLIDE, AI_ATK_SLIDE, AI_MOVE_NONE, AI_LIFE_STOP);//サイドジャンプモーションをアニメーション管理で分割します
 		enemyTable->enemyData[7].sleepTime = 1000;
 		enemyTable->enemyData[7].hitpoint = 5;
 		enemyTable->enemyData[7].stsAtkFrame[1] = 100;//着地後攻撃は素早い
@@ -2558,7 +2558,7 @@ void GameModelsLayer::ActionEStandby(int num)
 	case AI_APPEAR_SWALK:
 		unit[num].speed = STS_ENEMY_SWALKSPEED;
 		break;
-	case AI_APPEAR_SJUMP:
+	case AI_APPEAR_SLIDE:
 		unit[num].speed = STS_ENEMY_SJUMPSPEED;//
 		break;
 	case AI_APPEAR_ACRO:
@@ -2613,7 +2613,7 @@ void GameModelsLayer::ActionEStandby(int num)
 
 		unit[num].eState = ESTATE_MOVE;//待機が終わったら移動
 		break;
-	case AI_APPEAR_SJUMP:
+	case AI_APPEAR_SLIDE:
 		//横移動
 		//要チェック
 		unit[num].speed = STS_ENEMY_SJUMPSPEED;//
@@ -2777,13 +2777,12 @@ void GameModelsLayer::ActionEIdle(int num)
 		case AI_ATK_FAKE://威嚇攻撃を行う
 		case AI_ATK_SSHOT://立ち撃ちを行う
 		case AI_ATK_ACRO://アクロバティック
-		case AI_ATK_NUM:
 
 			//アイドル時間を設定
 			SetEnemyAtk(num);
 
 			break;
-		case AI_ATK_SJUMP://サイドジャンプ射撃
+		case AI_ATK_SLIDE://サイドジャンプ射撃
 
 			//アイドル時間を設定
 			SetEnemyAtk(num);
@@ -2914,7 +2913,7 @@ void GameModelsLayer::ActionEAttack(int num)
 				ShootBullet(num, unit[num].nowShot);
 			}
 			break;
-		case AI_ATK_SJUMP://サイドジャンプ射撃
+		case AI_ATK_SLIDE://サイドジャンプ射撃
 
 			//タイミングを合わせて射撃を行う
 			unit[num].atkFrame -= GameMasterM->loopTime;//アタックフレームを減少させていく
@@ -2966,7 +2965,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		//要チェック　アニメーションに合わせた弾の発射タイミング
 		unit[num].atkFrame = STS_SSHOT_START;//弾を発射するまでの残りフレームとして扱う
 		break;
-	case AI_ATK_SJUMP://サイドジャンプ射撃//要チェック
+	case AI_ATK_SLIDE://サイドジャンプ射撃//要チェック
 
 		//要チェック
 
@@ -3019,7 +3018,7 @@ void GameModelsLayer::SetEnemyMove(int num)
 	case AI_MOVE_SWALK://横歩き
 		unit[num].speed = STS_ENEMY_SWALKSPEED;
 		break;
-	case AI_MOVE_SJUMP://動かない
+	case AI_MOVE_SLIDE://動かない
 		unit[num].speed = STS_ENEMY_SJUMPSPEED;//
 		break;
 	case AI_MOVE_ACRO://アクロバティック
@@ -3076,7 +3075,7 @@ void GameModelsLayer::SetEnemyMove(int num)
 			unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//横歩きなので正面を向かせる
 		}
 		break;
-	case AI_MOVE_SJUMP://
+	case AI_MOVE_SLIDE://
 		//横移動
 		//要チェック
 		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 180.0f - r, 0.0f));//
