@@ -1,0 +1,18 @@
+WaveNumber,StartPos,SleepTime,TargetPos0,TargetPos1,TargetPos2,WaitToAttack0,WaitToAttack1,WaitToAttack2
+0,"(-999.00,-999.00,-999.00)",-999,"(-999.00,-999.00,-999.00)","(-999.00,-999.00,-999.00)","(-999.00,-999.00,-999.00)",-999,-999,-999
+EntryFlag,WaitToMove0,WaitToMove1,WaitToMove2,NextEnemys1,NextEnemys2,NextEnemys3,,
+FALSE,-999,-999,-999,-999,-999,-999,,
+,AIAppear,AIMove1,AIMove2,AIAtk0,AIAtk1,AIAtk2,AILifeCycle,
+,fJump,none,none,0,0,0,0,
+WaveNumber,StartPos,SleepTime,TargetPos0,TargetPos1,TargetPos2,WaitToAttack0,WaitToAttack1,WaitToAttack2
+1,"(16.665,14.551,0.00)",2,"(11.385, 10.211,0)","(10.613,10.226,0)","(10.24,7.78,0)",1,2,2
+EntryFlag,WaitToMove0,WaitToMove1,WaitToMove2,NextEnemys1,NextEnemys2,NextEnemys3,,
+TRUE,2,2,2,1,-999,-999,,
+,AIAppear,AIMove1,AIMove2,AIAtk0,AIAtk1,AIAtk2,AILifeCycle,
+,run,run,walk,none,none,shot,switch,
+WaveNumber,StartPos,SleepTime,TargetPos0,TargetPos1,TargetPos2,WaitToAttack0,WaitToAttack1,WaitToAttack2
+2,"(15.68,13.016,0)",2,"(9.705,8.38,0)","(10.673,13.27,0)","(11.645,12.424,0)",1,2,2
+EntryFlag,WaitToMove0,WaitToMove1,WaitToMove2,NextEnemys1,NextEnemys2,NextEnemys3,,
+TRUE,2,2,1,-999,-999,-999,,
+,AIAppear,AIMove1,AIMove2,AIAtk0,AIAtk1,AIAtk2,AILifeCycle,
+,walk,run,run,fake,fake,shot,stop,

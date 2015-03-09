@@ -11,12 +11,14 @@
 USING_NS_CC;
 using namespace TapGun;
 
+//GameModelsLayer
+//GameModelsLayerの関数のうち、エネミーに以外に関連するものをまとめています
+//エネミー関連はGameModelsLayerEにまとめています
 
 int rotationCount;
 float rotationR;//
 Vec3 changeCameraPos;
 Vec3 changeCameraRot;
-
 
 bool GameModelsLayer::init()
 {
@@ -195,7 +197,7 @@ void GameModelsLayer::UpdateWait()
 
 	switch (GM->waitFlag)
 	{
-	case 0://次の目標地点を決定
+	case 0://次の目標地点を決定する
 	{
 		//目標地点を取得し、移動処理の準備を行う
 		player.targetPos = GM->stagePoint[GM->sPoint].pPos;//

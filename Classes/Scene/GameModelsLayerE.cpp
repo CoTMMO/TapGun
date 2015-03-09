@@ -11,6 +11,9 @@
 USING_NS_CC;
 using namespace TapGun;
 
+//GameModelsLayerEnemy
+//GameModelsLayerの関数のうち、エネミーに関連するものをまとめています
+
 
 /**
 *	全モデル初期化
@@ -79,375 +82,418 @@ void GameModelsLayer::InitBullet()
 *	@return	なし
 *	@date	1/8 Ver 1.0
 */
-void GameModelsLayer::SetEnemy(void)
+void GameModelsLayer::SetNextWave(void)
 {
 	auto GM = GameMaster::GetInstance();
-
-	enemyTable->InitAll();//エネミー出現テーブルを初期化（）
-
-	//敵の初期化
-	for (int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
-	{
-		unit[i].sprite3d->setVisible(false);//敵モデル非表示
-		unit[i].visible = FALSE;//敵モデル非表示
-		unit[i].sprite3d->setPosition3D(Vec3(999.0f, 999.0f, 999.0f));
-		unit[i].eState = ESTATE_SLEEP;
-		unit[i].tableNum = -1;
-		unit[i].hitpoint = 5;
-		unit[i].nowShot = 0;
-		unit[i].maxShot = STS_ENEMY_MAXSHOT;
-
-
-		//
-		for (int j = 0; j < 3; j++)
-		{
-			unit[i].AIMove[j] = -1;
-			unit[i].AIAtk[j] = -1;
-		}
-		unit[i].AIAppear = -1;//
-		unit[i].AILife = -1;
-
-
-		//
-		for (int j = 0; j < 3; j++)
-		{
-			unit[i].nextEnemies[j] = -1;
-		}
-
-
-		//
-		for (int j = 0; j < 3; j++)
-		{
-			unit[i].stsWaitToAtk[j] = 0.0f;
-			unit[i].stsWaitToMove[j] = 0.0f;
-		}
-
-		unit[i].waitTime = 0.0f;//
-		unit[i].sleepTime = 0.0f;//
-	}
-
+	int flagNextWave = FALSE;//次回ウェーブが存在するなら-1以外になる
 	EnemySettingFile* ESF;
+
+	//次回ウェーブの確認
+
 	//現在ウェーブで場合分け
-	switch (GM->wave)
+	switch(GM->wave)
 	{
 	case 0://ウェーブ1
 	{
-		ESF = EnemySettingFile::create("test.csv");
-		//enemyTable->InitAll();//エネミー出現テーブルを初期化（）
-		//enemyTable->finishNumber = 12;//
+			   ESF = EnemySettingFile::create("wave1.csv");
+			   flagNextWave = TRUE;
 
-		////敵の初期化
-		//for (int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
-		//{
-		//	//
-		//	unit[i].sprite3d->setVisible(false);//敵モデル非表示
-		//	unit[i].visible = FALSE;//敵モデル非表示
-		//	unit[i].sprite3d->setPosition3D(Vec3(0.0f, 0.0f, 0.0f));//敵モデル非表示
-		//	unit[i].eState = ESTATE_SLEEP;
-		//	unit[i].tableNum = -1;
-		//	unit[i].hitpoint = 5;
-		//	unit[i].nowShot = 0;
-		//	unit[i].maxShot = STS_ENEMY_MAXSHOT;
+			   //enemyTable->InitAll();//エネミー出現テーブルを初期化（）
+			   //enemyTable->finishNumber = 12;//
 
-		//	//
-		//	unit[i].AIMove = -1;
-		//	unit[i].AIAtk = -1;
-		//	unit[i].AIAppear = -1;//
-		//	unit[i].AILife = -1;
+			   ////敵の初期化
+			   //for (int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
+			   //{
+			   //	//
+			   //	unit[i].sprite3d->setVisible(false);//敵モデル非表示
+			   //	unit[i].visible = FALSE;//敵モデル非表示
+			   //	unit[i].sprite3d->setPosition3D(Vec3(0.0f, 0.0f, 0.0f));//敵モデル非表示
+			   //	unit[i].eState = ESTATE_SLEEP;
+			   //	unit[i].tableNum = -1;
+			   //	unit[i].hitpoint = 5;
+			   //	unit[i].nowShot = 0;
+			   //	unit[i].maxShot = STS_ENEMY_MAXSHOT;
 
-		//	//
-		//	for (int j = 0; j < 3; j++)
-		//	{
-		//		unit[i].nextEnemies[j] = -1;
-		//	}
+			   //	//
+			   //	unit[i].AIMove = -1;
+			   //	unit[i].AIAtk = -1;
+			   //	unit[i].AIAppear = -1;//
+			   //	unit[i].AILife = -1;
 
-		//	//
-		//	for (int j = 0; j < 3; j++)
-		//	{
-		//		unit[i].stsAtkFrame[j] = 0.0f;
-		//	}
+			   //	//
+			   //	for (int j = 0; j < 3; j++)
+			   //	{
+			   //		unit[i].nextEnemies[j] = -1;
+			   //	}
 
-		//	unit[i].atkFrame = 0.0f;//
-		//	unit[i].eWaitFrame = 0.0f;//出現までの待ちフレーム
-		//	unit[i].sleepTime = 0.0f;
-		//}
+			   //	//
+			   //	for (int j = 0; j < 3; j++)
+			   //	{
+			   //		unit[i].stsAtkFrame[j] = 0.0f;
+			   //	}
 
-		////敵の出現ポイントをセット
-		//enemyTable->standbyPos[0] = (Vec3(16.665f, 0.0f, -14.551f));
-		//enemyTable->standbyPos[1] = (Vec3(15.682f, 0.0f, -13.016f));
-		//enemyTable->standbyPos[2] = (Vec3(12.660f, 0.0f, -5.490f));
-		//enemyTable->standbyPos[3] = (Vec3(9.705f, 0.0f, -16.823f));
-		//enemyTable->standbyPos[4] = (Vec3(16.665f, 0.0f, -14.551f));
+			   //	unit[i].atkFrame = 0.0f;//
+			   //	unit[i].eWaitFrame = 0.0f;//出現までの待ちフレーム
+			   //	unit[i].sleepTime = 0.0f;
+			   //}
 
-		//enemyTable->standbyPos[5] = (Vec3(15.682f, 0.0f, -13.016f));
-		//enemyTable->standbyPos[6] = (Vec3(9.19f, 0.0f, -16.823f));
-		//enemyTable->standbyPos[7] = (Vec3(15.682f, 0.0f, -13.016f));
-		//enemyTable->standbyPos[8] = (Vec3(12.66f, 0.0f, -5.49f));
-		//enemyTable->standbyPos[9] = (Vec3(7.402f, 0.0f, -14.74f));
+			   ////敵の出現ポイントをセット
+			   //enemyTable->standbyPos[0] = (Vec3(16.665f, 0.0f, -14.551f));
+			   //enemyTable->standbyPos[1] = (Vec3(15.682f, 0.0f, -13.016f));
+			   //enemyTable->standbyPos[2] = (Vec3(12.660f, 0.0f, -5.490f));
+			   //enemyTable->standbyPos[3] = (Vec3(9.705f, 0.0f, -16.823f));
+			   //enemyTable->standbyPos[4] = (Vec3(16.665f, 0.0f, -14.551f));
 
-
-		////敵の目標地点をセット
-		////enemyTable->targetPos[0][0] = (Vec3(11.385f, 0.0f, -10.211f));
-		//enemyTable->targetPos[0][1] = (Vec3(10.613f, 0.0f, -10.226f));
-		//enemyTable->targetPos[0][2] = (Vec3(10.247f, 0.0f, -7.78f));
-
-		////enemyTable->targetPos[1][0] = (Vec3(9.705f, 0.0f, -8.381f));
-		//enemyTable->targetPos[1][1] = (Vec3(10.673f, 0.0f, -13.275f));
-		//enemyTable->targetPos[1][2] = (Vec3(11.645f, 0.0f, -12.424f));
-
-		////enemyTable->targetPos[2][0] = (Vec3(11.645f, 0.0f, -12.424f));
-		////enemyTable->targetPos[2][1] = (Vec3(11.385f, 0.0f, -10.211f));
-		//enemyTable->targetPos[2][2] = (Vec3(11.504f, 0.0f, -9.227f));
-
-		////enemyTable->targetPos[2][2] = (Vec3(9.705f, 0.0f, -8.381f));
-		////enemyTable->targetPos[3][1] = (Vec3(12.21f, 0.0f, -12.327f));
-		//enemyTable->targetPos[3][2] = (Vec3(9.705f, 0.0f, -8.381f));
-
-		////enemyTable->targetPos[4][0] = (Vec3(11.385f, 0.0f, -7.781f));
-		////enemyTable->targetPos[4][1] = (Vec3(9.705f, 0.0f, -8.381f));
-		//enemyTable->targetPos[4][2] = (Vec3(10.673f, 0.0f, -13.275f));
+			   //enemyTable->standbyPos[5] = (Vec3(15.682f, 0.0f, -13.016f));
+			   //enemyTable->standbyPos[6] = (Vec3(9.19f, 0.0f, -16.823f));
+			   //enemyTable->standbyPos[7] = (Vec3(15.682f, 0.0f, -13.016f));
+			   //enemyTable->standbyPos[8] = (Vec3(12.66f, 0.0f, -5.49f));
+			   //enemyTable->standbyPos[9] = (Vec3(7.402f, 0.0f, -14.74f));
 
 
-		////enemyTable->targetPos[5][1] = (Vec3(11.385f, 0.0f, -10.211f));
-		//enemyTable->targetPos[5][1] = (Vec3(10.55f, 0.0f, -11.23f));
-		//enemyTable->targetPos[5][2] = (Vec3(11.55f, 0.0f, -9.23f));
+			   ////敵の目標地点をセット
+			   ////enemyTable->targetPos[0][0] = (Vec3(11.385f, 0.0f, -10.211f));
+			   //enemyTable->targetPos[0][1] = (Vec3(10.613f, 0.0f, -10.226f));
+			   //enemyTable->targetPos[0][2] = (Vec3(10.247f, 0.0f, -7.78f));
 
-		////enemyTable->targetPos[6][1] = (Vec3(11.385f, 0.0f, -7.781f));
-		////enemyTable->targetPos[6][2] = (Vec3(9.705f, 0.0f, -8.381f));
-		//enemyTable->targetPos[6][2] = (Vec3(10.613f, 0.0f, -10.226f));
+			   ////enemyTable->targetPos[1][0] = (Vec3(9.705f, 0.0f, -8.381f));
+			   //enemyTable->targetPos[1][1] = (Vec3(10.673f, 0.0f, -13.275f));
+			   //enemyTable->targetPos[1][2] = (Vec3(11.645f, 0.0f, -12.424f));
 
-		////enemyTable->targetPos[6][1] = (Vec3(11.385f, 0.0f, -7.781f));
-		////enemyTable->targetPos[6][2] = (Vec3(9.705f, 0.0f, -8.381f));
-		//enemyTable->targetPos[10][2] = (Vec3(11.813f, 0.0f, -12.226f));
+			   ////enemyTable->targetPos[2][0] = (Vec3(11.645f, 0.0f, -12.424f));
+			   ////enemyTable->targetPos[2][1] = (Vec3(11.385f, 0.0f, -10.211f));
+			   //enemyTable->targetPos[2][2] = (Vec3(11.504f, 0.0f, -9.227f));
 
-		////サイドジャンプ
-		////enemyTable->targetPos[9][1] = (Vec3(11.385f, 0.0f, -7.781f));
-		//enemyTable->targetPos[7][1] = (Vec3(12.21f, 0.0f, -12.327f));//サイドジャンプの着地位置
-		//enemyTable->targetPos[7][2] = (Vec3(12.21f, 0.0f, -12.327f));//その場に留まって射撃を行う
+			   ////enemyTable->targetPos[2][2] = (Vec3(9.705f, 0.0f, -8.381f));
+			   ////enemyTable->targetPos[3][1] = (Vec3(12.21f, 0.0f, -12.327f));
+			   //enemyTable->targetPos[3][2] = (Vec3(9.705f, 0.0f, -8.381f));
 
-		////画面手前からの敵
-		////enemyTable->targetPos[7][1] = (Vec3(11.385f, 0.0f, -7.781f));
-		////enemyTable->targetPos[7][2] = (Vec3(9.705f, 0.0f, -8.381f));
-		//enemyTable->targetPos[8][2] = (Vec3(11.704f, 0.0f, -8.25f));
-
-
-		////アクロバット
-		////enemyTable->targetPos[8][2] = (Vec3(9.705f, 0.0f, -13.016f));
-		//enemyTable->targetPos[9][1] = (Vec3(10.673f, 0.0f, -13.275f));//アクロバット開始地点まで走る
-		//enemyTable->targetPos[9][2] = (Vec3(12.14f, 0.0f, -11.95f));//ここまでアクロバットで移動
+			   ////enemyTable->targetPos[4][0] = (Vec3(11.385f, 0.0f, -7.781f));
+			   ////enemyTable->targetPos[4][1] = (Vec3(9.705f, 0.0f, -8.381f));
+			   //enemyTable->targetPos[4][2] = (Vec3(10.673f, 0.0f, -13.275f));
 
 
-		////エネミーの初期座標をセット
-		////エネミーの最初のターゲット座標をセット
-		////エネミーの行動パターンをセット
-		//enemyTable->enemyData[0].standbyPos = enemyTable->standbyPos[0];
-		//enemyTable->enemyData[0].SetTargetPos(enemyTable->targetPos[0]);
-		//enemyTable->enemyData[0].SetNextEnemy(2, -1, -1);
-		//enemyTable->enemyData[0].alive = TRUE;
-		//enemyTable->enemyData[0].SetAI(AI_APPEAR_RUN, AI_ATK_NONE, AI_MOVE_WALK, AI_LIFE_SWITCH);
-		//enemyTable->enemyData[0].sleepTime = 1000;
-		//enemyTable->enemyData[0].hitpoint = 5;
-		//enemyTable->enemyData[0].stsAtkFrame[1] = 2000;
-		//enemyTable->enemyData[0].stsAtkFrame[2] = 2000;
+			   ////enemyTable->targetPos[5][1] = (Vec3(11.385f, 0.0f, -10.211f));
+			   //enemyTable->targetPos[5][1] = (Vec3(10.55f, 0.0f, -11.23f));
+			   //enemyTable->targetPos[5][2] = (Vec3(11.55f, 0.0f, -9.23f));
+
+			   ////enemyTable->targetPos[6][1] = (Vec3(11.385f, 0.0f, -7.781f));
+			   ////enemyTable->targetPos[6][2] = (Vec3(9.705f, 0.0f, -8.381f));
+			   //enemyTable->targetPos[6][2] = (Vec3(10.613f, 0.0f, -10.226f));
+
+			   ////enemyTable->targetPos[6][1] = (Vec3(11.385f, 0.0f, -7.781f));
+			   ////enemyTable->targetPos[6][2] = (Vec3(9.705f, 0.0f, -8.381f));
+			   //enemyTable->targetPos[10][2] = (Vec3(11.813f, 0.0f, -12.226f));
+
+			   ////サイドジャンプ
+			   ////enemyTable->targetPos[9][1] = (Vec3(11.385f, 0.0f, -7.781f));
+			   //enemyTable->targetPos[7][1] = (Vec3(12.21f, 0.0f, -12.327f));//サイドジャンプの着地位置
+			   //enemyTable->targetPos[7][2] = (Vec3(12.21f, 0.0f, -12.327f));//その場に留まって射撃を行う
+
+			   ////画面手前からの敵
+			   ////enemyTable->targetPos[7][1] = (Vec3(11.385f, 0.0f, -7.781f));
+			   ////enemyTable->targetPos[7][2] = (Vec3(9.705f, 0.0f, -8.381f));
+			   //enemyTable->targetPos[8][2] = (Vec3(11.704f, 0.0f, -8.25f));
 
 
-		//enemyTable->enemyData[1].standbyPos = enemyTable->standbyPos[1];
-		//enemyTable->enemyData[1].SetTargetPos(enemyTable->targetPos[1]);
-		//enemyTable->enemyData[1].SetNextEnemy(3, -1, -1);
-		//enemyTable->enemyData[1].alive = TRUE;
-		//enemyTable->enemyData[1].SetAI(AI_APPEAR_RUN, AI_ATK_NONE, AI_MOVE_SWALK, AI_LIFE_SWITCH);
-		//enemyTable->enemyData[1].sleepTime = 1000;
-		//enemyTable->enemyData[1].hitpoint = 5;
-		//enemyTable->enemyData[1].stsAtkFrame[1] = 3000;
-		//enemyTable->enemyData[1].stsAtkFrame[2] = 3000;
+			   ////アクロバット
+			   ////enemyTable->targetPos[8][2] = (Vec3(9.705f, 0.0f, -13.016f));
+			   //enemyTable->targetPos[9][1] = (Vec3(10.673f, 0.0f, -13.275f));//アクロバット開始地点まで走る
+			   //enemyTable->targetPos[9][2] = (Vec3(12.14f, 0.0f, -11.95f));//ここまでアクロバットで移動
 
 
-		//enemyTable->enemyData[2].standbyPos = enemyTable->standbyPos[2];
-		//enemyTable->enemyData[2].SetTargetPos(enemyTable->targetPos[2]);
-		//enemyTable->enemyData[2].SetNextEnemy(4, -1, -1);
-		//enemyTable->enemyData[2].alive = TRUE;
-		//enemyTable->enemyData[2].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
-		//enemyTable->enemyData[2].sleepTime = 1000;
-		//enemyTable->enemyData[2].hitpoint = 5;
-		//enemyTable->enemyData[2].stsAtkFrame[2] = 2500;
+			   ////エネミーの初期座標をセット
+			   ////エネミーの最初のターゲット座標をセット
+			   ////エネミーの行動パターンをセット
+			   //enemyTable->enemyData[0].standbyPos = enemyTable->standbyPos[0];
+			   //enemyTable->enemyData[0].SetTargetPos(enemyTable->targetPos[0]);
+			   //enemyTable->enemyData[0].SetNextEnemy(2, -1, -1);
+			   //enemyTable->enemyData[0].alive = TRUE;
+			   //enemyTable->enemyData[0].SetAI(AI_APPEAR_RUN, AI_ATK_NONE, AI_MOVE_WALK, AI_LIFE_SWITCH);
+			   //enemyTable->enemyData[0].sleepTime = 1000;
+			   //enemyTable->enemyData[0].hitpoint = 5;
+			   //enemyTable->enemyData[0].stsAtkFrame[1] = 2000;
+			   //enemyTable->enemyData[0].stsAtkFrame[2] = 2000;
 
 
-		//enemyTable->enemyData[3].standbyPos = enemyTable->standbyPos[3];
-		//enemyTable->enemyData[3].SetTargetPos(enemyTable->targetPos[3]);
-		//enemyTable->enemyData[3].SetNextEnemy(5, -1, -1);
-		//enemyTable->enemyData[3].alive = TRUE;
-		//enemyTable->enemyData[3].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
-		//enemyTable->enemyData[3].sleepTime = 1000;
-		//enemyTable->enemyData[3].hitpoint = 5;
-		//enemyTable->enemyData[3].stsAtkFrame[2] = 2500;
+			   //enemyTable->enemyData[1].standbyPos = enemyTable->standbyPos[1];
+			   //enemyTable->enemyData[1].SetTargetPos(enemyTable->targetPos[1]);
+			   //enemyTable->enemyData[1].SetNextEnemy(3, -1, -1);
+			   //enemyTable->enemyData[1].alive = TRUE;
+			   //enemyTable->enemyData[1].SetAI(AI_APPEAR_RUN, AI_ATK_NONE, AI_MOVE_SWALK, AI_LIFE_SWITCH);
+			   //enemyTable->enemyData[1].sleepTime = 1000;
+			   //enemyTable->enemyData[1].hitpoint = 5;
+			   //enemyTable->enemyData[1].stsAtkFrame[1] = 3000;
+			   //enemyTable->enemyData[1].stsAtkFrame[2] = 3000;
 
 
-		//enemyTable->enemyData[4].standbyPos = enemyTable->standbyPos[4];
-		//enemyTable->enemyData[4].SetTargetPos(enemyTable->targetPos[4]);
-		//enemyTable->enemyData[4].SetNextEnemy(6, 10, -1);
-		//enemyTable->enemyData[4].alive = TRUE;
-		//enemyTable->enemyData[4].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
-		//enemyTable->enemyData[4].sleepTime = 1000;
-		//enemyTable->enemyData[4].hitpoint = 5;
-		//enemyTable->enemyData[4].stsAtkFrame[2] = 2500;
+			   //enemyTable->enemyData[2].standbyPos = enemyTable->standbyPos[2];
+			   //enemyTable->enemyData[2].SetTargetPos(enemyTable->targetPos[2]);
+			   //enemyTable->enemyData[2].SetNextEnemy(4, -1, -1);
+			   //enemyTable->enemyData[2].alive = TRUE;
+			   //enemyTable->enemyData[2].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
+			   //enemyTable->enemyData[2].sleepTime = 1000;
+			   //enemyTable->enemyData[2].hitpoint = 5;
+			   //enemyTable->enemyData[2].stsAtkFrame[2] = 2500;
 
 
-		////要チェック
-		//enemyTable->enemyData[5].standbyPos = enemyTable->standbyPos[5];
-		//enemyTable->enemyData[5].SetTargetPos(enemyTable->targetPos[5]);
-		//enemyTable->enemyData[5].SetNextEnemy(7, -1, -1);
-		//enemyTable->enemyData[5].alive = TRUE;
-		//enemyTable->enemyData[5].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_WALK, AI_LIFE_STOP);
-		//enemyTable->enemyData[5].sleepTime = 1000;
-		//enemyTable->enemyData[5].hitpoint = 5;
-		//enemyTable->enemyData[5].stsAtkFrame[1] = 3000;
-		//enemyTable->enemyData[5].stsAtkFrame[2] = 3000;
+			   //enemyTable->enemyData[3].standbyPos = enemyTable->standbyPos[3];
+			   //enemyTable->enemyData[3].SetTargetPos(enemyTable->targetPos[3]);
+			   //enemyTable->enemyData[3].SetNextEnemy(5, -1, -1);
+			   //enemyTable->enemyData[3].alive = TRUE;
+			   //enemyTable->enemyData[3].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
+			   //enemyTable->enemyData[3].sleepTime = 1000;
+			   //enemyTable->enemyData[3].hitpoint = 5;
+			   //enemyTable->enemyData[3].stsAtkFrame[2] = 2500;
 
 
-		////二体出てくる敵
-		//enemyTable->enemyData[6].standbyPos = enemyTable->standbyPos[6];
-		//enemyTable->enemyData[6].SetTargetPos(enemyTable->targetPos[6]);
-		//enemyTable->enemyData[6].SetNextEnemy(8, -1, -1);
-		//enemyTable->enemyData[6].alive = TRUE;
-		//enemyTable->enemyData[6].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
-		//enemyTable->enemyData[6].sleepTime = 980;
-		//enemyTable->enemyData[6].hitpoint = 5;
-		//enemyTable->enemyData[6].stsAtkFrame[2] = 2000;
-
-		//enemyTable->enemyData[10].standbyPos = enemyTable->standbyPos[6];//とりあえず6番と同じ所からスタート
-		//enemyTable->enemyData[10].SetTargetPos(enemyTable->targetPos[10]);
-		//enemyTable->enemyData[10].SetNextEnemy(-1, -1, -1);
-		//enemyTable->enemyData[10].alive = TRUE;
-		//enemyTable->enemyData[10].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
-		//enemyTable->enemyData[10].sleepTime = 1600;
-		//enemyTable->enemyData[10].hitpoint = 5;
-		//enemyTable->enemyData[10].stsAtkFrame[2] = 2500;
+			   //enemyTable->enemyData[4].standbyPos = enemyTable->standbyPos[4];
+			   //enemyTable->enemyData[4].SetTargetPos(enemyTable->targetPos[4]);
+			   //enemyTable->enemyData[4].SetNextEnemy(6, 10, -1);
+			   //enemyTable->enemyData[4].alive = TRUE;
+			   //enemyTable->enemyData[4].SetAI(AI_APPEAR_RUN,  AI_ATK_FAKE, AI_MOVE_NONE, AI_LIFE_STOP);
+			   //enemyTable->enemyData[4].sleepTime = 1000;
+			   //enemyTable->enemyData[4].hitpoint = 5;
+			   //enemyTable->enemyData[4].stsAtkFrame[2] = 2500;
 
 
-		////サイドジャンプ行動を行う
-		////要チェック
-		//enemyTable->enemyData[7].standbyPos = enemyTable->standbyPos[7];
-		//enemyTable->enemyData[7].SetTargetPos(enemyTable->targetPos[7]);
-		//enemyTable->enemyData[7].SetNextEnemy(9, -1, -1);
-		//enemyTable->enemyData[7].alive = TRUE;
-		//enemyTable->enemyData[7].SetAI(AI_APPEAR_SLIDE, AI_ATK_SLIDE, AI_MOVE_NONE, AI_LIFE_STOP);//サイドジャンプモーションをアニメーション管理で分割します
-		//enemyTable->enemyData[7].sleepTime = 1000;
-		//enemyTable->enemyData[7].hitpoint = 5;
-		//enemyTable->enemyData[7].stsAtkFrame[1] = 100;//着地後攻撃は素早い
-		//enemyTable->enemyData[7].stsAtkFrame[2] = 3000;//その後は隙を作る
+			   ////要チェック
+			   //enemyTable->enemyData[5].standbyPos = enemyTable->standbyPos[5];
+			   //enemyTable->enemyData[5].SetTargetPos(enemyTable->targetPos[5]);
+			   //enemyTable->enemyData[5].SetNextEnemy(7, -1, -1);
+			   //enemyTable->enemyData[5].alive = TRUE;
+			   //enemyTable->enemyData[5].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_WALK, AI_LIFE_STOP);
+			   //enemyTable->enemyData[5].sleepTime = 1000;
+			   //enemyTable->enemyData[5].hitpoint = 5;
+			   //enemyTable->enemyData[5].stsAtkFrame[1] = 3000;
+			   //enemyTable->enemyData[5].stsAtkFrame[2] = 3000;
 
 
-		////画面手前から出てくる敵
-		//enemyTable->enemyData[8].standbyPos = enemyTable->standbyPos[8];
-		//enemyTable->enemyData[8].SetTargetPos(enemyTable->targetPos[8]);
-		//enemyTable->enemyData[8].SetNextEnemy(-1, -1, -1);
-		//enemyTable->enemyData[8].finishFlag = TRUE;
-		//enemyTable->enemyData[8].alive = TRUE;
-		//enemyTable->enemyData[8].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
-		//enemyTable->enemyData[8].sleepTime = 1000;
-		//enemyTable->enemyData[8].hitpoint = 5;
-		////enemyTable->enemyData[0].stsAtkFrame[0] = 
-		////->enemyData[5].stsAtkFrame[1] = 1000;
-		//enemyTable->enemyData[8].stsAtkFrame[2] = 3000;
+			   ////二体出てくる敵
+			   //enemyTable->enemyData[6].standbyPos = enemyTable->standbyPos[6];
+			   //enemyTable->enemyData[6].SetTargetPos(enemyTable->targetPos[6]);
+			   //enemyTable->enemyData[6].SetNextEnemy(8, -1, -1);
+			   //enemyTable->enemyData[6].alive = TRUE;
+			   //enemyTable->enemyData[6].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
+			   //enemyTable->enemyData[6].sleepTime = 980;
+			   //enemyTable->enemyData[6].hitpoint = 5;
+			   //enemyTable->enemyData[6].stsAtkFrame[2] = 2000;
 
-		////要チェック
-		////アクロバット移動の代わりに移動攻撃の繰り返しに修正
-		//enemyTable->enemyData[9].standbyPos = enemyTable->standbyPos[9];
-		//enemyTable->enemyData[9].SetTargetPos(enemyTable->targetPos[9]);
-		//enemyTable->enemyData[9].SetNextEnemy(-1, -1, -1);
-		//enemyTable->enemyData[9].finishFlag = TRUE;
-		//enemyTable->enemyData[9].alive = TRUE;
-		//enemyTable->enemyData[9].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT,AI_MOVE_RUN, AI_LIFE_SWITCH);//
-		//enemyTable->enemyData[9].sleepTime = 1000;
-		//enemyTable->enemyData[9].hitpoint = 5;
-		//enemyTable->enemyData[9].stsAtkFrame[1] = 300;
-		//enemyTable->enemyData[9].stsAtkFrame[2] = 1200;
+			   //enemyTable->enemyData[10].standbyPos = enemyTable->standbyPos[6];//とりあえず6番と同じ所からスタート
+			   //enemyTable->enemyData[10].SetTargetPos(enemyTable->targetPos[10]);
+			   //enemyTable->enemyData[10].SetNextEnemy(-1, -1, -1);
+			   //enemyTable->enemyData[10].alive = TRUE;
+			   //enemyTable->enemyData[10].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
+			   //enemyTable->enemyData[10].sleepTime = 1600;
+			   //enemyTable->enemyData[10].hitpoint = 5;
+			   //enemyTable->enemyData[10].stsAtkFrame[2] = 2500;
 
 
-		////敵の出現定義が済んだら、最初に出現させる敵のセットを行う
-		//unit[1].eState = ESTATE_SLEEP;
-		//unit[1].sprite3d->setVisible(false);//敵モデル非表示
-		//unit[1].visible = TRUE;//敵モデル表示
-		//unit[1].sprite3d->setPosition3D(enemyTable->enemyData[0].standbyPos);//敵モデル非表示
-		//unit[1].SetTargetPos(enemyTable->enemyData[0].targetPos);
-		//unit[1].StandbyPos = enemyTable->enemyData[0].standbyPos;
-		//for(int i = 0; i < 3; i++)
-		//{
-		//	unit[1].stsAtkFrame[i] = enemyTable->enemyData[0].stsAtkFrame[i];
-		//}
-		//unit[1].tableNum = 0;
-		//unit[1].AIAppear = enemyTable->enemyData[0].AIappear;
-		//unit[1].AIAtk = enemyTable->enemyData[0].AIAtk;
-		//unit[1].AIMove = enemyTable->enemyData[0].AIMove;
-		//unit[1].AILife = enemyTable->enemyData[0].AILife;
+			   ////サイドジャンプ行動を行う
+			   ////要チェック
+			   //enemyTable->enemyData[7].standbyPos = enemyTable->standbyPos[7];
+			   //enemyTable->enemyData[7].SetTargetPos(enemyTable->targetPos[7]);
+			   //enemyTable->enemyData[7].SetNextEnemy(9, -1, -1);
+			   //enemyTable->enemyData[7].alive = TRUE;
+			   //enemyTable->enemyData[7].SetAI(AI_APPEAR_SLIDE, AI_ATK_SLIDE, AI_MOVE_NONE, AI_LIFE_STOP);//サイドジャンプモーションをアニメーション管理で分割します
+			   //enemyTable->enemyData[7].sleepTime = 1000;
+			   //enemyTable->enemyData[7].hitpoint = 5;
+			   //enemyTable->enemyData[7].stsAtkFrame[1] = 100;//着地後攻撃は素早い
+			   //enemyTable->enemyData[7].stsAtkFrame[2] = 3000;//その後は隙を作る
 
 
-		//unit[1].stsWaitFrame = enemyTable->enemyData[0].stsWaitFrame;
+			   ////画面手前から出てくる敵
+			   //enemyTable->enemyData[8].standbyPos = enemyTable->standbyPos[8];
+			   //enemyTable->enemyData[8].SetTargetPos(enemyTable->targetPos[8]);
+			   //enemyTable->enemyData[8].SetNextEnemy(-1, -1, -1);
+			   //enemyTable->enemyData[8].finishFlag = TRUE;
+			   //enemyTable->enemyData[8].alive = TRUE;
+			   //enemyTable->enemyData[8].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT, AI_MOVE_NONE, AI_LIFE_STOP);
+			   //enemyTable->enemyData[8].sleepTime = 1000;
+			   //enemyTable->enemyData[8].hitpoint = 5;
+			   ////enemyTable->enemyData[0].stsAtkFrame[0] = 
+			   ////->enemyData[5].stsAtkFrame[1] = 1000;
+			   //enemyTable->enemyData[8].stsAtkFrame[2] = 3000;
 
-		//unit[2].eState = ESTATE_SLEEP;
-		//unit[2].sprite3d->setVisible(false);//敵モデル非表示
-		//unit[2].visible = TRUE;//敵モデル表示
-		//unit[2].sprite3d->setPosition3D(enemyTable->enemyData[1].standbyPos);//敵モデル非表示
-		//unit[2].SetTargetPos(enemyTable->enemyData[1].targetPos);
-		//unit[2].StandbyPos = enemyTable->enemyData[1].standbyPos;
-		//unit[2].tableNum = 1;
+			   ////要チェック
+			   ////アクロバット移動の代わりに移動攻撃の繰り返しに修正
+			   //enemyTable->enemyData[9].standbyPos = enemyTable->standbyPos[9];
+			   //enemyTable->enemyData[9].SetTargetPos(enemyTable->targetPos[9]);
+			   //enemyTable->enemyData[9].SetNextEnemy(-1, -1, -1);
+			   //enemyTable->enemyData[9].finishFlag = TRUE;
+			   //enemyTable->enemyData[9].alive = TRUE;
+			   //enemyTable->enemyData[9].SetAI(AI_APPEAR_RUN, AI_ATK_SSHOT,AI_MOVE_RUN, AI_LIFE_SWITCH);//
+			   //enemyTable->enemyData[9].sleepTime = 1000;
+			   //enemyTable->enemyData[9].hitpoint = 5;
+			   //enemyTable->enemyData[9].stsAtkFrame[1] = 300;
+			   //enemyTable->enemyData[9].stsAtkFrame[2] = 1200;
 
-		//unit[2].AIAppear = enemyTable->enemyData[1].AIappear;
-		//unit[2].AIAtk = enemyTable->enemyData[1].AIAtk;
-		//unit[2].AIMove = enemyTable->enemyData[1].AIMove;
-		//unit[2].AILife = enemyTable->enemyData[1].AILife;
-		//for(int i = 0; i < 3; i++)
-		//{
-		//	unit[2].stsAtkFrame[i] = enemyTable->enemyData[1].stsAtkFrame[i];
-		//}
-		//unit[2].stsWaitFrame = enemyTable->enemyData[1].stsWaitFrame;
+
+			   ////敵の出現定義が済んだら、最初に出現させる敵のセットを行う
+			   //unit[1].eState = ESTATE_SLEEP;
+			   //unit[1].sprite3d->setVisible(false);//敵モデル非表示
+			   //unit[1].visible = TRUE;//敵モデル表示
+			   //unit[1].sprite3d->setPosition3D(enemyTable->enemyData[0].standbyPos);//敵モデル非表示
+			   //unit[1].SetTargetPos(enemyTable->enemyData[0].targetPos);
+			   //unit[1].StandbyPos = enemyTable->enemyData[0].standbyPos;
+			   //for(int i = 0; i < 3; i++)
+			   //{
+			   //	unit[1].stsAtkFrame[i] = enemyTable->enemyData[0].stsAtkFrame[i];
+			   //}
+			   //unit[1].tableNum = 0;
+			   //unit[1].AIAppear = enemyTable->enemyData[0].AIappear;
+			   //unit[1].AIAtk = enemyTable->enemyData[0].AIAtk;
+			   //unit[1].AIMove = enemyTable->enemyData[0].AIMove;
+			   //unit[1].AILife = enemyTable->enemyData[0].AILife;
+
+
+			   //unit[1].stsWaitFrame = enemyTable->enemyData[0].stsWaitFrame;
+
+			   //unit[2].eState = ESTATE_SLEEP;
+			   //unit[2].sprite3d->setVisible(false);//敵モデル非表示
+			   //unit[2].visible = TRUE;//敵モデル表示
+			   //unit[2].sprite3d->setPosition3D(enemyTable->enemyData[1].standbyPos);//敵モデル非表示
+			   //unit[2].SetTargetPos(enemyTable->enemyData[1].targetPos);
+			   //unit[2].StandbyPos = enemyTable->enemyData[1].standbyPos;
+			   //unit[2].tableNum = 1;
+
+			   //unit[2].AIAppear = enemyTable->enemyData[1].AIappear;
+			   //unit[2].AIAtk = enemyTable->enemyData[1].AIAtk;
+			   //unit[2].AIMove = enemyTable->enemyData[1].AIMove;
+			   //unit[2].AILife = enemyTable->enemyData[1].AILife;
+			   //for(int i = 0; i < 3; i++)
+			   //{
+			   //	unit[2].stsAtkFrame[i] = enemyTable->enemyData[1].stsAtkFrame[i];
+			   //}
+			   //unit[2].stsWaitFrame = enemyTable->enemyData[1].stsWaitFrame;
 	}
 		break;
 	case 1://ウェーブ2
-
-
+		ESF = EnemySettingFile::create("wave2.csv");
+		flagNextWave = TRUE;
 		break;
 	case 2://ウェーブ2
 
-
+		ESF = EnemySettingFile::create("wave3.csv");
+		flagNextWave = TRUE;
 		break;
 	default:
 		break;
 	}
 
-
-	//敵の
-	enemyTable->finishNumber = ESF->loadCount;//
-
-	//
-	for (int i = 0; i < ESF->WAVE_ENEMY_COUNT; i++)
+	//次回ウェーブが存在するならエネミー出現テーブルをセット
+	if(TRUE == flagNextWave)
 	{
-		//初期座標をセット
-		enemyTable->enemyData[i].standbyPos = ESF->dataList[i]->startPos;
+		enemyTable->InitAll();//エネミー出現テーブルを初期化
 
-		//敵の目標地点をセット
-		enemyTable->enemyData[i].SetTargetPos(ESF->dataList[i]->targetPos);
-
-
-		for (int j = 0; j < 3; j++)
+		//敵の初期化
+		for(int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
 		{
-			//次の敵をセット
-			enemyTable->enemyData[i].nextEnemiesNum[j] = ESF->dataList[i]->nextEnemies[j];
+			unit[i].sprite3d->setVisible(false);//敵モデル非表示
+			unit[i].visible = FALSE;//敵モデル非表示
+			unit[i].sprite3d->setPosition3D(Vec3(999.0f, 999.0f, 999.0f));
+			unit[i].eState = ESTATE_SLEEP;
+			unit[i].tableNum = -1;
+			unit[i].hitpoint = 5;
+			unit[i].nowShot = 0;
+			unit[i].maxShot = STS_ENEMY_MAXSHOT;
 
-			//次の敵をセット
-			enemyTable->enemyData[i].AIMove[j] = ESF->dataList[i]->aiMove[j];
-			enemyTable->enemyData[i].AIAtk[j] = ESF->dataList[i]->aiAtk[j];
+			//エネミーAIの定義
+			//初期値は-1
+			for(int j = 0; j < 3; j++)
+			{
+				unit[i].AIMove[j] = -1;
+				unit[i].AIAtk[j] = -1;
+			}
+			unit[i].AIAppear = -1;//
+			unit[i].AILife = -1;
 
-			//ウェイトフレームを取得
-			enemyTable->enemyData[i].stsWaitFrame[j] = ESF->dataList[i]->waitToMove[j];
-			enemyTable->enemyData[i].stsWaitToAtk[j] = ESF->dataList[i]->waitToAttack[j];
+
+			//次に出現する敵の番号
+			//初期値は-999
+			for(int j = 0; j < 3; j++)
+			{
+				unit[i].nextEnemies[j] = -999;
+			}
+
+			//
+			for(int j = 0; j < 3; j++)
+			{
+				unit[i].stsWaitToAtk[j] = -999;
+				unit[i].stsWaitToMove[j] = -999;
+			}
+
+			unit[i].waitTime = -999;//
+			unit[i].sleepTime = -999;//
 		}
 
-		enemyTable->enemyData[i].AIappear = ESF->dataList[i]->aiAppear;
-		enemyTable->enemyData[i].AILife = ESF->dataList[i]->aiLifeCycle;
-		enemyTable->enemyData[i].sleepTime = ESF->dataList[i]->sleepTime;
-		enemyTable->enemyData[i].hitpoint = STS_ENEMY_HP;//
-		enemyTable->enemyData[i].alive = TRUE;
+		//敵がこのウェーブで何体出現するかをチェック
+		enemyTable->finishNumber = ESF->loadCount;//
+
+		//
+		for(int i = 0; i < enemyTable->finishNumber; i++)
+		{
+			//初期座標をセット
+			enemyTable->enemyData[i].standbyPos = ESF->dataList[i]->startPos;
+
+			//敵の目標地点をセット
+			enemyTable->enemyData[i].SetTargetPos(ESF->dataList[i]->targetPos);
+
+
+			for(int j = 0; j < 3; j++)
+			{
+				//次の敵をセット
+				enemyTable->enemyData[i].nextEnemiesNum[j] = ESF->dataList[i]->nextEnemies[j];
+
+				//次の敵をセット
+				enemyTable->enemyData[i].AIMove[j] = ESF->dataList[i]->aiMove[j];
+				enemyTable->enemyData[i].AIAtk[j] = ESF->dataList[i]->aiAtk[j];
+
+				//ウェイトフレームを取得
+				enemyTable->enemyData[i].stsWaitFrame[j] = ESF->dataList[i]->waitToMove[j];
+				enemyTable->enemyData[i].stsWaitToAtk[j] = ESF->dataList[i]->waitToAttack[j];
+			}
+
+			enemyTable->enemyData[i].AIappear = ESF->dataList[i]->aiAppear;
+			enemyTable->enemyData[i].AILife = ESF->dataList[i]->aiLifeCycle;
+			enemyTable->enemyData[i].sleepTime = ESF->dataList[i]->sleepTime;
+			enemyTable->enemyData[i].hitpoint = STS_ENEMY_HP;//
+			enemyTable->enemyData[i].alive = TRUE;
+
+			//アクティブ
+			if(ESF->dataList[i]->entryFlag)
+			{
+				//Unitにデータを入れていく
+				////敵の出現定義が済んだら、最初に出現させる敵のセットを行う
+				int num = SearchFreeEnemy();
+
+				unit[num].eState = ESTATE_SLEEP;
+				unit[num].sprite3d->setVisible(false);
+				unit[num].visible = TRUE;
+				unit[num].tableNum = i;
+
+				//座標を代入
+				unit[num].sprite3d->setPosition3D(enemyTable->enemyData[i].standbyPos);
+				unit[num].StandbyPos = enemyTable->enemyData[i].standbyPos;
+				unit[num].SetTargetPos(enemyTable->enemyData[i].targetPos);
+				//各種フレームを代入
+				for(int j = 0; j < 3; j++)
+				{
+					unit[num].stsWaitToAtk[j] = enemyTable->enemyData[i].stsAtkFrame[j];
+					unit[num].stsWaitToMove[j] = enemyTable->enemyData[i].stsWaitToMove[j];
+				}
+				unit[num].waitTime = 0;//
+
+				//各種AI定義をを代入
+				for(int j = 0; j < 3; j++)
+				{
+					unit[num].AIAtk[j] = enemyTable->enemyData[i].AIAtk[j];
+					unit[num].AIMove[j] = enemyTable->enemyData[i].AIMove[j];
+				}
+				unit[num].AIAppear = enemyTable->enemyData[i].AIappear;
+				unit[num].AILife = enemyTable->enemyData[i].AILife;
+			}
+		}
 	}
 }
 
@@ -799,64 +845,6 @@ void GameModelsLayer::UpdateEnemy()
 	}
 }
 
-
-
-
-void GameModelsLayer::setNextEnemy(int num)
-{
-	enemyTable->enemyData[unit[num].tableNum].alive = FALSE;//num番の敵を倒した扱いにする
-
-	//現在のウェーブと、死亡した敵の番号をもとに、次のモデルを準備する
-	for(int i = 0; i < 3; i++)
-	{
-		const int nextNum = enemyTable->enemyData[unit[num].tableNum].nextEnemiesNum[i];
-		if(-1 == nextNum)//次のモデルが設定されていなければ
-		{
-			continue;
-		}
-		else
-		{//次の敵をスタンバイ状態にする
-			int n = SearchFreeEnemy();
-
-			unit[n].eState = ESTATE_SLEEP;
-			unit[n].sprite3d->setVisible(true);//敵モデル表示
-			unit[n].visible = TRUE;//敵モデル表示
-			unit[n].sprite3d->setPosition3D(enemyTable->enemyData[nextNum].standbyPos);
-			unit[n].StandbyPos = enemyTable->enemyData[nextNum].standbyPos;
-			unit[n].SetTargetPos(enemyTable->enemyData[nextNum].targetPos);
-			unit[n].nowTargetPos = 0;//ターゲットはスリープ解除したときに決定する
-			unit[n].tableNum = nextNum;
-
-			//AIの種類をセット
-			for (int j = 0; j < 3; j++)
-			{
-				unit[n].AIAtk[j] = enemyTable->enemyData[nextNum].AIAtk[j];
-				unit[n].AIMove[j] = enemyTable->enemyData[nextNum].AIMove[j];
-			}
-			unit[n].AIAppear = enemyTable->enemyData[nextNum].AIappear;
-			unit[n].AILife = enemyTable->enemyData[nextNum].AILife;
-
-			//敵のステータスをセット
-			for(int j = 0; j < 3; j++)
-			{
-				//unit[n].stsAtkFrame[j] = enemyTable->enemyData[nextNum].stsAtkFrame[j];
-				unit[n].stsWaitToMove[j] = enemyTable->enemyData[nextNum].stsWaitToMove[j];
-				unit[n].stsWaitToAtk[j] = enemyTable->enemyData[nextNum].stsWaitToAtk[j];
-			}
-			unit[n].hitpoint = enemyTable->enemyData[nextNum].hitpoint;
-
-			//弾の管理
-			unit[i].nowShot = 0;
-			unit[i].maxShot = enemyTable->enemyData[nextNum].maxShot;
-			//フレーム
-			unit[n].sleepTime = enemyTable->enemyData[nextNum].sleepTime;
-			//
-
-		}
-	}
-}
-
-
 void GameModelsLayer::ActionEStandby(int num)
 {
 	//向きの設定
@@ -1136,7 +1124,6 @@ void GameModelsLayer::ActionEDamaged(int num)
 	unit[num].speed = 0.0f;//
 	unit[num].speedVec = Vec3(0.0f, 0.0f, 0.0f);
 
-
 	unit[num].sprite3d->stopALLAnimation();
 	unit[num].sprite3d->startAnimation("dei1");
 	unit[num].eState = ESTATE_DEAD;
@@ -1155,10 +1142,6 @@ void GameModelsLayer::ActionEDead(int num)
 }
 
 
-
-/*
-
-*/
 void GameModelsLayer::ActionEAttack(int num)
 {
 	auto GM = GameMaster::GetInstance();
@@ -1261,7 +1244,6 @@ void GameModelsLayer::ActionEAttack(int num)
 }
 
 
-
 void GameModelsLayer::SetEnemyAtk(int num)
 {
 	//攻撃モーションに応じて動きを変化
@@ -1324,7 +1306,6 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		break;
 	}
 }
-
 
 
 void GameModelsLayer::SetEnemyMove(int num)
@@ -1427,6 +1408,59 @@ void GameModelsLayer::SetEnemyMove(int num)
 }
 
 
+void GameModelsLayer::setNextEnemy(int num)
+{
+	enemyTable->enemyData[unit[num].tableNum].alive = FALSE;//num番の敵を倒した扱いにする
+
+	//現在のウェーブと、死亡した敵の番号をもとに、次のモデルを準備する
+	for(int i = 0; i < 3; i++)
+	{
+		const int nextNum = enemyTable->enemyData[unit[num].tableNum].nextEnemiesNum[i];
+		if(-999 == nextNum)//次のモデルが設定されていなければ
+		{
+			continue;
+		}
+		else
+		{//次の敵をスタンバイ状態にする
+			int n = SearchFreeEnemy();
+
+			unit[n].eState = ESTATE_SLEEP;
+			unit[n].sprite3d->setVisible(true);//敵モデル表示
+			unit[n].visible = TRUE;//敵モデル表示
+			unit[n].sprite3d->setPosition3D(enemyTable->enemyData[num].standbyPos);
+			unit[n].StandbyPos = enemyTable->enemyData[num].standbyPos;
+			unit[n].SetTargetPos(enemyTable->enemyData[num].targetPos);
+			unit[n].nowTargetPos = 0;//ターゲットはスリープ解除したときに決定する
+			unit[n].tableNum = num;
+
+			//AIの種類をセット
+			for(int j = 0; j < 3; j++)
+			{
+				unit[n].AIAtk[j] = enemyTable->enemyData[num].AIAtk[j];
+				unit[n].AIMove[j] = enemyTable->enemyData[num].AIMove[j];
+			}
+			unit[n].AIAppear = enemyTable->enemyData[num].AIappear;
+			unit[n].AILife = enemyTable->enemyData[num].AILife;
+
+			//敵のステータスをセット
+			for(int j = 0; j < 3; j++)
+			{
+				//unit[n].stsAtkFrame[j] = enemyTable->enemyData[num].stsAtkFrame[j];
+				unit[n].stsWaitToMove[j] = enemyTable->enemyData[num].stsWaitToMove[j];
+				unit[n].stsWaitToAtk[j] = enemyTable->enemyData[num].stsWaitToAtk[j];
+			}
+			unit[n].hitpoint = enemyTable->enemyData[num].hitpoint;
+
+			//弾の管理
+			unit[n].nowShot = 0;
+			unit[n].maxShot = enemyTable->enemyData[num].maxShot;
+			//フレーム
+			unit[n].sleepTime = enemyTable->enemyData[num].sleepTime;
+		}
+	}
+}
+
+
 void GameModelsLayer::ClearEnemies()
 {
 	for (int i = UNIT1_ENEMY; i < UNIT2_BULLET; i++)
@@ -1477,7 +1511,9 @@ int GameModelsLayer::CheckNextWave(void)
 		GM->waitFlag = 0;//
 		GM->sPoint += 1;
 
-		//
+		//ウェーブ情報の読み込みはここで行う
+		SetNextWave();
+
 		player.sprite3d->stopALLAnimation();
 		player.sprite3d->startAnimation(idle);
 	}

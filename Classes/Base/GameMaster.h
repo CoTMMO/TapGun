@@ -135,7 +135,7 @@ namespace TapGun
 #define TIME_MAXTIME 180000//ゲーム本編の最大時間（ミリ秒）
 #define TIME_ACTION_UI 1800//ActionのUIを表示する時間（ミリ秒）
 #define TIME_DEAD_UI 3000//死亡時のカメラ表示する時間（ミリ秒）
-#define TIME_OP 6000//ActionのUIを表示する時間（ミリ秒）
+#define TIME_OP 0//OPの時間（ミリ秒）・・・現在はOPがないので0ミリ秒
 
 #define TIME_WROT 300//
 
