@@ -6,6 +6,8 @@
 #include "Stage/Enemy.h"
 #include "System/EnemySettingFile.h"
 
+#define TIME_CHANGER( time) ( time * 1000)	// 秒単位のtimeをミリ秒単位に変換
+
 USING_NS_CC;
 using namespace std;
 using namespace TapGun;
@@ -71,17 +73,17 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 			vector.x = atof( tmp.c_str());
 
 			getline( stream, tmp, ',');
-			vector.y = atof( tmp.c_str());
+			vector.z = -atof( tmp.c_str());
 
 			getline( stream, tmp, ',');
-			vector.z = atof( tmp.c_str());
+			vector.y = atof( tmp.c_str());
 
 			// 取得したデータVec3形式で格納
 			data -> startPos = vector;
 
 			// 待機時間を取得
 			getline( stream, tmp, ',');
-			data -> sleepTime = atoi( tmp.c_str());
+			data -> sleepTime = TIME_CHANGER( atoi( tmp.c_str()));
 
 			// 目標地点座標を取得 (最大3か所)
 			for( int i = 0; i < TARGET_POS_COUNT; i++)
@@ -91,9 +93,9 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 				tmp.erase( 0, 2);
 				vector.x = atof( tmp.c_str());
 				getline( stream, tmp, ',');
-				vector.y = atof( tmp.c_str());
+				vector.z = -atof( tmp.c_str());
 				getline( stream, tmp, ',');
-				vector.z = atof( tmp.c_str());
+				vector.y = atof( tmp.c_str());
 				data -> targetPos[i] = vector;
 			}
 
@@ -101,28 +103,42 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 			{
 				// 攻撃に移るまでの待機時間を取得
 				getline( stream, tmp, ',');
-				data -> waitToAttack[i] = atoi( tmp.c_str());
+				data -> waitToAttack[i] = TIME_CHANGER( atoi( tmp.c_str()));
 			}
 			break;
 
 		case 4:
-			// 戦闘の','まではデータ無しなので空読み
+			// 出現中フラグを設定
 			getline( stream, tmp, ',');
-			if( tmp == "FALSE" || atoi( tmp.c_str()) == 0) { data -> entryFlag = false; }
-			else if( tmp == "TRUE" || atoi( tmp.c_str()) == 1) { data -> entryFlag = true; }
+			if( tmp == "FALSE" || tmp == "false") 
+			{ 
+				data -> entryFlag = false; 
+			}
+			else if( tmp == "TRUE" || tmp == "true")
+			{ 
+				data -> entryFlag = true; 
+			}
+			else if( atoi( tmp.c_str()) == 0)
+			{
+				data -> entryFlag = false;
+			}
+			else if( atoi( tmp.c_str()) == 1)
+			{
+				data -> entryFlag = true; 
+			}
 
 			// 一連の行動終了から次の行動開始までの待機時間を取得
 			for( int i = 0; i < WAIT_TO_MOVE_COUNT; i++)
 			{
 				getline( stream, tmp, ',');
-				data -> waitToMove[i] = atoi( tmp.c_str());
+				data -> waitToMove[i] = TIME_CHANGER( atoi( tmp.c_str()));
 			}
 
 			// 自分が倒された後に出現する敵の配列番号を取得
 			for( int i = 0; i < NEXT_ENEMYS_COUNT; i++)
 			{
 				getline( stream, tmp, ',');
-				data -> nextEnemies[i] = atoi( tmp.c_str());
+				data -> nextEnemies[i] = TIME_CHANGER( atoi( tmp.c_str()));
 			}
 			break;
 
