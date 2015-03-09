@@ -411,7 +411,7 @@ void TitleScene::loadModels( void)
 	// 各種モデルデータの読み込み
 	if( frame == ResourceLoader::Map)
 	{
-		ResourceLoader::getInstance() -> loadModel( access -> getModelPath( "Stage/stage"));
+		ResourceLoader::getInstance() -> loadModel( "Stage/stage");
 	}
 	else if( frame >= ResourceLoader::EnemyStart && frame <= ResourceLoader::EnemyEnd)
 	{
@@ -439,8 +439,8 @@ void TitleScene::loadModels( void)
 void TitleScene::loadSound( void)
 {
 	auto sound = Sound::getInstance();
-    // ファイルパス制御クラスのインスタンスを取得
-    auto access = FileAccess::getInstance();
+	// ファイルパス制御クラスのインスタンスを取得
+	auto access = FileAccess::getInstance();
 
 	sound -> loadBGM( "Title");
 	sound -> loadSE( "Title/MoveSE");
