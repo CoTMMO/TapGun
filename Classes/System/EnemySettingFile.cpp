@@ -43,17 +43,6 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 		istringstream stream(str);		// 文字列を編集可能に
 		Vec3 vector;					// ファイルに存在するベクトル情報を一時保存
 
-		// 1ブロック分のデータを読み込んだ場合
-		if( settingFile -> fileLineCount > BLOCK_LINE_COUNT)
-		{
-			// 配列に読み込んだデータを保存
-			settingFile -> dataList[settingFile -> loadCount] = data;
-			// 読み込みブロックカウンタを増加
-			settingFile -> loadCount++;
-			// 読み込み行番号を初期化
-			settingFile -> fileLineCount = 1;
-		}
-
 		if( settingFile -> loadCount >= WAVE_ENEMY_COUNT)
 		{
 			log( "Enemy Seting File Block Num Over");
@@ -119,8 +108,8 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 		case 4:
 			// 戦闘の','まではデータ無しなので空読み
 			getline( stream, tmp, ',');
-			if( tmp == "FALSE") { data -> entryFlag = false; }
-			else if( tmp == "TRUE") { data -> entryFlag = true; }
+			if( tmp == "FALSE" || atoi( tmp.c_str()) == 0) { data -> entryFlag = false; }
+			else if( tmp == "TRUE" || atoi( tmp.c_str()) == 1) { data -> entryFlag = true; }
 
 			// 一連の行動終了から次の行動開始までの待機時間を取得
 			for( int i = 0; i < WAIT_TO_MOVE_COUNT; i++)
@@ -173,6 +162,19 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 
 		default:
 			break;
+		}
+
+		// 1ブロック分のデータを読み込んだ場合
+		if( settingFile -> fileLineCount >= BLOCK_LINE_COUNT)
+		{
+			// 配列に読み込んだデータを保存
+			settingFile -> dataList[settingFile -> loadCount] = data;
+			// 新しいメモリ領域を確保
+			data = new EnemyData;
+			// 読み込みブロックカウンタを増加
+			settingFile -> loadCount++;
+			// 読み込み行番号を初期化
+			settingFile -> fileLineCount = 0;
 		}
 	}
 	return settingFile;
