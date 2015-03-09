@@ -23,13 +23,3 @@ void Enemy::SetTargetPos(Vec3 pos[3])
 	}
 
 }
-
-
-int Enemy::SetAI(int appear, int atk, int move, int life)
-{
-		AIappear = appear;
-		AIAtk = atk;
-		AIMove = move;
-		AILife = life;
-		return TRUE;
-}

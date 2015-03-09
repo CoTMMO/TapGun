@@ -76,7 +76,7 @@ int Unit::Init(int num, int utype)
 
 	time = 0.0f;//管理時間を初期化
 
-	eWaitFrame = 0;//出現までの待ちフレーム
+	waitTime = 0;//
 	StandbyPos = Vec3(0, 0, 0);//待機座標
 
 	hitpoint = 0;

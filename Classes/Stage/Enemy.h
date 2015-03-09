@@ -59,7 +59,7 @@ namespace TapGun
 		cocos2d::Vec3 standbyPos;//
 		cocos2d::Vec3 targetPos[3];
 
-		int SetAI(int appear, int atk, int move, int life);
+		//int SetAI(int appear, int atk, int move, int life);
 		void SetNextEnemy(int num1, int num2, int num3);
 		void SetTargetPos(cocos2d::Vec3 pos[3]);
 		int number;

@@ -46,18 +46,20 @@ void EnemyTable::InitAll()
 		enemyData[i].hitpoint = 0;
 
 
+		for (int j = 0; j < 3; j++)
+		{
+			enemyData[i].AIAtk[j] = -999;
+			enemyData[i].AIMove[j] = -999;
+		}
 		enemyData[i].AIappear = -999;//出現パターン
-		enemyData[i].AIAtk = -999;
-		enemyData[i].AIMove = -999;
 		enemyData[i].AILife = -999;
 
 		//
 		for(int j = 0; j < 3; j++)
 		{
 			enemyData[i].stsAtkFrame[j] = 0.0f;//攻撃間隔（秒）
+			enemyData[i].stsWaitToMove[j] = 0.0f;//出現してから移動し始めるまでの時間
 		}
-
-		enemyData[i].stsWaitFrame = 0.0f;//出現してから移動し始めるまでの時間
 		enemyData[i].nowShot = 0;
 		enemyData[i].maxShot = 0;//
 	}
