@@ -5,6 +5,7 @@
 #include "System/Sound.h"
 #include "System/ResourceLoader.h"
 #include "Object/Effect.h"
+#include "System/EnemySettingFile.h"
 
 
 USING_NS_CC;

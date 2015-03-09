@@ -17,6 +17,7 @@ public:
 		WAVE_ENEMY_COUNT	= 10, 
 	};
 	WaveData* dataList[WAVE_ENEMY_COUNT];			// ?��d?��l?��?��10?��̈ȏ�?��̓G?��͏o?��?��?��?��?��Ȃ�?��̂� 10
+	unsigned int loadCount;
 
 private:
 	EnemySettingFile() {}
@@ -49,7 +50,6 @@ private:
 		int aiLifeCycle;			//
 	};
 
-	unsigned int loadCount;
 	unsigned int fileLineCount;
 };
 
