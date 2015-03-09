@@ -35,6 +35,8 @@ namespace TapGun
 			PlayerMuzzleAnime = 3,
 			EnemyMuzzleAnime = 2,
 			EnemyMuzzleCount = 16,
+
+			EffectGraphDataCount = 8,
 		};
 		
 		struct EffectData
@@ -58,6 +60,8 @@ namespace TapGun
 			_Sprite3D* sprite3DR[EnemyMuzzleAnime];
 			_Sprite3D* sprite3DL[EnemyMuzzleAnime];
 		};
+
+		void createHitEffect( cocos2d::Sprite3D* sprite3d, cocos2d::Vec3 vec, bool playerFlag);
 
 		EffectData *playerEffect[PlayerNum];
 		EffectData *enemyEffect[EnemyNum];
