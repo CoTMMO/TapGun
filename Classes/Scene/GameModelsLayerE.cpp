@@ -28,15 +28,8 @@ void GameModelsLayer::InitAllModels()
 }
 
 
-/**
-*	エネミー初期化
-*
-*	@author	sasebon
-*	@param	ステージ番号
-*	@return	正常:1 初期化失敗:-1
-*	@date	1/8 Ver 1.0
-*/
-int GameModelsLayer::InitEnemy(int stage_num)
+
+int GameModelsLayer::InitEnemy()
 {
 	//全てのエネミーユニットを初期化
 	//エネミーのセットはsetEnemyで行う

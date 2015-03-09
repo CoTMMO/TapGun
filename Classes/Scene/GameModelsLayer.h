@@ -89,20 +89,29 @@ namespace TapGun
 		void InitLayer(void);
 
 
-		void InitAllModels();//モデル全体の初期化
+		void InitAllModels(void);//モデル全体の初期化
 
 		/**
 		*	プレイヤー初期化
 		*
 		*	@author	sasebon
-		*	@param	ステージ番号
+		*	@param	なし
 		*	@return	なし
-		*	@date	1/8 Ver 1.0
+		*	@date	3/9 Ver 1.0
 		*/
-		void InitPlayer(int stage_num);
+		void InitPlayer(void);
+
+		/**
+		*	エネミー初期化
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	正常:1 初期化失敗:-1
+		*	@date	3/9 Ver 1.0
+		*/
+		int InitEnemy(void);
 
 
-		int InitEnemy(int stage_num);//エネミー初期化
 		void InitBullet(void);
 
 		/**
@@ -113,12 +122,19 @@ namespace TapGun
 		*	@return	正常:1 初期化失敗:-1
 		*	@date	1/8 Ver 1.0
 		*/
-		int InitMap(int stage_num);
+		int InitMap();
 
 		void checkNextEnemy(int enemyNum);//
 
+		/**
+		*	プレイヤーの回避中心計算
+		*
+		*	@author	sasebon
+		*	@param	プレイヤーの角度
+		*	@return	移動後のノード
+		*	@date	2/4 Ver 1.0
+		*/
 		cocos2d::Vec2 calcRot(float pRot, int pSide);//角度計算
-
 
 		/**
 		*	カメラの回避座標計算

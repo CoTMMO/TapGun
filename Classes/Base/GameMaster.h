@@ -114,7 +114,6 @@ namespace TapGun
 //3DSMAXのカメラ角度を通常角度に変換するためのマクロ
 #define MACRO_CROT_X(x) (x - 90)
 #define MACRO_CROT_Y(y) (y + 180)
-	//#define MACRO_CROT_Z(a) ()//Zは恐らく使用しない
 
 	//ミリ秒をフレームに変換/フレームをミリ秒に変換
 #define MACRO_StoF(second) (second * 60.0f * 0.001f)

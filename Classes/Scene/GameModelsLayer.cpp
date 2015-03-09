@@ -36,12 +36,12 @@ void GameModelsLayer::InitLayer(void)
 {
 	InitAllModels();
 
-	InitPlayer(0);//とりあえず引数0
-	InitMap(0);//正規のマップデータが降りてくるまでいったん保留します
+	InitPlayer();//とりあえず引数0
+	InitMap();
 
 	enemyTable->InitAll();//エネミー出現テーブルを初期化（現在はすべて0）
 
-	InitEnemy(0);
+	InitEnemy();
 	InitBullet();
 }
 
@@ -144,7 +144,7 @@ void GameModelsLayer::LoadModels( void)
 }
 
 
-void GameModelsLayer::InitPlayer(int wave_num)
+void GameModelsLayer::InitPlayer()
 {
 	auto GM = GameMaster::GetInstance();
 
@@ -177,7 +177,7 @@ void GameModelsLayer::InitPlayer(int wave_num)
 
 
 
-int GameModelsLayer::InitMap(int stage_num)
+int GameModelsLayer::InitMap()
 {
 	unit[UNIT0_MAP].Init();//メンバ変数の初期化をしておく
 	unit[UNIT0_MAP].sprite3d->setScale(1.0f);
@@ -1445,4 +1445,75 @@ void GameModelsLayer::SetLights()
 
 	camera->addChild(direction);
 
+}
+
+
+
+int GameModelsLayer::ChangeCamera(int num)
+{
+	//ゲームの状態変化に合わせてカメラを切り替えることができます
+	//カメラの座標と角度も変更できますが、あくまでカメラの初期位置であり、移動と回転は他で行う必要があります
+	//カメラの動きを注視点管理で統一したら、この関数は使わなくする予定です
+
+	auto GM = GameMaster::GetInstance();
+
+	switch (num)
+	{
+	case 0://0番はOPデモ用の初期設定
+
+		break;
+	case 1://1番はゲーム本編の初期設定
+
+		break;
+	case 2://2番は死亡用の初期設定
+
+		//カメラの位置を任意の値に設定する
+		GM->SetCamera3DPos(Vec3(KE_POSX, KE_POSY, KE_POSZ));
+		GM->SetCameraTarget(Vec3(KT_POSX, KT_POSY, KT_POSZ));
+
+		//カメラ座標と注視点からカメラ角度を設定する
+		GM->CalcCameraRot();
+		break;
+	}
+	return TRUE;
+}
+
+
+
+Vec2 GameModelsLayer::calcRot(float pRot, int pSide)
+{
+	Vec2 ret = Vec2(0.0f, 0.0f);
+	cNode.gNode->setRotation(0.0f);
+	cNode.gNode->setPosition(Vec2(0.0f, 0.0f));
+
+	cNode.lNode->setRotation3D(Vec3(0.0f, 0.0f, 0.0f));
+	cNode.lNode->setPosition(Vec2(0.0f, 0.0f));
+
+	//プレイヤーの向きに応じて処理を変更する
+	if (PSIDE_LEFT == pSide)
+	{
+		cNode.lNode->setPositionX(HIDEPOINT_X);//回避座標を代入
+		cNode.lNode->setPositionY(HIDEPOINT_Y);//回避座標を代入
+
+		cNode.gNode->setRotation(pRot);
+
+		ret = cNode.gNode->convertToWorldSpace(cNode.lNode->getPosition());//回転後のlNodeの座標を取得
+	}
+	else
+	{
+		cNode.lNode->setPositionX(-HIDEPOINT_X);//回避座標を代入
+		cNode.lNode->setPositionY(HIDEPOINT_Y);//回避座標を代
+
+		cNode.gNode->setRotation(pRot);
+		ret = cNode.gNode->convertToWorldSpace(cNode.lNode->getPosition());//回転後のlNodeの座標を取得
+	}
+	return ret;
+}
+
+
+float GameModelsLayer::getCross(cocos2d::Vec3 v1, cocos2d::Vec3 v2)
+{
+	Vec2 vec1 = Vec2(v1.x, v1.z);
+	Vec2 vec2 = Vec2(v2.x, v2.z);
+	return vec1.cross(vec2);
 }
