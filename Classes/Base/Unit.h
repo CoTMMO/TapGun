@@ -62,8 +62,8 @@ namespace TapGun
 
 		//AI管理
 		int AIAppear;//
-		int AIMove;//
-		int AIAtk;//エネミーの攻撃モーション
+		int AIMove[3];//
+		int AIAtk[3];//エネミーの攻撃モーション
 		int AILife;//AIの生き方
 
 		//int nextEnemy;//このエネミーが倒れたときに次に出てくるエネミーの番号
@@ -78,13 +78,13 @@ namespace TapGun
 		int eState;//敵の状態
 
 		//管理フレーム(必要であれば時間をdoubleに変更する)
-		int atkFrame;//攻撃までのカウント（ミリ秒）
-		int eWaitFrame;//出現までの待ち時間（ミリ秒）
+		//int atkFrame;//攻撃までのカウント（ミリ秒）
+		int waitTime;//各種待ち時間（ミリ秒）
 
-		int stsAtkFrame[3];//攻撃までのカウント定義（ミリ秒）
-		int stsWaitFrame;//出現までの待ち時間定義（ミリ秒）
+		int stsWaitToMove[3];//移動までの待ち時間定義（ミリ秒）
+		int stsWaitToAtk[3];//攻撃までの待ち時間定義（ミリ秒）
+		int sleepTime;//待機状態の時間
 
-		int sleepTime;//待機状態で
 		cocos2d::Vec3 StandbyPos;//待機座標
 		int tableNum;
 

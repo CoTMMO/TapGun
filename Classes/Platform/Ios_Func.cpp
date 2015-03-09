@@ -52,17 +52,17 @@ string FileAccess::getEnemySettingFilePath( const string& fileName)
 
 string FileAccess::getBGMPath( const string& fileName)
 {
-	return getFilePath( fileName);
+	return getFilePath( fileName) + ".mp3";
 }
 
 string FileAccess::getSEPath( const string& fileName)
 {
-	return getFilePath( fileName);
+	return getFilePath( fileName) + ".mp3";
 }
 
 string FileAccess::getVoicePath( const string& fileName)
 {
-	return getFilePath( fileName);
+	return getFilePath( fileName) + ".mp3";
 }
 
 string FileAccess::getFileStream( const string& fileName)

@@ -32,16 +32,17 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 		log( "Animation File Load Error");
 		return nullptr;
 	}
-	
-	string str;						// ファイルから取得した文字列を格納
-	string tmp;						// 読み込んだ文字列の一時保存
-	istringstream stream(str);		// 文字列を編集可能に
-	WaveData* data = new WaveData;	// 読み込んだ情報を格納する構造体を生成
-	Vec3 vector;					// ファイルに存在するベクトル情報を一時保存
 
+	string str;							// ファイルから取得した文字列を格納
+	EnemyData* data = new EnemyData;	// 読み込んだ情報を格納する構造体を生成
+	
 	// 読み込み行カウンタと読み込みブロックカウンタを初期化しファイル終端までループ
 	for( settingFile -> fileLineCount = 1, settingFile -> loadCount = 0; getline( file, str); settingFile -> fileLineCount++)
 	{
+		string tmp;						// 読み込んだ文字列の一時保存
+		istringstream stream(str);		// 文字列を編集可能に
+		Vec3 vector;					// ファイルに存在するベクトル情報を一時保存
+
 		// 1ブロック分のデータを読み込んだ場合
 		if( settingFile -> fileLineCount > BLOCK_LINE_COUNT)
 		{
@@ -69,22 +70,22 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 		case 2:
 			// ウェーブナンバーを取得
 			// カンマ区切りでデータを取得 (以下同じ処理はコメント省略)
-			getline( stream, tmp, ',');	
+			getline( stream, tmp, ',');
 			// 読み込んだ文字列を数値に変換し保存 (以下類似処理はコメント省略)
-			data -> Num = atoi( tmp.c_str());	
+			data -> Num = atoi( tmp.c_str());
 
 			// 出現地点座標を取得
 			// データ取得
-			getline( stream, tmp, ',');	
+			getline( stream, tmp, ',');
 			// 元データに存在する ""(" の2文字を削除
 			tmp.erase( 0, 2);
-			vector.x = atoi( tmp.c_str());
+			vector.x = atof( tmp.c_str());
 
 			getline( stream, tmp, ',');
-			vector.y = atoi( tmp.c_str());
+			vector.y = atof( tmp.c_str());
 
 			getline( stream, tmp, ',');
-			vector.z = atoi( tmp.c_str());
+			vector.z = atof( tmp.c_str());
 
 			// 取得したデータVec3形式で格納
 			data -> startPos = vector;
@@ -99,17 +100,20 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 				getline( stream, tmp, ',');
 				// 元データに存在する ""(" の2文字を削除
 				tmp.erase( 0, 2);
-				vector.x = atoi( tmp.c_str());
+				vector.x = atof( tmp.c_str());
 				getline( stream, tmp, ',');
-				vector.y = atoi( tmp.c_str());
+				vector.y = atof( tmp.c_str());
 				getline( stream, tmp, ',');
-				vector.z = atoi( tmp.c_str());
+				vector.z = atof( tmp.c_str());
 				data -> targetPos[i] = vector;
 			}
 
-			// 攻撃に移るまでの待機時間を取得
-			getline( stream, tmp, ',');
-			data -> waitToAtack = atoi( tmp.c_str());
+			for( int i = 0; i < WAIT_TO_ATTACK_COUNT; i++)
+			{
+				// 攻撃に移るまでの待機時間を取得
+				getline( stream, tmp, ',');
+				data -> waitToAttack[i] = atoi( tmp.c_str());
+			}
 			break;
 
 		case 4:

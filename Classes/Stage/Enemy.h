@@ -71,8 +71,8 @@ namespace TapGun
 		int hitpoint;
 		//
 		int AIappear;//出現パターン
-		int AIAtk;
-		int AIMove;
+		int AIAtk[3];
+		int AIMove[3];
 		int AILife;
 
 		int nowShot;//現在のショット回数
@@ -80,9 +80,13 @@ namespace TapGun
 		//float atkFrame;//攻撃間隔（秒）
 		//float waitFrame;//出現してから移動し始めるまでの時間
 		float sleepTime;//
-		float stsAtkFrame[3];//攻撃間隔（秒）
-		float stsWaitFrame;//出現してから移動し始めるまでの時間
+		int stsAtkFrame[3];//攻撃間隔（秒）
+		int stsWaitFrame[3];//出現してから移動し始めるまでの時間
 
+		int stsWaitToAtk[3];//移動後に攻撃するまでの時間
+		int stsWaitToMove[3];//攻撃後に移動するまでの時間
+
+		//int stsWaitFrame[3];//出現してから移動し始めるまでの時間
 	private:
 
 	};
