@@ -119,6 +119,8 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 		case 4:
 			// 戦闘の','まではデータ無しなので空読み
 			getline( stream, tmp, ',');
+			if( tmp == "FALSE") { data -> entryFlag = false; }
+			else if( tmp == "TRUE") { data -> entryFlag = true; }
 
 			// 一連の行動終了から次の行動開始までの待機時間を取得
 			for( int i = 0; i < WAIT_TO_MOVE_COUNT; i++)
