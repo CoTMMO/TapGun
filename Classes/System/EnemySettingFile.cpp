@@ -226,9 +226,9 @@ int EnemySettingFile::getModelNumber( const string& dataString)
 	{
 		return AI_MOVE_SWALK;
 	}
-	else if (dataString == "sJump")
+	else if (dataString == "slide")
 	{
-		return AI_MOVE_SJUMP;
+		return AI_MOVE_SLIDE;
 	}
 	else if (dataString == "acro")
 	{
@@ -248,9 +248,9 @@ int EnemySettingFile::getModelNumber( const string& dataString)
 	{
 		return AI_ATK_SSHOT;
 	}
-	else if (dataString == "sJump")
+	else if (dataString == "slide")
 	{
-		return AI_ATK_SJUMP;
+		return AI_ATK_SLIDE;
 	}
 	else if (dataString == "acro")
 	{

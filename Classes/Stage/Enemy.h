@@ -16,45 +16,41 @@ namespace TapGun
 	//エネミーの攻撃タイプ
 	enum _ENEMY_ATK_
 	{
-		AI_ATK_NONE,//攻撃モーションを行わない
-		AI_ATK_FAKE,//威嚇攻撃を行う
-		AI_ATK_SSHOT,//立ち撃ちを行う
-		AI_ATK_SJUMP,//サイドジャンプ射撃
-		AI_ATK_ACRO,//アクロバティック
-		AI_ATK_NUM
+		AI_ATK_NONE = 0,//攻撃モーションを行わない
+		AI_ATK_FAKE = -1,//威嚇攻撃を行う
+		AI_ATK_SSHOT = 7,//立ち撃ちを行う
+		AI_ATK_SLIDE = 4,//サイドジャンプ射撃
+		AI_ATK_ACRO = 5,//アクロバティック
 	};
 
 	//エネミーの出現方法
 	enum _ENEMY_APPEAR_
 	{
-		AI_APPEAR_RUN,//走りながら登場
-		AI_APPEAR_WALK,//歩き
-		AI_APPEAR_SWALK,//横歩き
-		AI_APPEAR_SLIDE,//サイドジャンプ
-		AI_APPEAR_FJUMP,//前ジャンプ
-		AI_APPEAR_ACRO,//アクロバティック
-		AI_APPEAR_NUM
+		AI_APPEAR_RUN = 1,//走りながら登場
+		AI_APPEAR_WALK = 2,//歩き
+		AI_APPEAR_SWALK = 3,//横歩き
+		AI_APPEAR_SLIDE = 4,//サイドジャンプ
+		AI_APPEAR_FJUMP = 6,//前ジャンプ
+		AI_APPEAR_ACRO = 5,//アクロバティック
 	};
 
 	//エネミーの移動方法
 	enum _ENEMY_MOVE_
 	{
-		AI_MOVE_NONE,//動かない
-		AI_MOVE_RUN,//走りながら登場
-		AI_MOVE_WALK,//歩き
-		AI_MOVE_SWALK,//横歩き
-		AI_MOVE_SJUMP,//動かない
-		AI_MOVE_ACRO,//アクロバティック
-		AI_MOVE_NUM
+		AI_MOVE_NONE = 0,//動かない
+		AI_MOVE_RUN = 1,//走りながら登場
+		AI_MOVE_WALK = 2,//歩き
+		AI_MOVE_SWALK = 3,//横歩き
+		AI_MOVE_SLIDE = 4,//サイドジャンプ
+		AI_MOVE_ACRO = 5,//アクロバティック
 	};
 
 	//エネミーのライフサイクル
 	enum _ENEMY_LIFE_
 	{
-		AI_LIFE_ONCE,//アクションは一度のみ
-		AI_LIFE_SWITCH,//2点間を移動する
-		AI_LIFE_STOP,//最終地点でとまる
-		AI_LIFE_NUM,
+		AI_LIFE_ONCE = 11,//アクションは一度のみ
+		AI_LIFE_SWITCH = 12,//2点間を移動する
+		AI_LIFE_STOP = 13,//最終地点でとまる
 	};
 
 	class Enemy
