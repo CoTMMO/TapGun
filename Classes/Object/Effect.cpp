@@ -49,7 +49,7 @@ Effect::Effect()
 
 			enemyMuzzle[i] -> sprite3DL[j] = _Sprite3D::create( buf);
 			enemyMuzzle[i] -> sprite3DL[j] -> setVisible( false);
-			enemyMuzzle[i] -> sprite3DR[j] -> setCameraMask( (unsigned short)CameraFlag::USER1);
+			enemyMuzzle[i] -> sprite3DL[j] -> setCameraMask( (unsigned short)CameraFlag::USER1);
 			enemyMuzzle[i] -> sprite3DL[j] -> retain();
 		}
 	}
@@ -213,7 +213,7 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point1 -> addChild( enemyMuzzle[i] -> sprite3DR[j]);
 			
-			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 270, 180));
+			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 90, 180));
 			point2 -> addChild( enemyMuzzle[i] -> sprite3DL[j]);
 		}
 		sound -> playSE( "Shot");
