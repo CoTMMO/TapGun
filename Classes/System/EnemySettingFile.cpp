@@ -182,14 +182,95 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 int EnemySettingFile::getModelNumber( const string& dataString)
 {
 	// モーション名に合わせた数値を格納
-	if( dataString == "")
+
+	//ここから出現
+	if( dataString == "run")
 	{
-		return 0;
+		return AI_APPEAR_RUN;
 	}
-	else if( dataString == "")
+	else if (dataString == "walk")
 	{
-		return 0;
+		return AI_APPEAR_WALK;
 	}
+	else if (dataString == "sWalk")
+	{
+		return AI_APPEAR_SWALK;
+	}
+	else if (dataString == "slide")
+	{
+		return AI_APPEAR_SLIDE;
+	}
+	else if (dataString == "acro")
+	{
+		return AI_ATK_ACRO;
+	}
+	else if (dataString == "fJump")
+	{
+		return AI_APPEAR_FJUMP;
+	}
+
+	//ここから移動
+	else if (dataString == "none")
+	{
+		return AI_MOVE_NONE;
+	}
+	else if (dataString == "run")
+	{
+		return AI_MOVE_RUN;
+	}
+	else if (dataString == "walk")
+	{
+		return AI_MOVE_WALK;
+	}
+	else if (dataString == "sWalk")
+	{
+		return AI_MOVE_SWALK;
+	}
+	else if (dataString == "sJump")
+	{
+		return AI_MOVE_SJUMP;
+	}
+	else if (dataString == "acro")
+	{
+		return AI_MOVE_ACRO;
+	}
+
+	//ここから攻撃
+	else if (dataString == "none")
+	{
+		return AI_ATK_NONE;
+	}
+	else if (dataString == "fake")
+	{
+		return AI_ATK_FAKE;
+	}
+	else if (dataString == "shot")
+	{
+		return AI_ATK_SSHOT;
+	}
+	else if (dataString == "sJump")
+	{
+		return AI_ATK_SJUMP;
+	}
+	else if (dataString == "acro")
+	{
+		return AI_MOVE_ACRO;
+	}
+
+	//ここからライフサイクル
+	else if (dataString == "once")
+	{
+		return AI_LIFE_ONCE;
+	}
+	else if (dataString == "switch")
+	{
+		return AI_LIFE_SWITCH;
+	}
+	else if (dataString == "stop")
+	{
+		return AI_LIFE_STOP;
+	}
+
 	else
 	{
 		return -999;
