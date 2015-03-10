@@ -976,8 +976,6 @@ void GameModelsLayer::ActionAppear(void)
 	}
 
 	//回避完了の判定
-	//	if (STS_HIDEWAIT <= GM->hideFrame)//突撃フレームに達したら
-	//	if(0 == player.sprite3d->checkAnimationState())//アニメーションが終了したら
 	if (player.getAnimEndTime() <= player.motProcTime)
 	{
 		//必要ならばモーションの停止を行う
@@ -1260,6 +1258,7 @@ void  GameModelsLayer::CheckPlayerAtk(void)
 			{
 				if (touchRay.intersects(unit[n].obbHead))//タッチ座標の法線と敵の当たり判定が接触したかをチェック
 				{
+
 					unit[n].hitpoint -= 1;
 					//１体に攻撃するとその時点でbreakする
 					break;

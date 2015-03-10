@@ -31,8 +31,8 @@ Player/mot_player_run.c3t,run
 
 Player/mot_player_shot_left.c3b,shot_l
 Player/mot_player_shot_left.c3t,shot_l
-Player/mot_player_shot_right_ver2.c3b,shot_r
-Player/mot_player_shot_right_ver2.c3t,shot_r
+Player/mot_player_shot_right.c3b,shot_r
+Player/mot_player_shot_right.c3t,shot_r
 
 Player/mot_player_hide_shot_left.c3b,h_shot_l
 Player/mot_player_hide_shot_left.c3t,h_shot_l
