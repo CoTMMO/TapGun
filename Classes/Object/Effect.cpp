@@ -21,7 +21,7 @@ Effect::Effect()
 		p = new EffectData;
 		p -> flag = false;
 	}
-	
+
 	playerMuzzle = new PlayerMuzzle;
 	playerMuzzle -> shotFlag = false;
 	for( int i = 0; i < PlayerMuzzleAnime; i++)
@@ -33,7 +33,7 @@ Effect::Effect()
 		playerMuzzle -> sprite3D[i] -> setCameraMask( (unsigned short)CameraFlag::USER1);
 		playerMuzzle -> sprite3D[i] -> retain();
 	}
-	
+
 	for( int i = 0; i < EnemyMuzzleCount; i++)
 	{
 		enemyMuzzle[i] = new EnemyMuzzle;
@@ -62,14 +62,15 @@ Effect* Effect::getInstance( void)
 	return P;
 }
 
-void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 vec, bool playerFlag)
+void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 point, EffectType effectType)
 {
 	string fileName;
 	EffectData* effect = nullptr;
 
 	// フラグ設定を元に分岐
-	if( playerFlag)
+	switch( effectType)
 	{
+	case PlayerHitEffect:					// プレイヤーの被弾エフェクト
 		for( int i = 0; i < PlayerNum; i++)
 		{
 			// 空きバッファチェック
@@ -79,9 +80,9 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 vec, bool playerFlag)
 				fileName = "P_Hit";			// フラグに応じた文字列を設定
 			}
 		}
-	}
-	else
-	{
+		break;
+
+	case EnemyHitEffect:					// 敵の被弾エフェクト
 		for( int i = 0; i < EnemyNum; i++)
 		{
 			// 空きバッファチェック
@@ -91,9 +92,10 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 vec, bool playerFlag)
 				fileName = "E_Hit";			// フラグに応じた文字列を設定
 			}
 		}
+		break;
 	}
 	if( !effect) { return; } // ポインタのコピーに失敗した場合は即終了
-	
+
 	// ノードとビルボードの実体を生成
 	effect -> billboard = BillBoard::create();
 	effect -> billboard -> retain();
@@ -102,10 +104,10 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 vec, bool playerFlag)
 
 	// インスタンス取得
 	auto cache = SpriteFrameCache::getInstance();
-			
+
 	// 空アニメーションを生成
 	auto animation = Animation::create();
-			
+
 	for( int i = 0; i < EffectGraphDataCount; i++)
 	{
 		char buf[64];
@@ -114,14 +116,14 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 vec, bool playerFlag)
 		// 空アニメーションに画像データを追加
 		animation -> addSpriteFrame( cache -> getSpriteFrameByName( frameName.c_str()));
 	}
-		
+
 	// アニメーション再生速度を設定
 	animation -> setDelayPerUnit( 0.05f);
 	animation -> setRestoreOriginalFrame( true);
-			
+
 	// アニメーションを元にアクションを生成
 	auto action = Animate::create( animation);
-			
+
 	// 解放処理をラムダ式で設定
 	auto callfunc = CallFunc::create( [=](void)->void
 										{
@@ -132,20 +134,20 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 vec, bool playerFlag)
 
 	// シーケンス設定し順番に処理されるように設定
 	auto sequence = Sequence::create( action, callfunc, NULL);
-			
+
 	// 作成したシーケンスの実行
 	effect -> billboard -> runAction( sequence);
-			
+
 	// 表示位置を設定 引数に応じて変更
-	if( vec == NULL_VECTOR) { effect -> billboard -> setPosition3D( Vec3( 0.1, 1.5, 0.5)); }
-	else { effect -> billboard -> setPosition3D( vec); }
+	if( point == NULL_VECTOR) { effect -> billboard -> setPosition3D( Vec3( 0.1, 1.5, 0.5)); }
+	else { effect -> billboard -> setPosition3D( point); }
 
 	// 表示角度を設定
 	effect -> node -> setRotation3D( Vec3( 0, -sprite3d -> getRotation3D().y, 0));
-	
+
 	// 表示スケールを設定
 	effect -> billboard -> setScale( 0.003f);
-			
+
 	// 作成した空ノードにビルボードを接続
 	effect -> node -> addChild( effect -> billboard);
 
@@ -159,22 +161,22 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 vec, bool playerFlag)
 
 void Effect::setPlayerHitEffect( Sprite3D* sprite3d)
 {
-	createHitEffect( sprite3d, NULL_VECTOR, true);
+	createHitEffect( sprite3d, NULL_VECTOR, PlayerHitEffect);
 }
 
-void Effect::setPlayerHitEffect( Sprite3D* sprite3d, Vec3 vec)
+void Effect::setPlayerHitEffect( Sprite3D* sprite3d, Vec3 point)
 {
-	createHitEffect( sprite3d, vec, true);
+	createHitEffect( sprite3d, point, PlayerHitEffect);
 }
 
 void Effect::setEnemyHitEffect( Sprite3D* sprite3d)
 {
-	createHitEffect( sprite3d, NULL_VECTOR, false);
+	createHitEffect( sprite3d, NULL_VECTOR, EnemyHitEffect);
 }
 
-void Effect::setEnemyHitEffect( Sprite3D* sprite3d, Vec3 vec)
+void Effect::setEnemyHitEffect( Sprite3D* sprite3d, Vec3 point)
 {
-createHitEffect( sprite3d, vec, false);
+	createHitEffect( sprite3d, point, EnemyHitEffect);
 }
 
 void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
@@ -189,7 +191,7 @@ void Effect::setPlayerMuzzle( Sprite3D* parentData, const string& pointName)
 	for( int i = 0; i < PlayerMuzzleAnime; i++)
 	{
 		playerMuzzle -> sprite3D[i] -> setRotation3D( Vec3( 90, 0, parentData -> getRotation3D().y));
-		point -> addChild( playerMuzzle -> sprite3D[i]);		
+		point -> addChild( playerMuzzle -> sprite3D[i]);
 	}
 	sound -> playSE( "Shot");
 }
@@ -207,12 +209,14 @@ void Effect::setEnemyMuzzle( Sprite3D* parentData, const string& pointName1, con
 		if( !point1) { return; }
 		auto point2 = parentData -> getAttachNode( pointName2);
 		if( !point2) { return; }
-		
+
 		for( int j = 0; j < EnemyMuzzleAnime; j++)
 		{
+			// 銃口先を向くように補正
 			enemyMuzzle[i] -> sprite3DR[j] -> setRotation3D( Vec3( 0, 270, 180));
 			point1 -> addChild( enemyMuzzle[i] -> sprite3DR[j]);
-			
+
+			// 銃口先を向くように補正
 			enemyMuzzle[i] -> sprite3DL[j] -> setRotation3D( Vec3( 0, 90, 180));
 			point2 -> addChild( enemyMuzzle[i] -> sprite3DL[j]);
 		}
@@ -232,7 +236,7 @@ void Effect::muzzleUpdate( void)
 			for( auto &p : playerMuzzle -> sprite3D) { p -> removeFromParent(); }
 			return;
 		}
-		
+
 		switch( playerMuzzle -> count)
 		{
 		case 0:
@@ -251,7 +255,7 @@ void Effect::muzzleUpdate( void)
 		}
 		playerMuzzle -> count++;
 	}
-	
+
 	for( auto &p : enemyMuzzle)
 	{
 		if( p -> shotFlag)
@@ -264,18 +268,18 @@ void Effect::muzzleUpdate( void)
 				for( auto &l : p -> sprite3DL) { l -> removeFromParent(); }
 				return;
 			}
-			
+
 			switch( p -> count)
 			{
 			case 0:
 				p -> sprite3DR[0] -> setVisible( true);
-					
+
 				p -> sprite3DL[0] -> setVisible( true);
 				break;
 			case 1:
 				p -> sprite3DR[0] -> setVisible( false);
 				p -> sprite3DR[1] -> setVisible( true);
-					
+
 				p -> sprite3DL[0] -> setVisible( false);
 				p -> sprite3DL[1] -> setVisible( true);
 				break;

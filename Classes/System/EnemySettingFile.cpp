@@ -12,13 +12,6 @@ USING_NS_CC;
 using namespace std;
 using namespace TapGun;
 
-/**
-*	敵設定ファイルの読み込みと設定用オブジェクトの生成
-*
-*	@author	minaka
-*	@param	fileName 設定ファイル名
-*	@return	正常終了 : 生成したオブジェクトへのポインタ  失敗 : nullptr
-*/
 EnemySettingFile* EnemySettingFile::create( const string& fileName)
 {
 	// オブジェクト生成
@@ -37,7 +30,7 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 
 	string str;							// ファイルから取得した文字列を格納
 	EnemyData* data = new EnemyData;	// 読み込んだ情報を格納する構造体を生成
-	
+
 	// 読み込み行カウンタと読み込みブロックカウンタを初期化しファイル終端までループ
 	for( settingFile -> fileLineCount = 1, settingFile -> loadCount = 0; getline( file, str); settingFile -> fileLineCount++)
 	{
@@ -51,7 +44,7 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 			return settingFile;
 		}
 
-		switch( settingFile -> fileLineCount)			// 現在の行番号で処理を分岐
+		switch( settingFile -> fileLineCount)　// 現在の行番号で処理を分岐
 		{
 		case 1:							// 奇数行にはデータが存在しないファイル構成なのでスキップ
 		case 3:
@@ -110,13 +103,13 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 		case 4:
 			// 出現中フラグを設定
 			getline( stream, tmp, ',');
-			if( tmp == "FALSE" || tmp == "false") 
-			{ 
-				data -> entryFlag = false; 
+			if( tmp == "FALSE" || tmp == "false")
+			{
+				data -> entryFlag = false;
 			}
 			else if( tmp == "TRUE" || tmp == "true")
-			{ 
-				data -> entryFlag = true; 
+			{
+				data -> entryFlag = true;
 			}
 			else if( atoi( tmp.c_str()) == 0)
 			{
@@ -124,7 +117,7 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 			}
 			else if( atoi( tmp.c_str()) == 1)
 			{
-				data -> entryFlag = true; 
+				data -> entryFlag = true;
 			}
 
 			// 一連の行動終了から次の行動開始までの待機時間を取得
@@ -196,105 +189,113 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 	return settingFile;
 }
 
-/**
-*	アニメーション名を指す文字列から数値を検索する
-*
-*	@author	minaka
-*	@param	dataString 元アニメーション名
-*	@return	検索結果の数値　発見できなかった場合は : -999
-*/
-int EnemySettingFile::getModelNumber( const string& dataString)
+int EnemySettingFile::getAIAppearNumber( const string& dataString)
 {
 	// モーション名に合わせた数値を格納
-
-	//ここから出現
 	if( dataString == "run")
 	{
 		return AI_APPEAR_RUN;
 	}
-	else if (dataString == "walk")
+	else if( dataString == "walk")
 	{
 		return AI_APPEAR_WALK;
 	}
-	else if (dataString == "sWalk")
+	else if( dataString == "sWalk")
 	{
 		return AI_APPEAR_SWALK;
 	}
-	else if (dataString == "slide")
+	else if( dataString == "slide")
 	{
 		return AI_APPEAR_SLIDE;
 	}
-	else if (dataString == "acro")
+	else if( dataString == "acro")
 	{
 		return AI_ATK_ACRO;
 	}
-	else if (dataString == "fJump")
+	else if( dataString == "fJump")
 	{
 		return AI_APPEAR_FJUMP;
 	}
+	else
+	{
+		return -999;
+	}
+}
 
-	//ここから移動
-	else if (dataString == "none")
+int getAIMoveNumber( const string& dataString)
+{
+	if( dataString == "none")
 	{
 		return AI_MOVE_NONE;
 	}
-	else if (dataString == "run")
+	else if( dataString == "run")
 	{
 		return AI_MOVE_RUN;
 	}
-	else if (dataString == "walk")
+	else if( dataString == "walk")
 	{
 		return AI_MOVE_WALK;
 	}
-	else if (dataString == "sWalk")
+	else if( dataString == "sWalk")
 	{
 		return AI_MOVE_SWALK;
 	}
-	else if (dataString == "slide")
+	else if( dataString == "slide")
 	{
 		return AI_MOVE_SLIDE;
 	}
-	else if (dataString == "acro")
+	else if( dataString == "acro")
 	{
 		return AI_MOVE_ACRO;
 	}
+	else
+	{
+		return -999;
+	}
+}
 
-	//ここから攻撃
-	else if (dataString == "none")
+int getAIAttackNumber( const string& dataString)
+{
+	if( dataString == "none")
 	{
 		return AI_ATK_NONE;
 	}
-	else if (dataString == "fake")
+	else if( dataString == "fake")
 	{
 		return AI_ATK_FAKE;
 	}
-	else if (dataString == "shot")
+	else if( dataString == "shot")
 	{
 		return AI_ATK_SSHOT;
 	}
-	else if (dataString == "slide")
+	else if( dataString == "slide")
 	{
 		return AI_ATK_SLIDE;
 	}
-	else if (dataString == "acro")
+	else if( dataString == "acro")
 	{
 		return AI_MOVE_ACRO;
 	}
+	else
+	{
+		return -999;
+	}
+}
 
-	//ここからライフサイクル
-	else if (dataString == "once")
+int getAILifeCycleNumber( const string& dataString)
+{
+	if( dataString == "once")
 	{
 		return AI_LIFE_ONCE;
 	}
-	else if (dataString == "switch")
+	else if( dataString == "switch")
 	{
 		return AI_LIFE_SWITCH;
 	}
-	else if (dataString == "stop")
+	else if( dataString == "stop")
 	{
 		return AI_LIFE_STOP;
 	}
-
 	else
 	{
 		return -999;

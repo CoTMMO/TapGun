@@ -27,6 +27,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/Scene/CreditScene.cpp \
 				   ../../Classes/Scene/GameClearLayer.cpp \
 				   ../../Classes/Scene/GameModelsLayer.cpp \
+				   ../../Classes/Scene/GameModelsLayerE.cpp \
 				   ../../Classes/Scene/GameScene.cpp \
 				   ../../Classes/Scene/GameUILayer.cpp \
 				   ../../Classes/Scene/TestScene.cpp \
