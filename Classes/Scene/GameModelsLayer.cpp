@@ -1258,8 +1258,16 @@ void  GameModelsLayer::CheckPlayerAtk(void)
 			{
 				if (touchRay.intersects(unit[n].obbHead))//タッチ座標の法線と敵の当たり判定が接触したかをチェック
 				{
+					//被弾エフェクトの位置の計算
+					float longDist = rayStart.distance(rayEnd);
+					float shortDist = rayStart.distance(unit[n].sprite3d->getPosition3D());
+					float r = shortDist / longDist;//レイの長さに対する、レイ視点と敵との距離の割合
+					Vec3 tmpRay = (rayEnd - rayStart) * r * 0.8f;
+					tmpRay += rayStart;
+					tmpRay = tmpRay - unit[n].sprite3d->getPosition3D();
 
 					unit[n].hitpoint -= 1;
+					Effect::getInstance()->setEnemyHitEffect(unit[n].sprite3d, tmpRay);
 					//１体に攻撃するとその時点でbreakする
 					break;
 				}
