@@ -9,12 +9,6 @@ USING_NS_CC;
 using namespace std;
 using namespace TapGun;
 
-/**
-*	メンバ変数の初期化
-*
-*	@author	minaka
-*	@param	なし
-*/
 ResourceLoader::ResourceLoader()
 {
 	for( auto &p : loadFlag) { p = false; }
@@ -24,13 +18,6 @@ ResourceLoader::ResourceLoader()
 	typeCount[TypePlayer] = Player;
 }
 
-/**
-*	3Dモデルの非同期読み込みオブジェクトのインスタンスの生成
-*
-*	@author	minaka
-*	@param	なし
-*	@return	生成したオブジェクトへのポインタ
-*/
 ResourceLoader* ResourceLoader::getInstance( void)
 {
 	static ResourceLoader* p = nullptr;
@@ -38,53 +25,22 @@ ResourceLoader* ResourceLoader::getInstance( void)
 	return p;
 }
 
-/**
-*	3Dモデルの非同期読み込み
-*
-*	@author	minaka
-*	@param	fileName 読み込みたいモデルのファイルパス
-*	@return	なし
-*/
 void ResourceLoader::loadModel( const string& filePath)
 {
 	_Sprite3D::createAsync( filePath, CC_CALLBACK_2( ResourceLoader::sprite3DLoadCallback, this, filePath), nullptr);
 }
 
-/**
-*	3Dモデルの非同期読み込み
-*
-*	@author	minaka
-*	@param	modelPath 読み込みたいモデルのファイルパス
-*	@param	texturePath 読み込みたいテクスチャのファイルパス
-*	@return	なし
-*/
 void ResourceLoader::loadModel( const string& modelPath, const string& texturePath)
 {
 	_Sprite3D::createAsync( modelPath, texturePath, CC_CALLBACK_2( ResourceLoader::sprite3DLoadCallback, this, modelPath), nullptr);
 }
 
-/**
-*	読み込み済み3Dモデルのポインタ取得
-*
-*	@author	minaka
-*	@param	count アクセスしたいモデルの番号 ※具体的な番号はヘッダーのModelNumberを参照
-*	@return	読み込み済み : 実体へのポインタ　読み込まれていない : nullptr
-*/
 _Sprite3D* ResourceLoader::getSprite3D( int count)
 {
 	if( loadFlag[count] == true) { return models[count]; }
 	else { return nullptr; }
 }
 
-/**
-*	非同期読み込み完了モデルを配列に格納
-*
-*	@author	minaka
-*	@param	sprite3D 読み込んだモデルデータへのポインタ
-*	@param	param データの親ポインタ
-*	@param	fileName 読み込んだモデルのファイル名
-*	@return	読み込み済み : 実体へのポインタ　読み込まれていない : nullptr
-*/
 void ResourceLoader::sprite3DLoadCallback( _Sprite3D* sprite3D, void* param, const string& fileName)
 {
 	// ローカルにコピー

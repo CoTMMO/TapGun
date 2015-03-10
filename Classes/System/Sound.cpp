@@ -10,14 +10,10 @@ using namespace std;
 using namespace TapGun;
 using namespace CocosDenshion;
 
-/**
- *	サウンド管理クラスのインスタンス取得
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0 エラー発生:-1
- *	@date	12/28 Ver 1.0
- */
+Sound::Sound()
+{	
+}
+
 Sound* Sound::getInstance( void)
 {
 	static Sound* P;
@@ -25,44 +21,18 @@ Sound* Sound::getInstance( void)
 	return P;
 }
 
-/**
- *	BGMファイルの読み込み
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::loadBGM( const string& fileName)
+void Sound::loadBGM( const string& fileName)
 {
 	Sound::getInstance() -> bgmFileName = FileAccess::getInstance() -> getBGMPath( fileName);
 	SimpleAudioEngine::getInstance() -> preloadBackgroundMusic( Sound::getInstance() -> bgmFileName.c_str());
-	return 0;
 }
 
-/**
- *	BGMファイルの読み込み（ボリューム調整付き）
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::loadBGM( const string& fileName, float Volume)
+void Sound::loadBGM( const string& fileName, float Volume)
 {
 	Sound::getInstance() -> loadBGM( fileName);
 	SimpleAudioEngine::getInstance() -> setBackgroundMusicVolume( ( Volume / 100));
-	return 0;
 }
 
-/**
- *	BGMの再生
- *
- *	@author	minaka 
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
 int Sound::playBGM( void)
 {
 	string str = Sound::getInstance() -> bgmFileName;
@@ -74,28 +44,13 @@ int Sound::playBGM( void)
 	return -1;
 }
 
-/**
- *	BGMの再生（ボリューム調整付き）
- *
- *	@author	minaka
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
 int Sound::playBGM( float Volume)
 {
 	SimpleAudioEngine::getInstance() -> setBackgroundMusicVolume( ( Volume / 100));
-	Sound::getInstance() -> playBGM();
+	if( Sound::getInstance() -> playBGM()) { return -1; }
 	return 0;
 }
 
-/**
- *	BGMのループ再生
- *
- *	@author	minaka 
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
 int Sound::playBGMLoop( void)
 {
 	string str = Sound::getInstance() -> bgmFileName;
@@ -107,95 +62,38 @@ int Sound::playBGMLoop( void)
 	return -1;
 }
 
-/**
- *	BGMのループ再生（ボリューム調整付き）
- *
- *	@author	minaka
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
 int Sound::playBGMLoop( float Volume)
 {
 	SimpleAudioEngine::getInstance() -> setBackgroundMusicVolume( ( Volume / 100));
-	Sound::getInstance() -> playBGMLoop();
+	if( Sound::getInstance() -> playBGMLoop()) { return -1; }
 	return 0;
 }
 
-/**
- *	BGMのボリューム設定
- *
- *	@author	minaka
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::setBGMVolume( float Volume)
+void Sound::setBGMVolume( float Volume)
 {
 	SimpleAudioEngine::getInstance() -> setBackgroundMusicVolume( ( Volume / 100));
-	return 0;
 }
 
-/**
- *	BGMの停止
- *
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::stopBGM( void)
+void Sound::stopBGM( void)
 {
 	SimpleAudioEngine::getInstance() -> stopBackgroundMusic();
-	return 0;
 }
 
-/**
- *	BGMの一時停止
- *
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::pauseBGM( void)
+void Sound::pauseBGM( void)
 {
 	SimpleAudioEngine::getInstance() -> pauseBackgroundMusic();
-	return 0;
 }
 
-/**
- *	BGMの再開
- *
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
 int Sound::resumeBGM( void)
 {
 	SimpleAudioEngine::getInstance() -> resumeBackgroundMusic();
-	return 0;
 }
 
-/**
- *	BGMのリスタート
- *
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
 int Sound::restartBGM( void)
 {
 	SimpleAudioEngine::sharedEngine() -> rewindBackgroundMusic();
-	return 0;
 }
 
-
-/**
- *	BGMの再生中チェック
- *
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
 int Sound::playCheckBGM( void)
 {
 	if( SimpleAudioEngine::sharedEngine() -> isBackgroundMusicPlaying())
@@ -207,34 +105,12 @@ int Sound::playCheckBGM( void)
 		return 0;
 	}
 }
-	
 
-/**
- *	BGM用メモリの解放（未実装）
- *
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::releaseBGM( void)
-{
-	// 未実装
-	return 0;
-}
-
-/**
- *	SEファイルの読み込み
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0 エラー発生時:-1
- *	@date	1/4 Ver 1.0
- */
-int Sound::loadSE( const std::string& fileName)
+int Sound::loadSE( const string& fileName)
 {
 	SoundData *data = new SoundData;
 	string str = static_cast<string>(fileName);
-	
+
 	if( str.size() < 4) return -1;
 	data -> filePath = FileAccess::getInstance() -> getSEPath( fileName).c_str();
 	SimpleAudioEngine::getInstance() -> preloadEffect( data -> filePath.c_str());
@@ -244,38 +120,21 @@ int Sound::loadSE( const std::string& fileName)
 		str.erase( 0, point);
 	}
 	data -> fileName = str;
-	
+
 	data -> ID = seDataList.size() - 1;
-	
+
 	seDataList.push_back( data);
 	return 0;
 }
 
-/**
- *	SEファイルの読み込み（ボリューム調整付き）
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::loadSE( const std::string& fileName, float Volume)
+int Sound::loadSE( const string& fileName, float Volume)
 {
-	Sound::getInstance() -> loadSE( fileName);
 	SimpleAudioEngine::getInstance() -> setEffectsVolume( ( Volume / 100));
+	if( Sound::getInstance() -> loadSE( fileName)) { return -1; }
 	return 0;
 }
 
-/**
- *	SEの再生
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::playSE( const std::string& fileName)
+int Sound::playSE( const string& fileName)
 {
 	for( int i = 0; i < seDataList.size(); i++)
 	{
@@ -288,45 +147,19 @@ int Sound::playSE( const std::string& fileName)
 	return -1;
 }
 
-/**
- *	SEの再生（ボリューム調整付き）
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::playSE( const std::string& fileName, float Volume)
+int Sound::playSE( const string& fileName, float Volume)
 {
 	SimpleAudioEngine::getInstance() -> setEffectsVolume( ( Volume / 100));
-	Sound::getInstance() -> playSE( fileName);
+	if( Sound::getInstance() -> playSE( fileName)) { return -1; }
 	return 0;
 }
 
-/**
- *	SE全体のボリューム調整
- *
- *	@author	minaka 
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
 int Sound::setSEVolume( float Volume)
 {
 	SimpleAudioEngine::getInstance() -> setEffectsVolume( ( Volume / 100));
-	return 0;
 }
 
-/**
- *	SEの停止
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::stopSE( const std::string& fileName)
+int Sound::stopSE( const string& fileName)
 {
 	for( int i = 0; i < seDataList.size(); i++)
 	{
@@ -339,15 +172,7 @@ int Sound::stopSE( const std::string& fileName)
 	return -1;
 }
 
-/**
- *	SEの再開
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::pauseSE( const std::string& fileName)
+int Sound::pauseSE( const string& fileName)
 {
 	for( int i = 0; i < seDataList.size(); i++)
 	{
@@ -360,15 +185,8 @@ int Sound::pauseSE( const std::string& fileName)
 	return -1;
 }
 
-/**
- *	SEのリスタート
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::resumeSE( const std::string& fileName)
+
+int Sound::resumeSE( const string& fileName)
 {
 	for( int i = 0; i < seDataList.size(); i++)
 	{
@@ -381,54 +199,22 @@ int Sound::resumeSE( const std::string& fileName)
 	return -1;
 }
 
-/**
- *	全SEの停止
- *		※この停止命令はVoiceと共有
- *	@author	minaka 
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::stopSEAll( void)
+void Sound::stopSEAll( void)
 {
 	SimpleAudioEngine::getInstance() -> stopAllEffects();
-	return 0;
 }
 
-/**
- *	全SEの再開
- *		※この停止命令はVoiceと共有
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::pauseSEAll( void)
+void Sound::pauseSEAll( void)
 {
 	SimpleAudioEngine::getInstance() -> pauseAllEffects();
-	return 0;
 }
 
-/**
- *	全SEのリスタート
- *		※この停止命令はVoiceと共有
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::resumeSEAll( void)
+void Sound::resumeSEAll( void)
 {
 	SimpleAudioEngine::getInstance() -> resumeAllEffects();
-	return 0;
 }
 
-/**
- *	SE用のメモリ解放
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::releaseSE( const std::string& fileName)
+int Sound::releaseSE( const string& fileName)
 {
 	for( int i = 0; i < seDataList.size(); i++)
 	{
@@ -437,260 +223,15 @@ int Sound::releaseSE( const std::string& fileName)
 			SimpleAudioEngine::getInstance() -> unloadEffect( seDataList[i] -> filePath.c_str());
 			return 0;
 		}
-	}	
+	}
 	return -1;
 }
 
-/**
- *	全SE用のメモリ解放
- *
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::releaseSEAll( void)
+void Sound::releaseSEAll( void)
 {
 	for( int i = 0; i < seDataList.size(); i++)
 	{
 		SimpleAudioEngine::getInstance() -> unloadEffect( seDataList[i] -> filePath.c_str());
 	}
 	vector<SoundData*>().swap(seDataList);
-	return 0;
 }
-
-/**
- *	Voiceファイルの読み込み
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::loadVoice( const std::string& fileName)
-{
-	SoundData *data = new SoundData;
-	string str = static_cast<string>(fileName);
-	
-	if( str.size() < 4) return -1;
-	data -> filePath = FileAccess::getInstance() -> getVoicePath( fileName).c_str();
-	SimpleAudioEngine::getInstance() -> preloadEffect( data -> filePath.c_str());
-	
-	while( int point = str.rfind( '/', str.size()) != -1)
-	{
-		str.erase( 0, point);
-	}
-	data -> fileName = str;
-
-	data -> ID = voiceDataList.size() - 1;
-
-	voiceDataList.push_back( data);
-	return 0;
-}
-
-/**
- *	Voiceファイルの読み込み（ボリューム調整付き）
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::loadVoice( const std::string& fileName, float Volume)
-{
-	Sound::getInstance() -> loadVoice( fileName);
-	SimpleAudioEngine::getInstance() -> setEffectsVolume( ( Volume / 100));
-	return 0;
-}
-
-/**
- *	Voiceファイルの再生
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::playVoice( const std::string& fileName)
-{
-	for( int i = 0; i < voiceDataList.size(); i++)
-	{
-		if( voiceDataList[i] -> fileName == fileName)
-		{
-			SimpleAudioEngine::getInstance() -> playEffect( voiceDataList[i] -> filePath.c_str());
-			return 0;
-		}
-	}
-	return -1;
-}
-
-/**
- *	Voiceファイルの読み込み（ボリューム調整付き）
- *
- *	@author	minaka 
- *	@param	fileName ファイル名
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::playVoice( const std::string& fileName, float Volume)
-{
-	SimpleAudioEngine::getInstance() -> setEffectsVolume( ( Volume / 100));
-	Sound::getInstance() -> playVoice( fileName);
-	return 0;
-}
-
-/**
- *	Voice全体のボリューム調整
- *		※ボリュームレベルはSEと共有
- *	@author	minaka
- *	@param	Volume ボリュームレベル ( 0.0 ~ 100.0 )
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::setVoiceVolume( float Volume)
-{
-	SimpleAudioEngine::getInstance() -> setEffectsVolume( ( Volume / 100));
-	return 0;
-}
-
-/**
- *	Voiceの停止
- *		
- *	@author	minaka
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::stopVoice( const std::string& fileName)
-{
-	for( int i = 0; i < voiceDataList.size(); i++)
-	{
-		if( voiceDataList[i] -> fileName == fileName)
-		{
-			SimpleAudioEngine::getInstance() -> stopEffect( voiceDataList[i] -> ID);
-			return 0;
-		}
-	}
-	return -1;
-}
-
-/**
- *	Voiceの再開
- *		
- *	@author	minaka
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::pauseVoice( const std::string& fileName)
-{
-	for( int i = 0; i < voiceDataList.size(); i++)
-	{
-		if( voiceDataList[i] -> fileName == fileName)
-		{
-			SimpleAudioEngine::getInstance() -> pauseEffect( voiceDataList[i] -> ID);
-			return 0;
-		}
-	}
-	return -1;
-}
-
-/**
- *	Voiceのリスタート
- *		
- *	@author	minaka
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::resumeVoice( const std::string& fileName)
-{
-	for( int i = 0; i < voiceDataList.size(); i++)
-	{
-		if( voiceDataList[i] -> fileName == fileName)
-		{
-			SimpleAudioEngine::getInstance() -> pauseEffect( voiceDataList[i] -> ID);
-			return 0;
-		}
-	}
-	return -1;
-}
-
-/**
- *	全Voiceの停止
- *		※この停止命令はSEと共有	
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::stopVoiceAll( void)
-{
-	SimpleAudioEngine::getInstance() -> stopAllEffects();
-	return 0;
-}
-
-/**
- *	全Voiceの再開
- *		※この再開命令はSEと共有	
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::pauseVoiceAll( void)
-{
-	SimpleAudioEngine::getInstance() -> pauseAllEffects();
-	return 0;
-}
-
-/**
- *	全Voiceのリスタート
- *		※このリスタート命令はSEと共有	
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::resumeVoiceAll( void)
-{
-	SimpleAudioEngine::getInstance() -> resumeAllEffects();
-	return 0;
-}
-
-/**
- *	Voice用のメモリ解放
- *
- *	@author	minaka
- *	@param	fileName ファイル名
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::releaseVoice( const std::string& fileName)
-{
-	for( int i = 0; i < voiceDataList.size(); i++)
-	{
-		if( voiceDataList[i] -> fileName == fileName)
-		{
-			SimpleAudioEngine::getInstance() -> unloadEffect( voiceDataList[i] -> filePath.c_str());
-			return 0;
-		}
-	}	
-	return -1;
-}
-
-/**
- *	全Voice用のメモリ解放
- *
- *	@author	minaka
- *	@return	正常終了:0
- *	@date	1/4 Ver 1.0
- */
-int Sound::releaseVoiceAll( void)
-{
-	for( int i = 0; i < voiceDataList.size(); i++)
-	{
-		SimpleAudioEngine::getInstance() -> unloadEffect( voiceDataList[i] -> filePath.c_str());
-	}
-	vector<SoundData*>().swap(voiceDataList);
-	return 0;
-}
-

@@ -4,7 +4,7 @@
 #include "Scene/TestScene.h"
 #include "Scene/TitleScene.h"
 
-#define TEST_SCENE
+//#define TEST_SCENE
 
 USING_NS_CC;
 using namespace TapGun;

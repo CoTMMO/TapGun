@@ -118,7 +118,7 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 point, EffectType effectT
 	}
 
 	// アニメーション再生速度を設定
-	animation -> setDelayPerUnit( 0.05f);
+	animation -> setDelayPerUnit( 0.01f);
 	animation -> setRestoreOriginalFrame( true);
 
 	// アニメーションを元にアクションを生成

@@ -79,16 +79,17 @@ namespace TapGun
 		GameUI( const GameUI& p) = delete;
 		GameUI& operator=( const GameUI& P) = delete;
 		static GameUI* getInstance( void);
-		
+
 		void init( cocos2d::Layer* layer);
 		void update( void);
-		
+
 		void setLogo( void);
 		void setHP( int count);
 		void setGameTime( float time);
 		void setBulletCount( int count);
 		void setReticlePoint( void);
-		
+		cocos2d::Vec3 getReticlePoint( void);
+
 	private:
 		enum UI_Count
 		{
@@ -108,22 +109,22 @@ namespace TapGun
 			Reload,
 			LogoNum,
 		};
-		
+
 		GameUI() {}
 
 		bool firstShotFlag;
 		bool returnEscapeFlag;
 		bool returnEscapeNoShotFlag;
-		
+
 		bool waitFlag;
 		int waitTime;
-		
+
 		bool timeFlag;	// 1/100秒の制御フラグ
 		int frame;		// 1/10秒以下の制御カウンタ
-		
+
 		int count01;
 		int count001;
-		
+
 		cocos2d::Node *hpParent;
 		cocos2d::Sprite *hp[HPGauge];
 		cocos2d::Node *timeParent;
@@ -140,4 +141,3 @@ namespace TapGun
 	};
 }
 #endif //__UI_H__
-

@@ -8,7 +8,7 @@ using namespace TapGun;
 USING_NS_CC;
 
 /**
-*	UIクラスの初期化	
+*	UIクラスの初期化
 *
 *	@author	minaka
 *	@param	なし
@@ -50,7 +50,7 @@ void GameUI::init( Layer* layer)
 		hpParent -> addChild( p,2);
 	}
 	layer -> addChild( hpParent);
-	
+
 	timeParent = Node::create();
 	for( int i = 0; i < TimeNumber; i++) // NumberSprite Count
 	{
@@ -80,16 +80,16 @@ void GameUI::init( Layer* layer)
 	timeNumber[2][0] -> setVisible( true);
 	timeNumber[3][0] -> setVisible( true);
 	timeNumber[4][0] -> setVisible( true);
-	
+
 	layer -> addChild( timeParent);
 
 	bulletParent = Node::create();
-	
+
 	bullet = Sprite::createWithSpriteFrameName( "BulletFrame.png");
 	bullet -> setPosition( Vec2( 640, 60));
 	bullet -> setScale( 0.15f);
 	bulletParent -> addChild( bullet, 1);
-	
+
 	for( int i = 0; i < BulletNumber; i++) // NumberSprite Count
 	{
 		for( int k = 0; k < 10; k++)	// NumberSprite init Loop
@@ -102,7 +102,7 @@ void GameUI::init( Layer* layer)
 			bulletParent -> addChild( bulletNumber[i][k], 3);
 		}
 	}
-	
+
 	for( int i = 0; i < 10; i++)
 	{
 		bulletNumber[0][i] -> setPosition( Vec2( 580, 55));
@@ -116,9 +116,9 @@ void GameUI::init( Layer* layer)
 	bulletNumber[1][0] -> setVisible( true);
 	bulletNumber[2][3] -> setVisible( true);
 	bulletNumber[3][0] -> setVisible( true);
-	
+
 	layer -> addChild( bulletParent);
-	
+
 	for( int i = 0; i < Escape; i++)
 	{
 		escape[i] = Sprite::createWithSpriteFrameName( "escape.png");
@@ -129,9 +129,9 @@ void GameUI::init( Layer* layer)
 	escape[1] -> setPosition( Vec2( 1150, 130));
 	auto flip = FlipX::create(true);
 	escape[1] -> runAction(flip);
-	
+
 	pause = Sprite::create();
-	
+
 	for( int i = 0; i < EnemyAttack; i++)
 	{
 		for( int k = 0; k < 3; k++)
@@ -143,7 +143,7 @@ void GameUI::init( Layer* layer)
 			layer -> addChild( enemyAttack[i][k]);
 		}
 	}
-	
+
 	for( int i = 0; i < Delete; i++)
 	{
 		deleteLogo[i] = Sprite::createWithSpriteFrameName( "derete.png");
@@ -191,7 +191,7 @@ void GameUI::init( Layer* layer)
 void GameUI::update( void)
 {
 	auto master = GameMaster::GetInstance();
-	
+
 	setLogo();
 	setHP( master -> GetPlayerHP());
 	setGameTime( master -> GetGameTime());
@@ -314,28 +314,28 @@ void GameUI::setGameTime( float time)
 	int count1 = count10 - ((count10 / 10) * 10);
 	static int count01 = 0;
 	static int count001 = 0;
-		
+
 	for( int i = 0; i < 10; i++)
 	{
 		if( timer / 100 == i) { continue; }
 		timeNumber[0][i] -> setVisible( false);
 	}
 	timeNumber[0][(int)timer / 100] -> setVisible( true);
-	
+
 	for( int i = 0; i < 10; i++)
 	{
 		if( count10 / 10 == i) { continue; }
 		timeNumber[1][i] -> setVisible( false);
 	}
 	timeNumber[1][count10 / 10] -> setVisible( true);
-	
+
 	for( int i = 0; i < 10; i++)
 	{
 		if( count1 / 10 == i) { continue; }
 		timeNumber[2][i] -> setVisible( false);
 	}
 	timeNumber[2][count1] -> setVisible( true);
-	
+
 	if( master -> GetGameState() == GSTATE_PLAY)
 	{
 		if( frame % 6 == 0)
@@ -403,14 +403,14 @@ void GameUI::setGameTime( float time)
 void GameUI::setBulletCount( int count)
 {
 	int Bcount = count - ((count / 10) * 10);
-		
+
 	for( int i = 0; i < 10; i++)
 	{
 		if( count / 10 == i) { continue; }
 		bulletNumber[0][i] -> setVisible( false);
 	}
 	bulletNumber[0][count / 10] -> setVisible( true);
-		
+
 	for( int i = 0; i < 10; i++)
 	{
 		if( Bcount == i) { continue; }
@@ -458,8 +458,8 @@ void GameUI::setReticlePoint( void)
 		}
 
 		reticle[1] -> setPosition( pos.x, pos.y + visibleSize.height * master -> reticleAjust);
-		
-		if( reticle[1] -> getPositionY() > visibleSize.height) 
+
+		if( reticle[1] -> getPositionY() > visibleSize.height)
 		{
 			reticle[1] -> setPositionY( reticle[1] -> getPositionY() - ( reticle[1] -> getPositionY() - visibleSize.height));
 		}
@@ -482,6 +482,10 @@ void GameUI::setReticlePoint( void)
 	}
 }
 
+Vec3 GameUI::getReticlePoint( void)
+{
+	return reticle[0] -> getPosition3D();
+}
 
 /**
 *
@@ -634,4 +638,3 @@ void UI::UpdatePos(void)
 void UI::UpdatePos(Vec2 pos)
 {
 }
-
