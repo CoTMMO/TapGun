@@ -10,106 +10,106 @@ namespace TapGun
 	{
 	public:
 		/**
-		*	“Gİ’èƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚Æİ’è—pƒIƒuƒWƒFƒNƒg‚Ì¶¬
+		*	Ã¬GÃªâ€ºÃ­Ã‹Ã‰tÃ‰@Ã‰CÃ‰Ã£Ã‡ÃƒÃ¬Â«Ã‡â€ºÃ§Ã»Ã‡â€ºÃ‡âˆ†Ãªâ€ºÃ­Ã‹Ã³pÃ‰IÃ‰uÃ‰WÃ‰FÃ‰NÃ‰gÃ‡ÃƒÃªâˆ‚ÃªÂ¨
 		*
 		*	@author	minaka
-		*	@param	fileName İ’èƒtƒ@ƒCƒ‹–¼
-		*	@return	³íI—¹ : ¶¬‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^  ¸”s : nullptr
+		*	@param	fileName Ãªâ€ºÃ­Ã‹Ã‰tÃ‰@Ã‰CÃ‰Ã£Ã±Âº
+		*	@return	Ãªâ‰¥Ã¨ÃŒÃ¨IÃ³Ï€ : Ãªâˆ‚ÃªÂ¨Ã‡ÂµÃ‡Î©Ã‰IÃ‰uÃ‰WÃ‰FÃ‰NÃ‰gÃ‡Ã·Ã‡ÃƒÃ‰|Ã‰CÃ‰Ã¬Ã‰^  Ã©âˆÃ®s : nullptr
 		*/
 		static EnemySettingFile* create( const std::string& fileName);
 
 	private:
-		// ŠÖ”éŒ¾—p (Ú×‚ÍŒã•û‚É‹Lq)
+		// Ã¤Ã·ÃªÃ®ÃªÃˆÃ¥Ã¦Ã³p (Ã¨â„Ã§â—ŠÃ‡Ã•Ã¥â€Ã¯ËšÃ‡â€¦Ã£LÃ¨q)
 		struct EnemyData;
 
 	public:
 		enum _DATA_LIST_COUNT
 		{
-			WAVE_ENEMY_COUNT	= 20,	// 1wave’†‚ÉoŒ»‚·‚é“G‚Ì‘”
+			WAVE_ENEMY_COUNT	= 20,	// 1waveÃ­ÃœÃ‡â€¦Ã¨oÃ¥ÂªÃ‡âˆ‘Ã‡ÃˆÃ¬GÃ‡ÃƒÃ«Ã§ÃªÃ®
 		};
 
-		unsigned int loadCount;			// “Ç‚İ‚İƒf[ƒ^”
-		EnemyData* dataList[WAVE_ENEMY_COUNT];	// “Ç‚İ‚ñ‚¾“Gƒf[ƒ^‚Ì•Û‘¶”z—ñ
+		unsigned int loadCount;			// Ã¬Â«Ã‡â€ºÃ§Ã»Ã‡â€ºÃ‰fÃ…[Ã‰^ÃªÃ®
+		EnemyData* dataList[WAVE_ENEMY_COUNT];	// Ã¬Â«Ã‡â€ºÃ§Ã»Ã‡Ã’Ã‡Ã¦Ã¬GÃ‰fÃ…[Ã‰^Ã‡ÃƒÃ¯â‚¬Ã«âˆ‚Ã®zÃ³Ã’
 
 	private:
-		EnemySettingFile()G
+		EnemySettingFile();
 
 		/**
-		*	ƒAƒjƒ[ƒVƒ‡ƒ“–¼‚ğw‚·•¶š—ñ‚©‚ç”’l‚ğŒŸõ‚·‚é
+		*	Ã‰AÃ‰jÃ‰Ã…Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã±ÂºÃ‡ï£¿Ã©wÃ‡âˆ‘Ã¯âˆ‚Ã©Ã¶Ã³Ã’Ã‡Â©Ã‡ÃÃªÃ®Ã­lÃ‡ï£¿Ã¥Ã¼Ã§Ä±Ã‡âˆ‘Ã‡Ãˆ
 		*
 		*	@author	minaka
-		*	@param	dataString Œ³ƒAƒjƒ[ƒVƒ‡ƒ“–¼
-		*	@return	ŒŸõŒ‹‰Ê‚Ì”’l@”­Œ©‚Å‚«‚È‚©‚Á‚½ê‡‚Í : -999
+		*	@param	dataString Ã¥â‰¥Ã‰AÃ‰jÃ‰Ã…Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã±Âº
+		*	@return	Ã¥Ã¼Ã§Ä±Ã¥Ã£Ã¢Â Ã‡ÃƒÃªÃ®Ã­lÃ…@Ã®â‰ Ã¥Â©Ã‡â‰ˆÃ‡Â´Ã‡Â»Ã‡Â©Ã‡Â¡Ã‡Î©Ã¨ÃÃ§Ã¡Ã‡Ã• : -999
 		*/
 		static int getAIAppearNumber( const std::string& dataString);
 
 		/**
-		*	ƒAƒjƒ[ƒVƒ‡ƒ“–¼‚ğw‚·•¶š—ñ‚©‚ç”’l‚ğŒŸõ‚·‚é
+		*	Ã‰AÃ‰jÃ‰Ã…Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã±ÂºÃ‡ï£¿Ã©wÃ‡âˆ‘Ã¯âˆ‚Ã©Ã¶Ã³Ã’Ã‡Â©Ã‡ÃÃªÃ®Ã­lÃ‡ï£¿Ã¥Ã¼Ã§Ä±Ã‡âˆ‘Ã‡Ãˆ
 		*
 		*	@author	minaka
-		*	@param	dataString Œ³ƒAƒjƒ[ƒVƒ‡ƒ“–¼
-		*	@return	ŒŸõŒ‹‰Ê‚Ì”’l@”­Œ©‚Å‚«‚È‚©‚Á‚½ê‡‚Í : -999
+		*	@param	dataString Ã¥â‰¥Ã‰AÃ‰jÃ‰Ã…Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã±Âº
+		*	@return	Ã¥Ã¼Ã§Ä±Ã¥Ã£Ã¢Â Ã‡ÃƒÃªÃ®Ã­lÃ…@Ã®â‰ Ã¥Â©Ã‡â‰ˆÃ‡Â´Ã‡Â»Ã‡Â©Ã‡Â¡Ã‡Î©Ã¨ÃÃ§Ã¡Ã‡Ã• : -999
 		*/
 		static int getAIMoveNumber( const std::string& dataString);
 
 		/**
-		*	ƒAƒjƒ[ƒVƒ‡ƒ“–¼‚ğw‚·•¶š—ñ‚©‚ç”’l‚ğŒŸõ‚·‚é
+		*	Ã‰AÃ‰jÃ‰Ã…Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã±ÂºÃ‡ï£¿Ã©wÃ‡âˆ‘Ã¯âˆ‚Ã©Ã¶Ã³Ã’Ã‡Â©Ã‡ÃÃªÃ®Ã­lÃ‡ï£¿Ã¥Ã¼Ã§Ä±Ã‡âˆ‘Ã‡Ãˆ
 		*
 		*	@author	minaka
-		*	@param	dataString Œ³ƒAƒjƒ[ƒVƒ‡ƒ“–¼
-		*	@return	ŒŸõŒ‹‰Ê‚Ì”’l@”­Œ©‚Å‚«‚È‚©‚Á‚½ê‡‚Í : -999
+		*	@param	dataString Ã¥â‰¥Ã‰AÃ‰jÃ‰Ã…Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã±Âº
+		*	@return	Ã¥Ã¼Ã§Ä±Ã¥Ã£Ã¢Â Ã‡ÃƒÃªÃ®Ã­lÃ…@Ã®â‰ Ã¥Â©Ã‡â‰ˆÃ‡Â´Ã‡Â»Ã‡Â©Ã‡Â¡Ã‡Î©Ã¨ÃÃ§Ã¡Ã‡Ã• : -999
 		*/
 		static int getAIAttackNumber( const std::string& dataString);
 
 		/**
-		*	ƒAƒjƒ[ƒVƒ‡ƒ“–¼‚ğw‚·•¶š—ñ‚©‚ç”’l‚ğŒŸõ‚·‚é
+		*	Ã‰AÃ‰jÃ‰Ã…Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã±ÂºÃ‡ï£¿Ã©wÃ‡âˆ‘Ã¯âˆ‚Ã©Ã¶Ã³Ã’Ã‡Â©Ã‡ÃÃªÃ®Ã­lÃ‡ï£¿Ã¥Ã¼Ã§Ä±Ã‡âˆ‘Ã‡Ãˆ
 		*
 		*	@author	minaka
-		*	@param	dataString Œ³ƒAƒjƒ[ƒVƒ‡ƒ“–¼
-		*	@return	ŒŸõŒ‹‰Ê‚Ì”’l@”­Œ©‚Å‚«‚È‚©‚Á‚½ê‡‚Í : -999
+		*	@param	dataString Ã¥â‰¥Ã‰AÃ‰jÃ‰Ã…Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã±Âº
+		*	@return	Ã¥Ã¼Ã§Ä±Ã¥Ã£Ã¢Â Ã‡ÃƒÃªÃ®Ã­lÃ…@Ã®â‰ Ã¥Â©Ã‡â‰ˆÃ‡Â´Ã‡Â»Ã‡Â©Ã‡Â¡Ã‡Î©Ã¨ÃÃ§Ã¡Ã‡Ã• : -999
 		*/
 		static int getAILifeCycleNumber( const std::string& dataString);
 
-		enum _DATA_NUMBER_	// Šeƒf[ƒ^‚Ì”
+		enum _DATA_NUMBER_	// Ã¤eÃ‰fÃ…[Ã‰^Ã‡ÃƒÃªÃ®
 		{
-			BLOCK_LINE_COUNT		= 6,	// 1ƒuƒƒbƒN‚Ìs”
+			BLOCK_LINE_COUNT		= 6,	// 1Ã‰uÃ‰Ã§Ã‰bÃ‰NÃ‡ÃƒÃ§sÃªÃ®
 
-			TARGET_POS_COUNT		= 3,	// –Ú•W’n“_”
-			WAIT_TO_ATTACK_COUNT	= 3,	// UŒ‚‘O‘Ò‹@ŠÔ”
-			WAIT_TO_MOVE_COUNT		= 3,	// UŒ‚Œã‘Ò‹@ŠÔ”
-			NEXT_ENEMYS_COUNT		= 3,	// Ÿ‚ÉoŒ»‚³‚¹‚é“Gƒf[ƒ^”
-			AI_MOVE_COUNT			= 2,	// ˆÚ“®ƒ‚[ƒVƒ‡ƒ“”
-			AI_ATTACK_COUNT			= 3,	// UŒ‚ƒ‚[ƒVƒ‡ƒ“”
+			TARGET_POS_COUNT		= 3,	// Ã±â„Ã¯WÃ­nÃ¬_ÃªÃ®
+			WAIT_TO_ATTACK_COUNT	= 3,	// Ã§UÃ¥Ã‡Ã«OÃ«â€œÃ£@Ã©Ã»Ã¤â€˜ÃªÃ®
+			WAIT_TO_MOVE_COUNT		= 3,	// Ã§UÃ¥Ã‡Ã¥â€Ã«â€œÃ£@Ã©Ã»Ã¤â€˜ÃªÃ®
+			NEXT_ENEMYS_COUNT		= 3,	// Ã©Ã¼Ã‡â€¦Ã¨oÃ¥ÂªÃ‡â‰¥Ã‡Ï€Ã‡ÃˆÃ¬GÃ‰fÃ…[Ã‰^ÃªÃ®
+			AI_MOVE_COUNT			= 2,	// Ã â„Ã¬Ã†Ã‰Ã‡Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬ÃªÃ®
+			AI_ATTACK_COUNT			= 3,	// Ã§UÃ¥Ã‡Ã‰Ã‡Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬ÃªÃ®
 		};
 
 		struct EnemyData
 		{
-			// ƒf[ƒ^”Ô†
+			// Ã‰fÃ…[Ã‰^Ã®â€˜Ã§Ãœ
 			int Num;
-			// oŒ»’n“_
+			// Ã¨oÃ¥ÂªÃ­nÃ¬_
 			cocos2d::Vec3 startPos;
-			// ‘Ò‹@ŠÔ
+			// Ã«â€œÃ£@Ã©Ã»Ã¤â€˜
 			int sleepTime;
-			// –Ú•W’n“_
+			// Ã±â„Ã¯WÃ­nÃ¬_
 			cocos2d::Vec3 targetPos[TARGET_POS_COUNT];
-			// ˆÚ“®Œã‚Ì‘Ò‹@ŠÔ
+			// Ã â„Ã¬Ã†Ã¥â€Ã‡ÃƒÃ«â€œÃ£@Ã©Ã»Ã¤â€˜
 			int waitToAttack[WAIT_TO_ATTACK_COUNT];
-			// oŒ»ƒtƒ‰ƒO
+			// Ã¨oÃ¥ÂªÃ‰tÃ‰Ã¢Ã‰O
 			bool entryFlag;
-			// UŒ‚Œã‚Ì‘Ò‹@ŠÔ
+			// Ã§UÃ¥Ã‡Ã¥â€Ã‡ÃƒÃ«â€œÃ£@Ã©Ã»Ã¤â€˜
 			int waitToMove[WAIT_TO_MOVE_COUNT];
-			// ŸoŒ»‚³‚¹‚é“G‚Ì”Ô†
+			// Ã©Ã¼Ã¨oÃ¥ÂªÃ‡â‰¥Ã‡Ï€Ã‡ÃˆÃ¬GÃ‡ÃƒÃ®â€˜Ã§Ãœ
 			int nextEnemies[NEXT_ENEMYS_COUNT];
-			// “oêƒ‚[ƒVƒ‡ƒ“”Ô†
+			// Ã¬oÃ¨ÃÃ©Ã»Ã‰Ã‡Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã®â€˜Ã§Ãœ
 			int aiAppear;
-			// ˆÚ“®ƒ‚[ƒVƒ‡ƒ“”Ô†
+			// Ã â„Ã¬Ã†Ã‰Ã‡Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã®â€˜Ã§Ãœ
 			int aiMove[AI_MOVE_COUNT];
-			// UŒ‚ƒ‚[ƒVƒ‡ƒ“”Ô†
+			// Ã§UÃ¥Ã‡Ã‰Ã‡Ã…[Ã‰VÃ‰Ã¡Ã‰Ã¬Ã®â€˜Ã§Ãœ
 			int aiAtk[AI_ATTACK_COUNT];
-			// ƒ‰ƒCƒtƒTƒCƒNƒ‹”Ô†
+			// Ã‰Ã¢Ã‰CÃ‰tÃ‰TÃ‰CÃ‰NÃ‰Ã£Ã®â€˜Ã§Ãœ
 			int aiLifeCycle;
 		};
-		unsigned int fileLineCount;			// Œ»İ‚Ìs”Ô†
+		unsigned int fileLineCount;			// Ã¥ÂªÃ§â€ºÃ‡ÃƒÃ§sÃ®â€˜Ã§Ãœ
 	};
 }
 

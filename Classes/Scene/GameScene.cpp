@@ -450,8 +450,6 @@ void GameScene::EndToTitle()
 	//BGMを停止
 	auto sound = Sound::getInstance();
 	sound->stopBGM();
-	sound->releaseBGM();
-
 	removeFromParent();
 	auto scene = TitleScene::createScene();
 	auto tran = TransitionFade::create(1, scene, ccc3(0, 0, 0));

@@ -37,6 +37,8 @@ namespace TapGun
 		*/
 		void update( float delta);
 
+		bool onTouchBegan( cocos2d::Touch *pTouch, cocos2d::Event *pEvent);
+		void onTouchMoved( cocos2d::Touch *pTouch, cocos2d::Event *pEvent);
 		/**
 		 *	ƒ^ƒbƒ`“ü—Í‚ÌŽó‚¯Žæ‚è (—£‚³‚ê‚½‚Æ‚«)
 		 *

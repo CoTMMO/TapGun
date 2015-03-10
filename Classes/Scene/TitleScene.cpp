@@ -117,6 +117,9 @@ void TitleScene::update( float delta)
 	}
 }
 
+bool TitleScene::onTouchBegan( Touch *pTouch, Event *pEvent) { return true; }
+void TitleScene::onTouchMoved( Touch *pTouch, Event *pEvent) {}
+
 void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 {
 	auto sound = Sound::getInstance();
@@ -257,7 +260,6 @@ void TitleScene::menuStartCallback( Ref* pSender)
 	if( !menuActionFlag) { return; }
 	auto sound = Sound::getInstance();
 	sound -> stopBGM();
-	sound -> releaseBGM();
 	sound -> loadBGM( "Main01");
 	sound -> playSE( "MoveSE");
 	auto scene = GameScene::CreateScene();

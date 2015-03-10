@@ -154,7 +154,7 @@ int Sound::playSE( const string& fileName, float Volume)
 	return 0;
 }
 
-int Sound::setSEVolume( float Volume)
+void Sound::setSEVolume( float Volume)
 {
 	SimpleAudioEngine::getInstance() -> setEffectsVolume( ( Volume / 100));
 }
