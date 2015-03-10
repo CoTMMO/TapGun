@@ -160,7 +160,7 @@ void GameModelsLayer::SetNextWave(void)
 		//
 		for(int i = 0; i < enemyTable->lastNumber; i++)
 		{
-			enemyTable->enemyData[i].hitpoint = STS_ENEMY_HP;//
+			enemyTable->enemyData[i].hitpoint = STS_ENEMY_HP;// *400;//
 			enemyTable->enemyData[i].alive = TRUE;
 			//初期座標をセット
 			enemyTable->enemyData[i].standbyPos = ESF->dataList[i]->startPos;
@@ -170,9 +170,13 @@ void GameModelsLayer::SetNextWave(void)
 			//AI系のデータ取得
 			for(int j = 0; j < 3; j++)
 			{
-				//次の敵をセット
-				enemyTable->enemyData[i].AIMove[j] = ESF->dataList[i]->aiMove[j];
+				//
 				enemyTable->enemyData[i].AIAtk[j] = ESF->dataList[i]->aiAtk[j];
+			}
+			for (int j = 0; j < 2; j++)
+			{
+				//
+				enemyTable->enemyData[i].AIMove[j + 1] = ESF->dataList[i]->aiMove[j];
 			}
 			enemyTable->enemyData[i].AIappear = ESF->dataList[i]->aiAppear;
 			enemyTable->enemyData[i].AILife = ESF->dataList[i]->aiLifeCycle;
@@ -205,6 +209,7 @@ void GameModelsLayer::SetNextWave(void)
 				unit[num].sprite3d->setVisible(false);
 				unit[num].visible = TRUE;
 				unit[num].tableNum = i;
+				unit[num].hitpoint = enemyTable->enemyData[i].hitpoint;//
 
 				//座標を代入
 				unit[num].sprite3d->setPosition3D(enemyTable->enemyData[i].standbyPos);
@@ -874,18 +879,92 @@ void GameModelsLayer::ActionEStandby(int num)
 }
 
 
+void GameModelsLayer::ActionEIdle(int num)
+{
+	auto GM = GameMaster::GetInstance();
+
+	unit[num].waitTime -= GM->loopTime;
+	if (unit[num].waitTime <= 0)
+	{
+		//アイドル時間が消費されたら
+		//エネミーの攻撃または移動をセット
+		//oldStateで場合分け
+		if (ESTATE_ATTACK1 == unit[num].oldState)
+		{
+			if (AI_LIFE_ONCE == unit[num].AILife)
+			{
+				unit[num].nowTarget += 1;//要チェック
+			}
+			else if (AI_LIFE_SWITCH == unit[num].AILife)
+			{
+				//目標地点をスイッチして再度動かす
+				if (2 == unit[num].nowTarget)
+				{
+					unit[num].nowTarget = 1;
+				}
+				else if (1 == unit[num].nowTarget)
+				{
+					unit[num].nowTarget = 2;
+				}
+				else
+				{
+					unit[num].nowTarget += 1;//
+				}
+			}
+			else if (AI_LIFE_STOP == unit[num].AILife)
+			{
+				if (2 != unit[num].nowTarget)
+				{
+					unit[num].nowTarget += 1;
+				}
+			}
+
+			//移動に移行
+			//移動しない場合は異なる処理をする
+			if (AI_MOVE_NONE == unit[num].AIMove[unit[num].nowTarget])
+			{
+				//移動処理に入る代わりに、次回の攻撃動作のためのアイドルに入る
+				unit[num].oldState = ESTATE_MOVE;
+				unit[num].eState = ESTATE_IDLE;//
+				unit[num].waitTime = unit[num].stsWaitToAtk[unit[num].nowTarget];
+				SetEnemyMove(num, 0);
+			}
+			else
+			{
+				SetEnemyMove(num, 0);
+			}
+		}
+		else if (ESTATE_MOVE == unit[num].oldState)
+		{
+			//攻撃に移行
+			//AIの行動パターンをもとに動きを変更する
+			if (AI_ATK_NONE == unit[num].AIAtk[unit[num].nowTarget])
+			{
+				//攻撃処理に入る代わりに、次回の移動動作のためのアイドルに入る
+				unit[num].oldState = ESTATE_ATTACK1;
+				unit[num].eState = ESTATE_IDLE;//
+				unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
+				SetEnemyAtk(num);
+			}
+			else
+			{
+				SetEnemyAtk(num);
+			}
+		}
+	}
+}
+
 
 void GameModelsLayer::ActionEMove(int num)
 {
 	auto GM = GameMaster::GetInstance();
-
 	Vec3 tmpPos = unit[num].sprite3d->getPosition3D();
 	float dist = tmpPos.distance(unit[num].targetPos[unit[num].nowTarget]);
-	if(ENEMY_STOP_DIST >= dist)
+	if (ENEMY_STOP_DIST >= dist)
 	{
 		//一定以上目的地に近付いたら
 		//エネミーのライフサイクルで場合分け
-		switch(unit[num].AILife)
+		switch (unit[num].AILife)
 		{
 		case AI_LIFE_ONCE://
 			//現在の目的地が最終ポイントであれば、キャラクターを消す
@@ -922,12 +1001,14 @@ void GameModelsLayer::ActionEMove(int num)
 		unit[num].speedVec = Vec3(0.0f, 0.0f, 0.0f);
 
 		//攻撃するエネミーは攻撃待ち、攻撃しないエネミーは移動待ち
-		if(AI_ATK_NONE != unit[num].AIAtk[unit[num].nowTarget])
+		if (AI_ATK_NONE != unit[num].AIAtk[unit[num].nowTarget])
 		{
-			if(0 >= unit[num].stsWaitToAtk[unit[num].nowTarget])
+			if (0 >= unit[num].stsWaitToAtk[unit[num].nowTarget])
 			{
 				//ウェイトが設定されていないエネミーはアイドル状態をスキップして攻撃を行う
 				unit[num].waitTime = 0;
+				unit[num].oldState = unit[num].eState;
+				unit[num].eState = ESTATE_IDLE;
 				ActionEIdle(num);
 			}
 			else
@@ -942,7 +1023,7 @@ void GameModelsLayer::ActionEMove(int num)
 		}
 		else
 		{
-			if(0 >= unit[num].stsWaitToMove[unit[num].nowTarget])
+			if (0 >= unit[num].stsWaitToMove[unit[num].nowTarget])
 			{
 				//ウェイトが設定されていないエネミーはアイドル状態をスキップして移動を行う
 				unit[num].waitTime = 0;
@@ -966,86 +1047,6 @@ void GameModelsLayer::ActionEMove(int num)
 }
 
 
-void GameModelsLayer::ActionEIdle(int num)
-{
-	auto GM = GameMaster::GetInstance();
-
-	unit[num].waitTime -= GM->loopTime;
-	if (unit[num].waitTime <= 0)
-	{
-		//アイドル時間が消費されたら
-		//エネミーの攻撃または移動をセット
-		//OldMotionで場合分け
-		if (ESTATE_ATTACK1 == unit[num].oldState)
-		{
-			//移動に移行
-			SetEnemyMove(num, 0);
-		}
-		else if (ESTATE_MOVE == unit[num].oldState)
-		{
-			//AIの行動パターンをもとに動きを変更する
-			if (AI_LIFE_ONCE == unit[num].AILife)
-			{
-				unit[num].nowTarget += 1;//要チェック
-			}
-			else if (AI_LIFE_SWITCH == unit[num].AILife)
-			{
-				//目標地点をスイッチして再度動かす
-				if (2 == unit[num].nowTarget)
-				{
-					unit[num].nowTarget = 1;
-				}
-				else if (1 == unit[num].nowTarget)
-				{
-					unit[num].nowTarget = 2;
-				}
-				else
-				{
-					unit[num].nowTarget += 1;//
-				}
-			}
-			else if (AI_LIFE_STOP == unit[num].AILife)
-			{
-				if (2 != unit[num].nowTarget)
-				{
-					unit[num].nowTarget += 1;
-				}
-			}
-			SetEnemyAtk(num);
-		}
-	}
-}
-
-
-void GameModelsLayer::ActionEDamaged(int num)
-{
-	//HPが0になったら
-	//ジャンプする敵については専用処理を記述する
-
-	//それ以外の一般的な敵
-	//速度を0にする
-	unit[num].speed = 0.0f;//
-	unit[num].speedVec = Vec3(0.0f, 0.0f, 0.0f);
-
-	unit[num].sprite3d->stopALLAnimation();
-	unit[num].sprite3d->startAnimation("dei1");
-	unit[num].oldState = unit[num].eState;
-	unit[num].eState = ESTATE_DEAD;
-}
-
-
-
-void GameModelsLayer::ActionEDead(int num)
-{
-	if (0 == unit[num].sprite3d->checkAnimationState())//死亡アニメーションが終了したら
-	{
-		unit[num].sprite3d->setVisible(false);
-		unit[num].visible = FALSE;
-		setNextEnemy(num);//次の敵の出現チェック
-	}
-}
-
-
 void GameModelsLayer::ActionEAttack(int num)
 {
 	auto GM = GameMaster::GetInstance();
@@ -1055,22 +1056,24 @@ void GameModelsLayer::ActionEAttack(int num)
 		//ウェイトが設定されているエネミーはアイドル状態に移行する
 		unit[num].oldState = unit[num].eState;
 		unit[num].eState = ESTATE_IDLE;
-		unit[num].sprite3d->stopALLAnimation();
-		unit[num].sprite3d->startAnimationLoop("idle");
-		unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
-
+		unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];//
+		//waitが0の場合は即アイドル終了させる
 		if (0 >= unit[num].waitTime)
 		{
 			ActionEIdle(num);
 		}
+		unit[num].sprite3d->stopALLAnimation();
+		unit[num].sprite3d->startAnimationLoop("idle");
 	}
 	else
 	{
+		int a = 0;
 		//敵の攻撃モーションごとに弾の発射タイミングなどを選択
 		switch (unit[num].AIAtk[unit[num].nowTarget])
 		{
 		case AI_ATK_NONE://攻撃しない
-			//
+
+			a++;
 			break;
 		case AI_ATK_FAKE://威嚇攻撃を行う
 
@@ -1123,13 +1126,8 @@ void GameModelsLayer::SetEnemyAtk(int num)
 	//攻撃モーションに応じて動きを変化
 	switch (unit[num].AIAtk[unit[num].nowTarget])
 	{
-		//
-	case AI_ATK_NONE:
 
-		//攻撃しない敵はここには入ってこない
-		unit[num].oldState = unit[num].eState;
-		unit[num].eState = ESTATE_ATTACK1;//
-		//アニメーションはアイドルのまま：要チェック
+	case AI_ATK_NONE:
 		break;
 	case AI_ATK_FAKE://威嚇攻撃を行う
 		unit[num].oldState = unit[num].eState;
@@ -1200,11 +1198,13 @@ void GameModelsLayer::SetEnemyMove(int num,int flag)
 	r = CC_RADIANS_TO_DEGREES(r);
 
 	if (0 == flag)
-	{//AI_MOVEの移動
+	{
+		//AI_MOVEの移動
 		flag = unit[num].AIMove[unit[num].nowTarget];
 	}
 	else if (1 == flag)
-	{//AI_APPEARの移動
+	{
+		//AI_APPEARの移動
 		flag = unit[num].AIAppear;
 	}
 
@@ -1213,53 +1213,57 @@ void GameModelsLayer::SetEnemyMove(int num,int flag)
 	switch(flag)
 	{
 	case AI_MOVE_NONE://動かない
-		//
+		unit[num].speed = 0.0f;
+		unit[num].sprite3d->stopAllActions();
+		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
 
 		break;
 	case AI_MOVE_RUN://走り
 		//
 		unit[num].speed = STS_ENEMY_RUNSPEED;//
 		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
+		unit[num].sprite3d->stopAllActions();
 		unit[num].sprite3d->startAnimationLoop("run");
 		break;
 	case AI_MOVE_WALK://歩き
-	{
-		//歩きの場合はがプレイヤーから遠ざかるか否かで前進と後退を分ける
-		Vec3 nowPos = unit[num].sprite3d->getPosition3D();
-		Vec3 nextPos = unit[num].targetPos[unit[num].nowTarget];
+		{
+			//歩きの場合はがプレイヤーから遠ざかるか否かで前進と後退を分ける
+			Vec3 nowPos = unit[num].sprite3d->getPosition3D();
+			Vec3 nextPos = unit[num].targetPos[unit[num].nowTarget];
 
-		float distNow = nowPos.distance(player.sprite3d->getPosition3D());
-		float distNext = nextPos.distance(player.sprite3d->getPosition3D());
+			float distNow = nowPos.distance(player.sprite3d->getPosition3D());
+			float distNext = nextPos.distance(player.sprite3d->getPosition3D());
+			unit[num].sprite3d->stopAllActions();
+			if(distNow < distNext)
+			{//プレイヤーから遠ざかる場合
+				unit[num].sprite3d->stopALLAnimation();
+				unit[num].sprite3d->startAnimationLoop("bwalk");
+				unit[num].sprite3d->setRotation3D(Vec3(0.0f, -90.0f - r, 0.0f));//
+				unit[num].speed = STS_ENEMY_BWALKSPEED;
+			}
+			else
+			{//近づく場合
+				unit[num].sprite3d->stopALLAnimation();
+				unit[num].sprite3d->startAnimationLoop("walk");
+				unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
+				unit[num].speed = STS_ENEMY_WALKSPEED;
+			}
 
-		if(distNow < distNext)
-		{//プレイヤーから遠ざかる場合
-			unit[num].sprite3d->stopALLAnimation();
-			unit[num].sprite3d->startAnimationLoop("bwalk");
-			unit[num].sprite3d->setRotation3D(Vec3(0.0f, -90.0f - r, 0.0f));//
-			unit[num].speed = STS_ENEMY_BWALKSPEED;
-		}
-		else
-		{//近づく場合
-			unit[num].sprite3d->stopALLAnimation();
-			unit[num].sprite3d->startAnimationLoop("walk");
+			//移動方向に関わらずプレイヤーの方を向かせる方がいい場合は、この記述を使用する
+			Vec3 tmpPos = GM->stagePoint[GM->sPoint].pPos;//
+			tmpPos = tmpPos - unit[num].sprite3d->getPosition3D();//プレイヤーの位置へのベクトルを計算
+			tmpPos.normalize();//ベクトルの正規化を行う
+
+			double r = atan2(tmpPos.z, tmpPos.x);
+			r = CC_RADIANS_TO_DEGREES(r);
 			unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
-			unit[num].speed = STS_ENEMY_WALKSPEED;
 		}
-
-		//移動方向に関わらずプレイヤーの方を向かせる方がいい場合は、この記述を使用する
-		Vec3 tmpPos = GM->stagePoint[GM->sPoint].pPos;//
-		tmpPos = tmpPos - unit[num].sprite3d->getPosition3D();//プレイヤーの位置へのベクトルを計算
-		tmpPos.normalize();//ベクトルの正規化を行う
-
-		double r = atan2(tmpPos.z, tmpPos.x);
-		r = CC_RADIANS_TO_DEGREES(r);
-		unit[num].sprite3d->setRotation3D(Vec3(0.0f, 90.0f - r, 0.0f));//
-	}
 		break;
 	case AI_MOVE_SWALK://横歩き
 		//横移動
 		//要チェック
 		unit[num].speed = STS_ENEMY_SWALKSPEED;
+		unit[num].sprite3d->stopAllActions();
 		//外積をもとに
 		gai = getCross(unit[num].sprite3d->getPosition3D(), unit[num].targetPos[unit[num].nowTarget]);
 		if(gai <= 0)
@@ -1408,6 +1412,50 @@ void GameModelsLayer::ClearEnemies()
 }
 
 
+void GameModelsLayer::ActionEDamaged(int num)
+{
+	//HPが0になったら
+	//ジャンプする敵については専用処理を記述する
+
+	//それ以外の一般的な敵
+	//速度を0にする
+	unit[num].speed = 0.0f;//
+	unit[num].speedVec = Vec3(0.0f, 0.0f, 0.0f);
+
+	unit[num].sprite3d->stopALLAnimation();
+	unit[num].sprite3d->startAnimation("dei1");
+	unit[num].oldState = unit[num].eState;
+	unit[num].eState = ESTATE_DEAD;
+}
+
+
+
+void GameModelsLayer::ActionEDead(int num)
+{
+	if (0 == unit[num].sprite3d->checkAnimationState())//死亡アニメーションが終了したら
+	{
+		unit[num].sprite3d->setVisible(false);
+		unit[num].visible = FALSE;
+		setNextEnemy(num);//次の敵の出現チェック
+	}
+}
+
+
+
+int GameModelsLayer::SearchFreeEnemy()
+{
+	for (int i = UNIT1_ENEMY; i <= UNIT2_BULLET; i++)
+	{
+		if (FALSE == unit[i].visible)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+
+
 int GameModelsLayer::CheckNextWave(void)
 {
 	auto GM = GameMaster::GetInstance();
@@ -1457,15 +1505,3 @@ int GameModelsLayer::CheckNextWave(void)
 	return TRUE;
 }
 
-
-int GameModelsLayer::SearchFreeEnemy()
-{
-	for (int i = UNIT1_ENEMY; i <= UNIT2_BULLET; i++)
-	{
-		if (FALSE == unit[i].visible)
-		{
-			return i;
-		}
-	}
-	return -1;
-}

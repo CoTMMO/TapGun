@@ -10,106 +10,106 @@ namespace TapGun
 	{
 	public:
 		/**
-		*	ìGê›íËÉtÉ@ÉCÉãÇÃì«Ç›çûÇ›Ç∆ê›íËópÉIÉuÉWÉFÉNÉgÇÃê∂ê¨
+		*	ìGê›íËÉtÉ@ÉCÉãÁE�ì«ÁE��çûÁE��ÁE�Eê›íËópÉIÉuÉWÉFÉNÉgÁE�ê∂ê¨
 		*
 		*	@author	minaka
 		*	@param	fileName ê›íËÉtÉ@ÉCÉãñº
-		*	@return	ê≥èÌèIóπ : ê∂ê¨ÇµÇΩÉIÉuÉWÉFÉNÉgÇ÷ÇÃÉ|ÉCÉìÉ^  é∏îs : nullptr
+		*	@return	ê≥èÌèIóπ : ê∂ê¨ÁE�ÁE�ÉIÉuÉWÉFÉNÉgÁE�ÁE�É|ÉCÉìÉ^  é∏îs : nullptr
 		*/
 		static EnemySettingFile* create( const std::string& fileName);
 
 	private:
-		// ä÷êîêÈåæóp (è⁄ç◊ÇÕå„ï˚Ç…ãLèq)
+		// ä÷êîêÈåæóp (è⁁E�◊ÁE�å„ï˚ÁE��ãLèq)
 		struct EnemyData;
 
 	public:
 		enum _DATA_LIST_COUNT
 		{
-			WAVE_ENEMY_COUNT	= 20,	// 1waveíÜÇ…èoåªÇ∑ÇÈìGÇÃëçêî
+			WAVE_ENEMY_COUNT	= 20,	// 1waveíÜÁE��èoåªÁE�EÁE�ìGÁE�ëçêî
 		};
 
-		unsigned int loadCount;			// ì«Ç›çûÇ›ÉfÅ[É^êî
-		EnemyData* dataList[WAVE_ENEMY_COUNT];	// ì«Ç›çûÇÒÇæìGÉfÅ[É^ÇÃï€ë∂îzóÒ
+		unsigned int loadCount;			// ì«ÁE��çûÁE��ÉfÁEÉ^êî
+		EnemyData* dataList[WAVE_ENEMY_COUNT];	// ì«ÁE��çûÁE�ÁE�ìGÉfÁEÉ^ÁE�ï€ë∂îzóÁE
 
 	private:
 		EnemySettingFile();
 
 		/**
-		*	ÉAÉjÉÅÅ[ÉVÉáÉìñºÇéwÇ∑ï∂éöóÒÇ©ÇÁêîílÇåüçıÇ∑ÇÈ
+		*	ÉAÉjÉÁE�EÉVÉáÉìñºÁE��éwÁE�Eï∂éöóÒÁE�ÁE�E�îílÁE��åüçıÁE�EÁE�E
 		*
 		*	@author	minaka
-		*	@param	dataString å≥ÉAÉjÉÅÅ[ÉVÉáÉìñº
-		*	@return	åüçıåãâ ÇÃêîílÅ@î≠å©Ç≈Ç´Ç»Ç©Ç¡ÇΩèÍçáÇÕ : -999
+		*	@param	dataString å≥ÉAÉjÉÁE�EÉVÉáÉìñº
+		*	@return	åüçıåãâ ÁE�êîílÁEî≠å©ÁE��ÁE�ÁE�ÁE�ÁE�ÁE�èÍçáÁE�E: -999
 		*/
 		static int getAIAppearNumber( const std::string& dataString);
 
 		/**
-		*	ÉAÉjÉÅÅ[ÉVÉáÉìñºÇéwÇ∑ï∂éöóÒÇ©ÇÁêîílÇåüçıÇ∑ÇÈ
+		*	ÉAÉjÉÁE�EÉVÉáÉìñºÁE��éwÁE�Eï∂éöóÒÁE�ÁE�E�îílÁE��åüçıÁE�EÁE�E
 		*
 		*	@author	minaka
-		*	@param	dataString å≥ÉAÉjÉÅÅ[ÉVÉáÉìñº
-		*	@return	åüçıåãâ ÇÃêîílÅ@î≠å©Ç≈Ç´Ç»Ç©Ç¡ÇΩèÍçáÇÕ : -999
+		*	@param	dataString å≥ÉAÉjÉÁE�EÉVÉáÉìñº
+		*	@return	åüçıåãâ ÁE�êîílÁEî≠å©ÁE��ÁE�ÁE�ÁE�ÁE�ÁE�èÍçáÁE�E: -999
 		*/
 		static int getAIMoveNumber( const std::string& dataString);
 
 		/**
-		*	ÉAÉjÉÅÅ[ÉVÉáÉìñºÇéwÇ∑ï∂éöóÒÇ©ÇÁêîílÇåüçıÇ∑ÇÈ
+		*	ÉAÉjÉÁE�EÉVÉáÉìñºÁE��éwÁE�Eï∂éöóÒÁE�ÁE�E�îílÁE��åüçıÁE�EÁE�E
 		*
 		*	@author	minaka
-		*	@param	dataString å≥ÉAÉjÉÅÅ[ÉVÉáÉìñº
-		*	@return	åüçıåãâ ÇÃêîílÅ@î≠å©Ç≈Ç´Ç»Ç©Ç¡ÇΩèÍçáÇÕ : -999
+		*	@param	dataString å≥ÉAÉjÉÁE�EÉVÉáÉìñº
+		*	@return	åüçıåãâ ÁE�êîílÁEî≠å©ÁE��ÁE�ÁE�ÁE�ÁE�ÁE�èÍçáÁE�E: -999
 		*/
 		static int getAIAttackNumber( const std::string& dataString);
 
 		/**
-		*	ÉAÉjÉÅÅ[ÉVÉáÉìñºÇéwÇ∑ï∂éöóÒÇ©ÇÁêîílÇåüçıÇ∑ÇÈ
+		*	ÉAÉjÉÁE�EÉVÉáÉìñºÁE��éwÁE�Eï∂éöóÒÁE�ÁE�E�îílÁE��åüçıÁE�EÁE�E
 		*
 		*	@author	minaka
-		*	@param	dataString å≥ÉAÉjÉÅÅ[ÉVÉáÉìñº
-		*	@return	åüçıåãâ ÇÃêîílÅ@î≠å©Ç≈Ç´Ç»Ç©Ç¡ÇΩèÍçáÇÕ : -999
+		*	@param	dataString å≥ÉAÉjÉÁE�EÉVÉáÉìñº
+		*	@return	åüçıåãâ ÁE�êîílÁEî≠å©ÁE��ÁE�ÁE�ÁE�ÁE�ÁE�èÍçáÁE�E: -999
 		*/
 		static int getAILifeCycleNumber( const std::string& dataString);
 
-		enum _DATA_NUMBER_	// äeÉfÅ[É^ÇÃêî
+		enum _DATA_NUMBER_	// äeÉfÁEÉ^ÁE�êî
 		{
-			BLOCK_LINE_COUNT		= 6,	// 1ÉuÉçÉbÉNÇÃçsêî
+			BLOCK_LINE_COUNT		= 6,	// 1ÉuÉçÉbÉNÁE�çsêî
 
-			TARGET_POS_COUNT		= 3,	// ñ⁄ïWínì_êî
-			WAIT_TO_ATTACK_COUNT	= 3,	// çUåÇëOë“ã@éûä‘êî
-			WAIT_TO_MOVE_COUNT		= 3,	// çUåÇå„ë“ã@éûä‘êî
-			NEXT_ENEMYS_COUNT		= 3,	// éüÇ…èoåªÇ≥ÇπÇÈìGÉfÅ[É^êî
-			AI_MOVE_COUNT			= 2,	// à⁄ìÆÉÇÅ[ÉVÉáÉìêî
-			AI_ATTACK_COUNT			= 3,	// çUåÇÉÇÅ[ÉVÉáÉìêî
+			TARGET_POS_COUNT		= 3,	// ñ⁁E�Wínì_êî
+			WAIT_TO_ATTACK_COUNT	= 3,	// çUåÁE�Oë“ã@éûä‘êî
+			WAIT_TO_MOVE_COUNT		= 3,	// çUåÁE�„ë“ã@éûä‘êî
+			NEXT_ENEMYS_COUNT		= 3,	// éüÁE��èoåªÁE��ÁE�ÁE�ìGÉfÁEÉ^êî
+			AI_MOVE_COUNT			= 2,	// à⁁E�ÁE�ÁE�EÉVÉáÉìêî
+			AI_ATTACK_COUNT			= 3,	// çUåÁE�ÁE�EÉVÉáÉìêî
 		};
 
 		struct EnemyData
 		{
-			// ÉfÅ[É^î‘çÜ
+			// ÉfÁEÉ^î‘çÁE
 			int Num;
 			// èoåªínì_
 			cocos2d::Vec3 startPos;
-			// ë“ã@éûä‘
+			// ë“ã@éûä E
 			int sleepTime;
-			// ñ⁄ïWínì_
+			// ñ⁁E�Wínì_
 			cocos2d::Vec3 targetPos[TARGET_POS_COUNT];
-			// à⁄ìÆå„ÇÃë“ã@éûä‘
+			// à⁁E�ÁE�„ÁE�ë“ã@éûä E
 			int waitToAttack[WAIT_TO_ATTACK_COUNT];
 			// èoåªÉtÉâÉO
 			bool entryFlag;
-			// çUåÇå„ÇÃë“ã@éûä‘
+			// çUåÁE�„ÁE�ë“ã@éûä E
 			int waitToMove[WAIT_TO_MOVE_COUNT];
-			// éüèoåªÇ≥ÇπÇÈìGÇÃî‘çÜ
+			// éüèoåªÁE��ÁE�ÁE�ìGÁE�î‘çÁE
 			int nextEnemies[NEXT_ENEMYS_COUNT];
-			// ìoèÍéûÉÇÅ[ÉVÉáÉìî‘çÜ
+			// ìoèÍéûÉÁE�EÉVÉáÉìî‘çÁE
 			int aiAppear;
-			// à⁄ìÆÉÇÅ[ÉVÉáÉìî‘çÜ
+			// à⁁E�ÁE�ÁE�EÉVÉáÉìî‘çÁE
 			int aiMove[AI_MOVE_COUNT];
-			// çUåÇÉÇÅ[ÉVÉáÉìî‘çÜ
+			// çUåÁE�ÁE�EÉVÉáÉìî‘çÁE
 			int aiAtk[AI_ATTACK_COUNT];
-			// ÉâÉCÉtÉTÉCÉNÉãî‘çÜ
+			// ÉâÉCÉtÉTÉCÉNÉãî‘çÁE
 			int aiLifeCycle;
 		};
-		unsigned int fileLineCount;			// åªç›ÇÃçsî‘çÜ
+		unsigned int fileLineCount;			// åªç›ÁE�çsî‘çÁE
 	};
 }
 

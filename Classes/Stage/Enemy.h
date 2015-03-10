@@ -49,9 +49,9 @@ namespace TapGun
 	//エネミーのライフサイクル
 	enum _ENEMY_LIFE_
 	{
-		AI_LIFE_ONCE = 11,//アクションは一度のみ
-		AI_LIFE_SWITCH = 12,//2点間を移動する
-		AI_LIFE_STOP = 13,//最終地点でとまる
+		AI_LIFE_ONCE,//アクションは一度のみ
+		AI_LIFE_SWITCH,//2点間を移動する
+		AI_LIFE_STOP,//最終地点でとまる
 	};
 
 	class Enemy
