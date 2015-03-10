@@ -47,6 +47,7 @@
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		825E08B31AACE088006962E6 /* Ios_Func.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 825E08AD1AACE088006962E6 /* Ios_Func.cpp */; };
 		827F98391AAD771B00C4C220 /* EnemyData.csv in Resources */ = {isa = PBXBuildFile; fileRef = 827F98381AAD771B00C4C220 /* EnemyData.csv */; };
+		827F983B1AAE80BF00C4C220 /* GameModelsLayerE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827F983A1AAE80BF00C4C220 /* GameModelsLayerE.cpp */; };
 		82B638E71AA68E220039AE63 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82B637E11AA68E220039AE63 /* AppDelegate.cpp */; };
 		82B638E81AA68E220039AE63 /* GameMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82B637E41AA68E220039AE63 /* GameMaster.cpp */; };
 		82B638E91AA68E220039AE63 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82B637E61AA68E220039AE63 /* Player.cpp */; };
@@ -342,6 +343,7 @@
 		825E08AE1AACE088006962E6 /* Ios_Func.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ios_Func.h; sourceTree = "<group>"; };
 		825E08B11AACE088006962E6 /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Platform.h; sourceTree = "<group>"; };
 		827F98381AAD771B00C4C220 /* EnemyData.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnemyData.csv; sourceTree = "<group>"; };
+		827F983A1AAE80BF00C4C220 /* GameModelsLayerE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameModelsLayerE.cpp; sourceTree = "<group>"; };
 		82B637E11AA68E220039AE63 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		82B637E21AA68E220039AE63 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		82B637E41AA68E220039AE63 /* GameMaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMaster.cpp; sourceTree = "<group>"; };
@@ -800,6 +802,7 @@
 				82B637FB1AA68E220039AE63 /* GameClearLayer.h */,
 				82B637FC1AA68E220039AE63 /* GameModelsLayer.cpp */,
 				82B637FD1AA68E220039AE63 /* GameModelsLayer.h */,
+				827F983A1AAE80BF00C4C220 /* GameModelsLayerE.cpp */,
 				82B637FE1AA68E220039AE63 /* GameScene.cpp */,
 				82B637FF1AA68E220039AE63 /* GameScene.h */,
 				82B638001AA68E220039AE63 /* GameUILayer.cpp */,
@@ -1561,6 +1564,7 @@
 				82B638F21AA68E220039AE63 /* GameClearLayer.cpp in Sources */,
 				82B638EB1AA68E220039AE63 /* Sprite3D.cpp in Sources */,
 				82B638EE1AA68E220039AE63 /* Effect.cpp in Sources */,
+				827F983B1AAE80BF00C4C220 /* GameModelsLayerE.cpp in Sources */,
 				82B638E81AA68E220039AE63 /* GameMaster.cpp in Sources */,
 				82B638F81AA68E220039AE63 /* Enemy.cpp in Sources */,
 				82B638F51AA68E220039AE63 /* GameUILayer.cpp in Sources */,
