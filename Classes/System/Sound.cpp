@@ -11,7 +11,7 @@ using namespace TapGun;
 using namespace CocosDenshion;
 
 Sound::Sound()
-{	
+{
 }
 
 Sound* Sound::getInstance( void)
@@ -84,12 +84,12 @@ void Sound::pauseBGM( void)
 	SimpleAudioEngine::getInstance() -> pauseBackgroundMusic();
 }
 
-int Sound::resumeBGM( void)
+void Sound::resumeBGM( void)
 {
 	SimpleAudioEngine::getInstance() -> resumeBackgroundMusic();
 }
 
-int Sound::restartBGM( void)
+void Sound::restartBGM( void)
 {
 	SimpleAudioEngine::sharedEngine() -> rewindBackgroundMusic();
 }
