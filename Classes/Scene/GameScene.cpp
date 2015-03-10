@@ -100,7 +100,7 @@ bool GameScene::init()
 
 	GameMasterS->loopTime = 16;
 	//
-	GameMasterS->reticleAjust = 0.1f;//
+	GameMasterS->reticleAjust = 0.2f;//
 
 	GameMasterS->SetGameState(GSTATE_CREATE);
 

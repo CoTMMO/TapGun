@@ -2,198 +2,584 @@
 #include "GameUILayer.h"
 
 #include "Base/GameMaster.h"
-#include "Base/UI.h"
-
+#include "System/Sound.h"
 
 USING_NS_CC;
 using namespace TapGun;
 
-GameMaster* GameMasterL;//å¤‰æ•°åã¯ä»Šå¾Œè€ƒæ…®ã™ã‚‹
-
-
 /**
-*	ã‚²ãƒ¼ãƒ æœ¬ç·¨ã®UIãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’åˆæœŸåŒ–
-*
-*	@author	sasebon
-*	@param	ãªã—
-*	@return	åˆæœŸåŒ–æˆåŠŸï¼ä¸å¯ã®boolå€¤
-*	@date	1/8 Ver 1.0
-*/
+ *	ƒQ[ƒ€–{•Ò‚ÌUIƒŒƒCƒ„[‚ğ‰Šú‰»
+ *
+ *	@author	minaka
+ *	@param	‚È‚µ
+ *	@return	‰Šú‰»¬Œ÷ true ¸”s false
+ */
 bool GameUILayer::init()
 {
-	if(!Layer::init())
-	{
-		return false;
-	}
-	GameMasterL = GameMaster::GetInstance();//ã‚²ãƒ¼ãƒ ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
+	if( !Layer::init()) { return false; }
+	initHPGauge();
 	return true;
 }
 
-
 /**
-*	ã‚²ãƒ¼ãƒ æœ¬ç·¨ã®UIãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å„ç¨®æ•°å€¤åˆæœŸåŒ–
-*
-*	@author	sasebon
-*	@param	ãªã—
-*	@return	åˆæœŸåŒ–æˆåŠŸï¼ä¸å¯ã®boolå€¤
-*	@date	1/8 Ver 1.0
-*/
-void GameUILayer::InitLayer(void)
+ *	ŠeíUI‚ğ‰Šú‰»
+ *
+ *	@author	minaka
+ *	@param	‚È‚µ
+ *	@return	‚È‚µ
+ */
+void GameUILayer::InitLayer( void)
 {
-	InitAllUI();
-//	SetUI();
-	GameUI::getInstance() -> init( this);
+
+//	initBulletCounter();
+	initOtherUI();
 }
 
-
 /**
-*	ã‚²ãƒ¼ãƒ æœ¬ç·¨ã®UIãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å„ç¨®æ•°å€¤åˆæœŸåŒ–
-*
-*	@author	sasebon
-*	@param	ãªã—
-*	@return	åˆæœŸåŒ–æˆåŠŸï¼ä¸å¯ã®boolå€¤
-*	@date	1/8 Ver 1.0
-*/
-int GameUILayer::SerchFreeUI()
-{
-	for (int i = 0; i < MAX_UI; i++)
-	{
-		if (FALSE == Ui[i].valid)
-		{
-			return i;
-		}
-	}
-	return -1;//å…¨ã¦ã®UISpriteãŒä½¿ç”¨ã•ã‚Œã¦ã„ãŸã‚‰-1ã‚’è¿”ã™
-}
-
-
-/**
-*	UIã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ç”Ÿæˆ
-*
-*	@author	sasebon
-*	@param	ãªã—
-*	@return	ãªã—
-*	@date	2/5 Ver 1.0
-*/
-//void GameUILayer::LoadUISprite()
-//{
-//	std::string fileName1;
-//
-//	//ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ç”Ÿæˆ
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-//	fileName1 = "reticle.png";
-//#else
-//	fileName1 = "Graph/Pictures/reticle.png";
-//#endif
-////	UIBillBoard[UIKIND_RETICLE] = cocos2d::BillBoard::createWithTexture(
-////		Sprite::createWithSpriteFrameName( "reticle_idle.png") -> getTexture(), BillBoard::Mode::VIEW_PLANE_ORIENTED);
-//}
-
-
-/**
-*	UIã®é…ç½®
-*
-*	@author	sasebon
-*	@param	ãªã—
-*	@return	ãªã—
-*	@date	1/8 Ver 1.0
-*/
-//void GameUILayer::SetUI()
-//{
-//	auto s = Director::getInstance()->getWinSize();//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚ºã‚’å–å¾—
-//}
-
-
-
-
-/**
-*	UIç³»ã®æ•°å€¤åˆæœŸåŒ–
-*
-*	@author	sasebon
-*	@param	ãªã—
-*	@return	ãªã—
-*	@date	1/8 Ver 1.0
-*/
-void GameUILayer::InitAllUI()
-{
-	for(int i = 0; i < MAX_UI; i++)
-	{
-		Ui[i].Init();
-	}
-}
-
-
-
-/**
-*	UIã®æ›´æ–°
-*
-*	@author	sasebon
-*	@param	ãªã—
-*	@return	ãªã—
-*	@date	1/20 Ver 1.0
-*/
+ *	UI‚ÌXV
+ *
+ *	@author	minaka
+ *	@param	‚È‚µ
+ *	@return	‚È‚µ
+ */
 void GameUILayer::UpdateLayer( void)
 {
-	GameUILayer::MoveReticle();
-	GameUI::getInstance() -> update();
+	auto master = GameMaster::GetInstance();
+
+	setLogo();
+//	setHP( master -> GetPlayerHP());
+//	setGameTime( master -> GetGameTime());
+//	setBulletCount( master -> GetPlayerBullets());
+	setReticlePoint();
+}
+
+/**
+*	ŠeƒƒS‚Ì•\¦ˆ—
+*
+*	@author	minaka
+*	@param	‚È‚µ
+*	@return	‚È‚µ
+*	@date	2/26 Ver 1.0
+*/
+void GameUILayer::setLogo( void)
+{
+	auto master = GameMaster::GetInstance();
+	static bool waitFlag = false;
+	static int waitTime = 0;
+
+	auto sound = Sound::getInstance();
+	static bool bgmFlag = false;
+
+	if( master -> GetGameState() == GSTATE_WAIT)
+	{
+		logo[ReloadLogo] -> setVisible( false);
+		if( bgmFlag == false && waitTime == 70)
+		{
+			// “K“–‚É‘Ò‚Á‚Ä‚©‚çBGM‚ğÄ¶
+			sound -> playBGMLoop();
+			bgmFlag = true;
+		}
+		if( waitTime % 30 == 0 || waitTime == 0)
+		{
+			waitFlag = !waitFlag;
+			logo[WaitLogo] -> setVisible( waitFlag);
+		}
+		escape[0] -> setOpacity( 25);
+		escape[1] -> setOpacity( 25);
+		waitTime++;
+	}
+	else if( master -> GetGameState() == GSTATE_PLAY_SET)
+	{
+		waitFlag = false;
+		logo[WaitLogo] -> setVisible( false);
+	}
+	else if( master -> GetGameState() == GSTATE_PLAY_ACTION)
+	{
+		logo[ActionLogo] -> setVisible( true);
+		if( master -> playerSide == PSIDE_LEFT)
+		{
+			escape[0] -> setOpacity( 255);
+		}
+		else
+		{
+			escape[1] -> setOpacity( 255);
+		}
+	}
+	else if( master -> GetGameState() == GSTATE_PLAY)
+	{
+		logo[ActionLogo] -> setVisible( false);
+	}
+	else if(master->GetGameState() == GSTATE_CLEAR)
+	{
+		logo[WaitLogo]->setVisible(false);
+	}
+
+	//’Ç‰ÁFƒEƒF[ƒu’†‚©‚Âc’eØ‚ê‚Ì‚Ì‚İƒŠƒ[ƒhUI‚ğ•\¦
+	if(master->GetGameState() == GSTATE_PLAY && master->GetPlayerBullets() == 0)
+	{
+		logo[ReloadLogo] -> setVisible( true);
+	}
+	else
+	{
+		logo[ReloadLogo] -> setVisible( false);
+	}
+}
+
+/**
+*	HPƒQ[ƒW‚ÌXVˆ—
+*
+*	@author	minaka
+*	@param	‚È‚µ
+*	@return	‚È‚µ
+*	@date	2/26 Ver 1.0
+*/
+void GameUILayer::setHP( int count)
+{
+	for( int i = 0; i < 6; i++)
+	{
+		hp[i + 2] -> setVisible( false);
+	}
+	for( int i = count; i > 0; i--)
+	{
+		hp[i + 1] -> setVisible( true);
+	}
+}
+
+/**
+*	HPƒQ[ƒW“à‚Ìƒ^ƒCƒ}[XVˆ—
+*
+*	@author	minaka
+*	@param	‚È‚µ
+*	@return	‚È‚µ
+*	@date	2/26 Ver 1.0
+*/
+void GameUILayer::setGameTime( float time)
+{
+	auto master = GameMaster::GetInstance();
+
+	// 1/100•b‚Ì§Œäƒtƒ‰ƒO
+	static bool timeFlag = false;
+	// 1/10•bˆÈ‰º‚Ì§ŒäƒJƒEƒ“ƒ^
+	static int frame = 0;
+
+	int timer = time * 0.001f;
+	int count100 = timer / 100;
+	int count10 = ((int)timer % 100);
+	int count1 = count10 - ((count10 / 10) * 10);
+	static int count01 = 0;
+	static int count001 = 0;
+
+	for( int i = 0; i < 10; i++)
+	{
+		if( timer / 100 == i) { continue; }
+		timeNumber[0][i] -> setVisible( false);
+	}
+	timeNumber[0][(int)timer / 100] -> setVisible( true);
+
+	for( int i = 0; i < 10; i++)
+	{
+		if( count10 / 10 == i) { continue; }
+		timeNumber[1][i] -> setVisible( false);
+	}
+	timeNumber[1][count10 / 10] -> setVisible( true);
+
+	for( int i = 0; i < 10; i++)
+	{
+		if( count1 / 10 == i) { continue; }
+		timeNumber[2][i] -> setVisible( false);
+	}
+	timeNumber[2][count1] -> setVisible( true);
+
+	if( master -> GetGameState() == GSTATE_PLAY)
+	{
+		if( frame % 6 == 0)
+		{
+			for( int i = 0; i < 10; i++)
+			{
+				if( count01 / 10 == i) { continue; }
+				timeNumber[3][i] -> setVisible( false);
+			}
+			timeNumber[3][count01] -> setVisible( true);
+			if( count01 == 0) { count01 = 10; }
+			count01--;
+		}
+		if( timeFlag)
+		{
+			for( int i = 0; i < 10; i++)
+			{
+				if( count001 / 10 == i) { continue; }
+				timeNumber[4][i] -> setVisible( false);
+			}
+			timeNumber[4][count001] -> setVisible( true);
+			if( count001 == 1) { count001 = 10; timeFlag = !timeFlag; }
+			count001 -= 2;
+		}
+		else
+		{
+			for( int i = 0; i < 10; i++)
+			{
+				if( count001 / 10 == i) { continue; }
+				timeNumber[4][i] -> setVisible( false);
+			}
+			timeNumber[4][count001] -> setVisible( true);
+			if( count001 == 0) { count001 = 11; timeFlag = !timeFlag; }
+			count001 -= 2;
+		}
+		frame++;
+	}
+	else if(master->GetGameState() == GSTATE_TIMEOVER)//’Ç‰Á
+	{
+		//ƒ^ƒCƒ€ƒI[ƒo[‚ÍƒRƒ“ƒ}ˆÈ‰º‚Ì”š‚ğ0‚É‚·‚é
+		for(int i = 0; i < 10; i++)
+		{
+			if(count01 / 10 == i) { continue; }
+			timeNumber[3][i]->setVisible(false);
+		}
+		timeNumber[3][0]->setVisible(true);
+
+		for(int i = 0; i < 10; i++)
+		{
+			if(count001 / 10 == i) { continue; }
+			timeNumber[4][i]->setVisible(false);
+		}
+		timeNumber[4][0]->setVisible(true);
+	}
+}
+
+/**
+*	c’e”’l‚ÌXVˆ—
+*
+*	@author	minaka
+*	@param	‚È‚µ
+*	@return	‚È‚µ
+*	@date	2/26 Ver 1.0
+*/
+void GameUILayer::setBulletCount( int count)
+{
+	int Bcount = count - ((count / 10) * 10);
+
+	for( int i = 0; i < 10; i++)
+	{
+		if( count / 10 == i) { continue; }
+		bulletNumber[0][i] -> setVisible( false);
+	}
+	bulletNumber[0][count / 10] -> setVisible( true);
+
+	for( int i = 0; i < 10; i++)
+	{
+		if( Bcount == i) { continue; }
+		bulletNumber[1][i] -> setVisible( false);
+	}
+	bulletNumber[1][Bcount] -> setVisible( true);
+}
+
+
+void GameUILayer::initHPGauge( void)
+{
+	// HPƒQ[ƒW‚Ìe‚Æ‚È‚éƒm[ƒh‚ğì¬
+	hpParent = Node::create();
+	// HPƒQ[ƒW‚Ì˜g‚ğ“Ç‚İ‚İ
+	hp[HPFrame] = Sprite::createWithSpriteFrameName( "HPFrame.png");
+	// HPƒQ[ƒW‚Ì”wŒi‚ğ“Ç‚İ‚İ
+	hp[HPBG] = Sprite::createWithSpriteFrameName( "HPGaugeBG.png");
+
+	// ƒQ[ƒW–{‘Ì•”•ª‚ğ“Ç‚İ‚İ”z—ñ‚ÉŠ„‚è“–‚Ä
+	for( int i = 2, k = HPGaugeCount; i < HPGaugeCount; i++, k--)
+	{
+		// ƒtƒ@ƒCƒ‹–¼—pƒoƒbƒtƒ@
+		char buf[64];
+		// ƒtƒ@ƒCƒ‹–¼‚ğ¶¬
+		sprintf( buf, "HPGauge_%02d.png", i - 1);
+		// ”z—ñ‚ÌÅŒã‚Ì—v‘f‚©‚ç‡”Ô‚É‰æ‘œƒf[ƒ^‚ğ•Û‘¶@(Œã‚Ì‘Œ¸‚Ìˆ—ŠÈ—ª‰»‚Ì‚½‚ß)
+		hp[k - 1] = Sprite::createWithSpriteFrameName( buf);
+	}
+
+	// ‘S‚Ä‚Ì‰æ‘œƒf[ƒ^‚ÉƒAƒNƒZƒX
+	for( auto &p : hp)
+	{
+		// •`‰æˆÊ’uİ’è
+		p -> setPosition( Vec2( HPPositionX, HPPositionY));
+		// •\¦ƒTƒCƒY‚ğİ’è
+		p -> setScale( 0.8);
+
+		p -> retain();
+		// eƒm[ƒh‚ÉÚ‘±
+		hpParent -> addChild( p, 2);
+	}
+
+	hpParent -> retain();
+
+	// eƒm[ƒh‚ğƒŒƒCƒ„[‚ÉÚ‘±
+	addChild( hpParent);
+
+	// ƒQ[ƒW“à‚Ìƒ^ƒCƒ}[‚Ìe‚Æ‚È‚éƒm[ƒh‚ğì¬
+//	timeParent = Node::create();
+
+	// •`‰æ‚·‚é”š•ª‰Šú‰»
+	for( int i = 0; i < TimeCount; i++)
+	{
+		// 0 ~ 9‚Ü‚Å‚Ì”’l‚ğ‰Šú‰»
+		for( int k = 0; k < 10; k++)
+		{
+			// ƒtƒ@ƒCƒ‹–¼—pƒoƒbƒtƒ@
+			char buf[64];
+			// ƒtƒ@ƒCƒ‹–¼‚ğ¶¬
+			sprintf( buf, "%d.png", k);
+			// Œ…”‚²‚Æ‚É0 ~ 9‚Ü‚Å‚ÌƒXƒvƒ‰ƒCƒg‚ğ¶¬
+			timeNumber[i][k] = Sprite::createWithSpriteFrameName( buf);
+			// •\¦‚·‚éƒTƒCƒY‚ğİ’è
+			timeNumber[i][k] -> setScale( 0.16f);
+			// Å‰‚Í‘S‚Ä”ñ•\¦‚É
+			timeNumber[i][k] -> setVisible( false);
+
+			timeNumber[i][k] -> retain();
+			// ƒ^ƒCƒ}[‚Ìe‚ÉÚ‘±
+			
+			addChild( timeNumber[i][k]);
+		}
+	}
+
+//	timeParent -> retain();
+
+	// eƒm[ƒh‚ğƒŒƒCƒ„[‚ÉÚ‘±
+//	addChild( timeParent);
+}
+
+void GameUILayer::initBulletCounter( void)
+{
+	// c’eƒAƒCƒRƒ“‚Ìe‚Æ‚È‚éƒm[ƒh‚ğ¶¬
+	bulletParent = Node::create();
+	// c’eƒAƒCƒRƒ“‚ğ“Ç‚İ‚İ
+	bullet = Sprite::createWithSpriteFrameName( "BulletFrame.png");
+	// •\¦ˆÊ’u‚ğİ’è
+	bullet -> setPosition( Vec2( BulletFrameX, BulletFrameY));
+	// •\¦ƒTƒCƒY‚ğİ’è
+	bullet -> setScale( 0.15f);
+	// eƒm[ƒh‚ÉÚ‘±
+	bulletParent -> addChild( bullet, 1);
+
+	// •`‰æ‚·‚é”š•ª‰Šú‰»
+	for( int i = 0; i < BulletCount; i++)
+	{
+		// 0 ~ 9‚Ü‚Å‚Ì”’l‚ğ‰Šú‰»
+		for( int k = 0; k < 10; k++)
+		{
+			// ƒtƒ@ƒCƒ‹–¼—pƒoƒbƒtƒ@
+			char buf[64];
+			// ƒtƒ@ƒCƒ‹–¼‚ğ¶¬
+			sprintf( buf, "%d_.png", k);
+			// Œ…”‚²‚Æ‚É0 ~ 9‚Ü‚Å‚ÌƒXƒvƒ‰ƒCƒg‚ğ¶¬
+			bulletNumber[i][k] = Sprite::createWithSpriteFrameName( buf);
+			// •\¦‚·‚éƒTƒCƒY‚ğİ’è
+			bulletNumber[i][k] -> setScale( 0.15f);
+			// Å‰‚Í‘S‚Ä”ñ•\¦‚É
+			bulletNumber[i][k] -> setVisible( false);
+			// c’eƒAƒCƒRƒ“‚Ìeƒm[ƒh‚ÉÚ‘±
+			bulletParent -> addChild( bulletNumber[i][k], 3);
+		}
+	}
+
+	// 0 ~ 9‚Ü‚Å‚Ì”’l•ª‚Ìİ’è
+	for( int i = 0; i < 10; i++)
+	{
+		bulletNumber[0][i] -> setPosition( Vec2( 580, 55));
+		bulletNumber[1][i] -> setPosition( Vec2( 615, 55));
+
+		// ˆÈ‰º‚Íƒ}ƒKƒWƒ“‚Ì‘•’e”—p‚Ì‚½‚ß¬‚³‚­•\¦‚·‚é‚æ‚¤‚Éİ’è
+		bulletNumber[2][i] -> setScale( 0.12f);
+		bulletNumber[2][i] -> setPosition( Vec2( 670, 50));
+		bulletNumber[3][i] -> setScale( 0.12f);
+		bulletNumber[3][i] -> setPosition( Vec2( 700, 50));
+	}
+
+	// ‰Šúİ’è‚Ì‘•’e”‚Í 30 ‚È‚Ì‚Å 3 ‚Æ 0 ‚Ì‚İ•\¦
+	bulletNumber[2][3] -> setVisible( true);
+	bulletNumber[3][0] -> setVisible( true);
+
+	bulletParent -> retain();
+
+	// eƒm[ƒh‚ğƒŒƒCƒ„[‚ÉÚ‘±
+	addChild( bulletParent);
+}
+
+
+void GameUILayer::initOtherUI( void)
+{
+	// ‰æ–ÊƒTƒCƒY‚ğæ“¾
+	auto visibleSize = Director::getInstance() -> getVisibleSize();
+
+	// ‰ñ”ğƒAƒCƒRƒ“‚ğ‰Šú‰»
+	for( int i = 0; i < EscapeCount; i++)
+	{
+		// ƒXƒvƒ‰ƒCƒg‚ğ¶¬
+		escape[i] = Sprite::createWithSpriteFrameName( "escape.png");
+		// •\¦ƒTƒCƒY‚ğ•ÏX
+		escape[i] -> setScale( 0.4f);
+		// ƒŒƒCƒ„[‚ÉÚ‘±
+		addChild( escape[i]);
+	}
+	// ‰ñ”ğƒAƒCƒRƒ“‚Ì•\¦ˆÊ’uİ’è (¶ƒAƒCƒRƒ“)
+	escape[EscapeLeft] -> setPosition( Vec2( 130, 130));
+	// ‰ñ”ğƒAƒCƒRƒ“‚Ì•\¦ˆÊ’uİ’è (‰EƒAƒCƒRƒ“)
+	escape[EscapeRight] -> setPosition( Vec2( 1150, 130));
+	// ‰E‘¤‚ÌƒAƒCƒRƒ“—p‚É¶‰E”½“]ƒAƒNƒVƒ‡ƒ“‚ğ¶¬
+	auto flip = FlipX::create(true);
+	// ‰E‘¤‚ÌƒAƒCƒRƒ“‚Ì‚İ¶‰E”½“]
+	escape[EscapeRight] -> runAction(flip);
+
+	// d—l•ÏX‚Ì‚½‚ßƒJƒbƒg
+/*	pause = Sprite::create();
+
+	for( int i = 0; i < EnemyAttackCount; i++)
+	{
+		for( int k = 0; k < 3; k++)
+		{
+			char buf[64];
+			sprintf( buf, "enemy_attack_%02d.png", k + 1);
+			enemyAttack[i][k] = Sprite::createWithSpriteFrameName( buf);
+			enemyAttack[i][k] -> setVisible( false);
+			addChild( enemyAttack[i][k]);
+		}
+	}
+
+	for( int i = 0; i < DeleteCount; i++)
+	{
+		deleteLogo[i] = Sprite::createWithSpriteFrameName( "derete.png");
+		deleteLogo[i] -> setVisible( false);
+		addChild( deleteLogo[i]);
+	}
+*/
+
+	// ƒQ[ƒ€“à‚Åg—p‚·‚éƒƒS‚ğ¶¬
+	logo[ActionLogo] = Sprite::createWithSpriteFrameName( "action.png");
+	logo[WaitLogo] = Sprite::createWithSpriteFrameName( "wait.png");
+	logo[ReloadLogo] = Sprite::createWithSpriteFrameName( "rerode.png");
+
+	// ŠeƒƒS‚Ì‰Šú‰»
+	for( auto &p : logo)
+	{
+		// •\¦ˆÊ’u‚ğİ’è
+		p -> setPosition( 1280 / 2, 250);
+		// •\¦ƒTƒCƒY‚ğİ’è
+		p -> setScale( 0.3f);
+		// ”ñ•\¦ó‘Ô‚Éİ’è
+		p -> setVisible( false);
+		// ƒŒƒCƒ„[‚ÉÚ‘±
+		addChild( p);
+	}
+
+	// ƒŒƒeƒBƒNƒ‹‚Ì§Œäƒtƒ‰ƒO‚ğ‰Šú‰»
+	// ƒEƒF[ƒu“à‚Å‚Ì‰ËŒ‚ŠÇ—ƒtƒ‰ƒO
+	firstShotFlag = false;
+	// ”ñËŒ‚ó‘Ô‚©‚ç‚Ì•œ‹Aƒtƒ‰ƒO
+	returnEscapeFlag = false;
+	// •œ‹AŒã‚Ì‰ËŒ‚ŠÇ—ƒtƒ‰ƒO
+	returnEscapeNoShotFlag = false;
+
+	// ƒAƒCƒhƒ‹ó‘ÔƒŒƒeƒBƒNƒ‹‚ğ“Ç‚İ‚İ
+	reticle[ReticleIdle] = Sprite::createWithSpriteFrameName( "reticle_idle.png");
+	// ËŒ‚ó‘ÔƒŒƒeƒBƒNƒ‹‚ğ“Ç‚İ‚İ
+	reticle[ReticleShot] = Sprite::createWithSpriteFrameName( "reticle_shot.png");
+	// ƒAƒCƒhƒ‹ó‘Ô‚Ì“§–¾“x‚ğİ’è (–ñ20%)
+	reticle[ReticleIdle] -> setOpacity( 50);
+
+	// ŠeƒŒƒeƒBƒNƒ‹‚Ì‰Šú‰»
+	for( auto &p : reticle)
+	{
+		// •\¦ˆÊ’u‚Ìİ’è
+		p -> setPosition( Vec2( visibleSize.width / 2, visibleSize.height / 2));
+		// •\¦ƒTƒCƒY‚Ìİ’è
+		p -> setScale( 0.5f);
+		// ”ñ•\¦ó‘Ô‚Éİ’è
+		p -> setVisible( false);
+		// ƒŒƒCƒ„[‚ÉÚ‘±
+		addChild( p);
+	}
 }
 
 
 
-/**
-*	ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ç§»å‹•
-*
-*	@author	sasebon
-*	@param	ãªã—
-*	@return	ãªã—
-*	@date	1/8 Ver 1.0
-*/
-void GameUILayer::MoveReticle(void)
+void GameUILayer::setReticlePoint( void)
 {
-	static bool flag = false;
-	if (TRUE == valid[UIKIND_RETICLE])//åˆæœŸåŒ–ãƒã‚§ãƒƒã‚¯ã¯ä¸è¦ãªã‚‰ã°æ¶ˆã™
+	// ƒ^ƒbƒ`‚³‚ê‚½À•W‚ğ•Û‘¶
+	static Vec2 pos;
+	// ‰æ–ÊƒTƒCƒY‚ğæ“¾
+	auto visibleSize = Director::getInstance() -> getVisibleSize();
+	// ƒQ[ƒ€ƒ}ƒXƒ^[‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
+	auto master = GameMaster::GetInstance();
+
+	// ƒEƒF[ƒu’†ˆÈŠO‚ÍƒŒƒeƒBƒNƒ‹”ñ•\¦
+	if( master -> GetGameState() != GSTATE_PLAY && master -> GetGameState() != GSTATE_PLAY_ACTION)
 	{
-		if (flag == false)
-		{
-			GameUI::getInstance()->init(this);
-			flag = true;
-		}
+		// ‘S‚Ä”ñ•\¦ó‘Ô‚Éİ’è
+		for( auto &p : reticle) { p -> setVisible( false); }
+		// ˆ—I—¹
+		return;
+	}
 
-		Vec2 tPos;
-		auto size = Director::getInstance()->getWinSize();//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã‚’å–å¾—
-		//ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®æŒ™å‹•
-		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹ã‚’å–å¾—ã—ã¦å ´åˆåˆ†ã‘
-		switch (GameMasterL->GetPlayerState())
-		{
-		case PSTATE_SHOT://æ”»æ’ƒä¸­ã¯ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã‚’ç§»å‹•ã•ã›ã‚‹
+	// ‰æ–Ê‚ğƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚é‚©‰æ–Êã‚ğ‚È‚¼‚Á‚Ä‚¢‚éê‡
+	if( master -> GetTouchState() == TSTATE_ON || master -> GetTouchState() == TSTATE_MOVE)
+	{
+		// ‰ËŒ‚ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+		firstShotFlag = true;
+		// ƒ^ƒbƒ`À•W‚ğƒ[ƒJƒ‹‚É•Û‘¶
+		pos = master -> GetTouchPos();
+	}
 
-			tPos = GameMasterL->GetTouchPos();//ã‚¿ãƒƒãƒåº§æ¨™ã‚’å–å¾—
-			tPos.y += size.height * GameMasterL->reticleAjust;//
-			if (tPos.y >= size.height)
+	// ƒvƒŒƒCƒ„[‚ªËŒ‚’†‚Ü‚½‚ÍƒAƒCƒhƒ‹ó‘Ô‚Å‚ ‚éA1“x‚Å‚àËŒ‚‚µ‚Ä‚¢‚½ê‡ƒŒƒeƒBƒNƒ‹‚ğËŒ‚ó‘Ô‚É•ÏX
+	if( ( master -> GetPlayerState() == PSTATE_SHOT || master -> GetPlayerState() == PSTATE_IDLE)
+	 	&& firstShotFlag)// && !returnEscapeFlag)
+	{
+		// ‰ñ”ğó‘Ô‚©‚ç‚Ì•œ‹A‰ËŒ‚‘O
+		if( returnEscapeNoShotFlag)
+		{
+			// •\¦ƒŒƒeƒBƒNƒ‹‚ğƒAƒCƒhƒ‹ó‘Ô‚É•ÏX
+			reticle[ReticleShot] -> setVisible( false);
+			reticle[ReticleIdle] -> setVisible( true);
+			// ‰æ–Ê‚ğƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚é‚©‰æ–Êã‚ğ‚È‚¼‚Á‚Ä‚¢‚éê‡
+			if( master -> GetTouchState() == TSTATE_ON || master -> GetTouchState() == TSTATE_MOVE)
 			{
-				tPos.y = size.height;
+				// •œ‹AŒãËŒ‚‘Oƒtƒ‰ƒO‚ğ“|‚·
+				returnEscapeNoShotFlag = false;
 			}
+		}
+		else
+		{
+			// ËŒ‚’†‚Ìê‡
 
-			UIBillBoard[UIKIND_RETICLE]->setPosition(tPos);
+			// •\¦ƒŒƒeƒBƒNƒ‹‚ğƒVƒ‡ƒbƒgó‘Ô‚É•ÏX
+			reticle[ReticleIdle] -> setVisible( false);
+			reticle[ReticleShot] -> setVisible( true);
 
-			break;
-		case PSTATE_IDLE://ã‚¢ã‚¤ãƒ‰ãƒ«çŠ¶æ…‹
+			// ƒŒƒeƒBƒNƒ‹•\¦ˆÊ’u‚ğƒ^ƒbƒ`ˆÊ’u‚Ìã‚Éİ’è
+			reticle[ReticleShot] -> setPosition( pos.x, pos.y + visibleSize.height * master -> reticleAjust);
 
-			UIBillBoard[UIKIND_RETICLE]->setVisible(true);
-			break;
-		case PSTATE_HIDE://éš ã‚Œã¦ã„ã‚‹a
-		case PSTATE_APPEAR://éš ã‚ŒãŸçŠ¶æ…‹ã‹ã‚‰å‡ºã‚‹
-		case PSTATE_DAMAGED://ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸ
-			break;
-		case PSTATE_RUN://èµ°ã£ã¦ã„ã‚‹ï¼ˆWaitæ™‚ï¼‰
-			UIBillBoard[UIKIND_RETICLE]->setVisible(false);
+			// ƒŒƒeƒBƒNƒ‹‚ª‰æ–ÊŠO‚Öo‚éê‡
+			if( reticle[ReticleShot] -> getPositionY() > visibleSize.height)
+			{
+				// ‰æ–Ê“à‚É•\¦‚³‚ê‚é‚æ‚¤‚É•â³
+				reticle[ReticleShot] -> setPositionY( reticle[ReticleShot] -> getPositionY()
+				 								- ( reticle[ReticleShot] -> getPositionY() - visibleSize.height));
+			}
+		}
+	}
+	else
+	{
+		// •\¦ƒŒƒeƒBƒNƒ‹‚ğƒAƒCƒhƒ‹ó‘Ô‚É•ÏX
+		reticle[ReticleShot] -> setVisible( false);
+		reticle[ReticleIdle] -> setVisible( true);
 
-			break;
-		case PSTATE_DEAD://æ­»äº¡
-			//ã‚¦ã‚§ã‚¤ãƒˆæ™‚ã¨æ­»äº¡æ™‚ã¯GSTATE_PLAYã§ã¯ãªã„ã®ã§ã€ä»–ã®ã‚¹ãƒ†ãƒ¼ãƒˆæ™‚ã¯ä¸€æ‹¬ã§UIã®éè¡¨ç¤ºã‚’ç®¡ç†ã—ãŸæ–¹ãŒã‚ˆã„
-			//ç¾åœ¨ã¯ã“ã“ã«ã‚‚è¨˜è¿°ã—ã¦ãŠã
-			UIBillBoard[UIKIND_RETICLE]->setVisible(false);
-			break;
+		// ‰æ–Ê‚ªƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚È‚­‚Ä
+		if( master -> GetTouchState() == TSTATE_OFF)// && returnEscapeFlag)
+		{
+		//	returnEscapeFlag = false;
+			firstShotFlag = true;
+			returnEscapeNoShotFlag = true;
+			pos = Vec2( visibleSize.width / 2, visibleSize.height / 2 - visibleSize.height * master -> reticleAjust);
+		}
+		else
+		{
+		//	returnEscapeFlag = true;
 		}
 	}
 }

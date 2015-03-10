@@ -138,6 +138,9 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 point, EffectType effectT
 	// 作成したシーケンスの実行
 	effect -> billboard -> runAction( sequence);
 
+	// 拡大率を2倍に設定
+	effect -> billboard -> setScale( 20.0f);
+
 	// 表示位置を設定 引数に応じて変更
 	if( point == NULL_VECTOR) { effect -> billboard -> setPosition3D( Vec3( 0.1, 1.5, 0.5)); }
 	else { effect -> billboard -> setPosition3D( point); }

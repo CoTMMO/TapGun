@@ -175,7 +175,7 @@ void TitleScene::setSprite( void)
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
 	// ファイルパス制御クラスのインスタンスを取得
 	auto access = FileAccess::getInstance();
-	
+
 	teamLogo = Sprite::create( access -> getPicturePath( "ty.png"));
 	teamLogo -> setPosition( Vec2( visibleSize.width / 2, visibleSize.height / 2));
 	teamLogo -> setOpacity( 0);
@@ -195,14 +195,6 @@ void TitleScene::setSprite( void)
 	sprite[Menu] -> setVisible( false);
 }
 
-/**
-*	タイトルシーン用のメニューの作成
-*
-*	@author	minaka
-*	@param	なし
-*	@return なし
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::setMenu( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
@@ -226,14 +218,6 @@ void TitleScene::setMenu( void)
 	addChild( menu[Credit]);
 }
 
-/**
-*	メニューの移動処理
-*
-*	@author	minaka
-*	@param	なし
-*	@return なし
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::menuAction( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
@@ -247,14 +231,6 @@ void TitleScene::menuAction( void)
 	}
 }
 
-/**
-*	GameStartのコールバック関数
-*
-*	@author	minaka
-*	@param	cocos依存なので省略
-*	@return なし
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::menuStartCallback( Ref* pSender)
 {
 	if( !menuActionFlag) { return; }
@@ -267,14 +243,6 @@ void TitleScene::menuStartCallback( Ref* pSender)
 	Director::getInstance() -> replaceScene( tran);
 }
 
-/**
-*	GameEndのコールバック関数
-*
-*	@author	minaka
-*	@param	cocos依存なので省略
-*	@return なし
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::menuEndCallback( Ref* pSender)
 {
 	if( !menuActionFlag) { return; }
@@ -287,14 +255,6 @@ void TitleScene::menuEndCallback( Ref* pSender)
 #endif
 }
 
-/**
-*	クレジットのコールバック関数
-*
-*	@author	minaka
-*	@param	cocos依存なので省略
-*	@return なし
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::menuCreditCallback( Ref* pSender)
 {
 	if( !menuActionFlag) { return; }
@@ -306,14 +266,6 @@ void TitleScene::menuCreditCallback( Ref* pSender)
 	Director::getInstance() -> replaceScene( tran);
 }
 
-/**
-*	各種画像データの読み込み
-*
-*	@author	minaka
-*	@param	cocos依存なので省略
-*	@return なし
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::loadPicture( void)
 {
 	static bool loadFlag = false;
@@ -339,14 +291,6 @@ void TitleScene::loadPicture( void)
 	loadFlag = true;
 }
 
-/**
-*	各種モデルデータの読み込み
-*
-*	@author	minaka
-*	@param	cocos依存なので省略
-*	@return なし
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::loadModels( void)
 {
 	// リソースファイル読み込みフレームの制御カウンタ
@@ -375,14 +319,6 @@ void TitleScene::loadModels( void)
 	frame++;
 }
 
-/**
-*	各種サウンドデータの読み込み
-*
-*	@author	minaka
-*	@param	cocos依存なので省略
-*	@return なし
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::loadSound( void)
 {
 	auto sound = Sound::getInstance();
@@ -395,7 +331,6 @@ void TitleScene::loadSound( void)
 	sound -> loadSE( "Gun/Reload");
 }
 
-// 以下フラグ制御関数
 template<class P> bool TitleScene::checkFlag( P* flag, const P number) { return ( ( *flag & number) != 0); }
 template<class P> void TitleScene::setFlag( P* flag, const P number) { *flag |= number; }
 template<class P> void TitleScene::resetFlag( P* flag, const P number) { *flag &= ~number; }

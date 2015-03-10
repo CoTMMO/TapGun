@@ -5,8 +5,6 @@
 #include "SimpleAudioEngine.h"
 #include "Platform.h"
 
-
-#include "Base/UI.h"
 #include "Base/Sprite3D.h"
 #include "Object/Effect.h"
 #include "System/Sound.h"
