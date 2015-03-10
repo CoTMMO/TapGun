@@ -45,9 +45,6 @@
     <ClCompile Include="..\Classes\Base\Sprite3D.cpp">
       <Filter>Source\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Base\UI.cpp">
-      <Filter>Source\Base</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Base\Unit.cpp">
       <Filter>Source\Base</Filter>
     </ClCompile>
@@ -96,9 +93,6 @@
     <ClCompile Include="..\Classes\Platform\Win32_Func.cpp">
       <Filter>Source\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Platform\Android_Func.cpp">
-      <Filter>Source\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Scene\GameModelsLayerE.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
@@ -117,9 +111,6 @@
       <Filter>Source\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Base\Sprite3D.h">
-      <Filter>Source\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Base\UI.h">
       <Filter>Source\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Base\Unit.h">
@@ -172,9 +163,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Platform.h">
       <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Platform\Android_Func.h">
-      <Filter>Source\Platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

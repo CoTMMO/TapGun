@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -141,12 +141,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\Base\GameMaster.cpp" />
     <ClCompile Include="..\Classes\Base\Player.cpp" />
     <ClCompile Include="..\Classes\Base\Sprite3D.cpp" />
-    <ClCompile Include="..\Classes\Base\UI.cpp" />
     <ClCompile Include="..\Classes\Base\Unit.cpp" />
     <ClCompile Include="..\Classes\Object\Effect.cpp" />
-    <ClCompile Include="..\Classes\Platform\Android_Func.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\Classes\Platform\Win32_Func.cpp" />
     <ClCompile Include="..\Classes\Scene\ContinueLayer.cpp" />
     <ClCompile Include="..\Classes\Scene\CreditScene.cpp" />
@@ -169,13 +165,9 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\Base\GameMaster.h" />
     <ClInclude Include="..\Classes\Base\Player.h" />
     <ClInclude Include="..\Classes\Base\Sprite3D.h" />
-    <ClInclude Include="..\Classes\Base\UI.h" />
     <ClInclude Include="..\Classes\Base\Unit.h" />
     <ClInclude Include="..\Classes\Object\Effect.h" />
     <ClInclude Include="..\Classes\Platform.h" />
-    <ClInclude Include="..\Classes\Platform\Android_Func.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\Classes\Platform\Win32_Func.h" />
     <ClInclude Include="..\Classes\Scene\ContinueLayer.h" />
     <ClInclude Include="..\Classes\Scene\CreditScene.h" />

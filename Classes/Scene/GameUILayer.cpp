@@ -17,7 +17,6 @@ using namespace TapGun;
 bool GameUILayer::init()
 {
 	if( !Layer::init()) { return false; }
-	initHPGauge();
 	return true;
 }
 
@@ -30,8 +29,8 @@ bool GameUILayer::init()
  */
 void GameUILayer::InitLayer( void)
 {
-
-//	initBulletCounter();
+	initHPGauge();
+	initBulletCounter();
 	initOtherUI();
 }
 
@@ -47,9 +46,9 @@ void GameUILayer::UpdateLayer( void)
 	auto master = GameMaster::GetInstance();
 
 	setLogo();
-//	setHP( master -> GetPlayerHP());
-//	setGameTime( master -> GetGameTime());
-//	setBulletCount( master -> GetPlayerBullets());
+	setHP( master -> GetPlayerHP());
+	setGameTime( master -> GetGameTime());
+	setBulletCount( master -> GetPlayerBullets());
 	setReticlePoint();
 }
 
@@ -338,6 +337,24 @@ void GameUILayer::initHPGauge( void)
 			addChild( timeNumber[i][k]);
 		}
 	}
+		
+	for( int i = 0; i < 10; i++)
+	{
+		timeNumber[0][i] -> setPosition( Vec2( 560, 700));
+		timeNumber[1][i] -> setPosition( Vec2( 600, 700));
+		timeNumber[2][i] -> setPosition( Vec2( 640, 700));
+		timeNumber[3][i] -> setPosition( Vec2( 690, 695));
+		timeNumber[4][i] -> setPosition( Vec2( 720, 695));
+		timeNumber[3][i] -> setScale( 0.12f);
+		timeNumber[4][i] -> setScale( 0.12f);
+	}
+
+	timeNumber[0][3] -> setVisible( true);
+	timeNumber[1][0] -> setVisible( true);
+	timeNumber[2][0] -> setVisible( true);
+	timeNumber[3][0] -> setVisible( true);
+	timeNumber[4][0] -> setVisible( true);
+
 
 //	timeParent -> retain();
 
@@ -528,7 +545,7 @@ void GameUILayer::setReticlePoint( void)
 
 	// プレイヤーが射撃中またはアイドル状態である時、1度でも射撃していた場合レティクルを射撃状態に変更
 	if( ( master -> GetPlayerState() == PSTATE_SHOT || master -> GetPlayerState() == PSTATE_IDLE)
-	 	&& firstShotFlag)// && !returnEscapeFlag)
+		&& firstShotFlag)// && !returnEscapeFlag)
 	{
 		// 回避状態からの復帰初射撃前
 		if( returnEscapeNoShotFlag)
@@ -559,7 +576,7 @@ void GameUILayer::setReticlePoint( void)
 			{
 				// 画面内に表示されるように補正
 				reticle[ReticleShot] -> setPositionY( reticle[ReticleShot] -> getPositionY()
-				 								- ( reticle[ReticleShot] -> getPositionY() - visibleSize.height));
+												- ( reticle[ReticleShot] -> getPositionY() - visibleSize.height));
 			}
 		}
 	}
