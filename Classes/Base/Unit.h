@@ -66,7 +66,6 @@ namespace TapGun
 		int AIAtk[3];//エネミーの攻撃モーション
 		int AILife;//AIの生き方
 
-		//int nextEnemy;//このエネミーが倒れたときに次に出てくるエネミーの番号
 		int nextEnemies[3];//このエネミーを倒した次に出てくるエネミーの番号
 
 		//パラメータ
@@ -84,19 +83,17 @@ namespace TapGun
 
 		int stsWaitToMove[3];//移動までの待ち時間定義（ミリ秒）
 		int stsWaitToAtk[3];//攻撃までの待ち時間定義（ミリ秒）
-		//int sleepTime;//待機状態の時間(waitTimeに一本化)
 
 		cocos2d::Vec3 StandbyPos;//待機座標
 		int tableNum;
 
 
-		//==変数==
 		cocos2d::Vec3 pos;//モデル座標・・・削除予定（sprite3dの座標を使用）
 		float speed;//移動速度（移動量）
 		cocos2d::Vec3 speedVec;//移動ベクトル（speedをもとに計算する）
 		cocos2d::Vec3 targetPos[3];//移動時の目標座標
 		int nowTarget;//何番目の目標座標に向けて走るかの設定
-
+		int maxTarget;//移動先が何箇所あるか（1~3）
 		cocos2d::Vec3 collisionPos;//OBBの辺の長さ（現在は１つのみ定義）
 
 		//==当たり判定関連クラス(仮)==

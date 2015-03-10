@@ -126,7 +126,7 @@ void GameModelsLayer::SetNextWave(void)
 			unit[i].hitpoint = STS_ENEMY_HP;
 			unit[i].nowShot = 0;
 			unit[i].maxShot = STS_ENEMY_MAXSHOT;
-
+			unit[i].maxTarget = 0;
 			//エネミーAIの定義
 			//初期値は-1
 			for(int j = 0; j < 3; j++)
@@ -869,12 +869,13 @@ void GameModelsLayer::ActionEStandby(int num)
 	for(int i = 0; i < 3; i++)
 	{
 		//現在はtargetPos配列に必ず有効座標が入っているものとして処理を組んでいます
-		if(Vec3(-999.0f, -999.0f, -999.0f) != unit[num].targetPos[i])
+		if(Vec3(-999.0f, -999.0f, 999.0f) != unit[num].targetPos[i])
 		{
-			unit[num].nowTarget = i;
-			break;
+			unit[num].maxTarget++;
 		}
 	}
+	unit[num].maxTarget--;//配列にあわせるために-1する
+	unit[num].nowTarget = 0;
 	SetEnemyMove(num, 1);
 }
 
@@ -893,18 +894,18 @@ void GameModelsLayer::ActionEIdle(int num)
 		{
 			if (AI_LIFE_ONCE == unit[num].AILife)
 			{
-				unit[num].nowTarget += 1;//要チェック
+				unit[num].nowTarget += 1;
 			}
 			else if (AI_LIFE_SWITCH == unit[num].AILife)
 			{
 				//目標地点をスイッチして再度動かす
-				if (2 == unit[num].nowTarget)
+				if (unit[num].maxTarget == unit[num].nowTarget)
 				{
-					unit[num].nowTarget = 1;
+					unit[num].nowTarget -= 1;
 				}
-				else if (1 == unit[num].nowTarget)
+				else if ((unit[num].maxTarget - 1) == unit[num].nowTarget)
 				{
-					unit[num].nowTarget = 2;
+					unit[num].nowTarget += 1;
 				}
 				else
 				{
@@ -913,7 +914,7 @@ void GameModelsLayer::ActionEIdle(int num)
 			}
 			else if (AI_LIFE_STOP == unit[num].AILife)
 			{
-				if (2 != unit[num].nowTarget)
+				if (unit[num].maxTarget > unit[num].nowTarget)
 				{
 					unit[num].nowTarget += 1;
 				}
@@ -923,10 +924,10 @@ void GameModelsLayer::ActionEIdle(int num)
 			//移動しない場合は異なる処理をする
 			if (AI_MOVE_NONE == unit[num].AIMove[unit[num].nowTarget])
 			{
-				//移動処理に入る代わりに、次回の攻撃動作のためのアイドルに入る
-				unit[num].oldState = ESTATE_MOVE;
-				unit[num].eState = ESTATE_IDLE;//
-				unit[num].waitTime = unit[num].stsWaitToAtk[unit[num].nowTarget];
+				////移動処理に入る代わりに、次回の攻撃動作のためのアイドルに入る
+				//unit[num].oldState = ESTATE_MOVE;
+				//unit[num].eState = ESTATE_IDLE;//
+				//unit[num].waitTime = unit[num].stsWaitToAtk[unit[num].nowTarget];
 				SetEnemyMove(num, 0);
 			}
 			else
@@ -940,15 +941,16 @@ void GameModelsLayer::ActionEIdle(int num)
 			//AIの行動パターンをもとに動きを変更する
 			if (AI_ATK_NONE == unit[num].AIAtk[unit[num].nowTarget])
 			{
-				//攻撃処理に入る代わりに、次回の移動動作のためのアイドルに入る
-				unit[num].oldState = ESTATE_ATTACK1;
-				unit[num].eState = ESTATE_IDLE;//
-				unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
+				////攻撃処理に入る代わりに、次回の移動動作のためのアイドルに入る
+				//unit[num].oldState = ESTATE_ATTACK1;
+				//unit[num].eState = ESTATE_IDLE;//
+				//unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
 				SetEnemyAtk(num);
 			}
 			else
 			{
 				SetEnemyAtk(num);
+				//unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
 			}
 		}
 	}
@@ -962,13 +964,16 @@ void GameModelsLayer::ActionEMove(int num)
 	float dist = tmpPos.distance(unit[num].targetPos[unit[num].nowTarget]);
 	if (ENEMY_STOP_DIST >= dist)
 	{
+		//移動終了後はウェイトを挟んで（アイドル状態）攻撃処理
+		//攻撃をしない場合も判定処理は行う
+
 		//一定以上目的地に近付いたら
 		//エネミーのライフサイクルで場合分け
 		switch (unit[num].AILife)
 		{
 		case AI_LIFE_ONCE://
 			//現在の目的地が最終ポイントであれば、キャラクターを消す
-			if (2 == unit[num].nowTarget)
+			if (unit[num].maxTarget == unit[num].nowTarget)
 			{
 				//敵を消去して、次テーブルを検索
 				unit[num].speed = 0.0f;//
@@ -1003,41 +1008,46 @@ void GameModelsLayer::ActionEMove(int num)
 		//攻撃するエネミーは攻撃待ち、攻撃しないエネミーは移動待ち
 		if (AI_ATK_NONE != unit[num].AIAtk[unit[num].nowTarget])
 		{
-			if (0 >= unit[num].stsWaitToAtk[unit[num].nowTarget])
-			{
-				//ウェイトが設定されていないエネミーはアイドル状態をスキップして攻撃を行う
-				unit[num].waitTime = 0;
-				unit[num].oldState = unit[num].eState;
-				unit[num].eState = ESTATE_IDLE;
-				ActionEIdle(num);
-			}
-			else
-			{
-				//ウェイトが設定されているエネミーはアイドル状態に移行する
-				unit[num].oldState = unit[num].eState;
-				unit[num].eState = ESTATE_IDLE;
-				unit[num].sprite3d->stopALLAnimation();
-				unit[num].sprite3d->startAnimationLoop("idle");
-				unit[num].waitTime = unit[num].stsWaitToAtk[unit[num].nowTarget];
-			}
+			//if (0 >= unit[num].stsWaitToAtk[unit[num].nowTarget])
+			//{
+			//	//ウェイトが設定されていないエネミーはアイドル状態をスキップして攻撃を行う
+			//	unit[num].waitTime = 0;
+			//	unit[num].oldState = unit[num].eState;
+			//	unit[num].eState = ESTATE_IDLE;
+			//	ActionEIdle(num);
+			//}
+			//else
+			//{
+
+			//ウェイトが設定されているエネミーはアイドル状態に移行する
+			unit[num].oldState = unit[num].eState;
+			unit[num].eState = ESTATE_IDLE;
+			unit[num].sprite3d->stopALLAnimation();
+			unit[num].sprite3d->startAnimationLoop("idle");
+
+			//ウェイト時間を設定
+			unit[num].waitTime = unit[num].stsWaitToAtk[unit[num].nowTarget];
+			//}
 		}
 		else
 		{
-			if (0 >= unit[num].stsWaitToMove[unit[num].nowTarget])
-			{
-				//ウェイトが設定されていないエネミーはアイドル状態をスキップして移動を行う
-				unit[num].waitTime = 0;
-				ActionEIdle(num);
-			}
-			else
-			{
-				//ウェイトが設定されているエネミーはアイドル状態に移行する
-				unit[num].oldState = unit[num].eState;
-				unit[num].eState = ESTATE_IDLE;
-				unit[num].sprite3d->stopALLAnimation();
-				unit[num].sprite3d->startAnimationLoop("idle");
-				unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
-			}
+			//if (0 >= unit[num].stsWaitToMove[unit[num].nowTarget])
+			//{
+			//	//ウェイトが設定されていないエネミーはアイドル状態をスキップして移動を行う
+			//	unit[num].waitTime = 0;
+			//	ActionEIdle(num);
+			//}
+			//else
+			//{
+			//ウェイトが設定されているエネミーはアイドル状態に移行する
+			unit[num].oldState = unit[num].eState;
+			unit[num].eState = ESTATE_IDLE;
+			unit[num].sprite3d->stopALLAnimation();
+			unit[num].sprite3d->startAnimationLoop("idle");
+
+			//ウェイト時間を設定
+			unit[num].waitTime = unit[num].stsWaitToAtk[unit[num].nowTarget];
+			//}
 		}
 	}
 	else
@@ -1052,28 +1062,29 @@ void GameModelsLayer::ActionEAttack(int num)
 	auto GM = GameMaster::GetInstance();
 	if(0 == unit[num].sprite3d->checkAnimationState())
 	{
+		//攻撃終了後
 		unit[num].nowShot = 0;
-		//ウェイトが設定されているエネミーはアイドル状態に移行する
+
 		unit[num].oldState = unit[num].eState;
 		unit[num].eState = ESTATE_IDLE;
 		unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];//
 		//waitが0の場合は即アイドル終了させる
-		if (0 >= unit[num].waitTime)
-		{
-			ActionEIdle(num);
-		}
+
+		//if (0 >= unit[num].waitTime)
+		//{
+		//	ActionEIdle(num);
+		//}
+
 		unit[num].sprite3d->stopALLAnimation();
 		unit[num].sprite3d->startAnimationLoop("idle");
 	}
 	else
 	{
-		int a = 0;
 		//敵の攻撃モーションごとに弾の発射タイミングなどを選択
 		switch (unit[num].AIAtk[unit[num].nowTarget])
 		{
 		case AI_ATK_NONE://攻撃しない
 
-			a++;
 			break;
 		case AI_ATK_FAKE://威嚇攻撃を行う
 
@@ -1126,8 +1137,15 @@ void GameModelsLayer::SetEnemyAtk(int num)
 	//攻撃モーションに応じて動きを変化
 	switch (unit[num].AIAtk[unit[num].nowTarget])
 	{
-
 	case AI_ATK_NONE:
+
+		//攻撃しないエネミーはアイドル状態にする
+		unit[num].oldState = ESTATE_ATTACK1;
+		unit[num].eState = ESTATE_IDLE;//アイドル状態に移る
+		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
+		unit[num].sprite3d->startAnimationLoop("idle");
+		unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
+
 		break;
 	case AI_ATK_FAKE://威嚇攻撃を行う
 		unit[num].oldState = unit[num].eState;
@@ -1179,7 +1197,6 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		unit[num].waitTime = STS_SSHOT_START;//弾を発射するまでの残りフレーム
 		break;
 	}
-	unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
 }
 
 
@@ -1362,35 +1379,36 @@ void GameModelsLayer::setNextEnemy(int num)
 			unit[n].eState = ESTATE_SLEEP;
 			unit[n].sprite3d->setVisible(true);//敵モデル表示
 			unit[n].visible = TRUE;//敵モデル表示
-			unit[n].sprite3d->setPosition3D(enemyTable->enemyData[num].standbyPos);
-			unit[n].StandbyPos = enemyTable->enemyData[num].standbyPos;
-			unit[n].SetTargetPos(enemyTable->enemyData[num].targetPos);
+			unit[n].sprite3d->setPosition3D(enemyTable->enemyData[nextNum].standbyPos);
+			unit[n].StandbyPos = enemyTable->enemyData[nextNum].standbyPos;
+			unit[n].SetTargetPos(enemyTable->enemyData[nextNum].targetPos);
 			unit[n].nowTarget = 0;//ターゲットはスリープ解除したときに決定する
-			unit[n].tableNum = num;
+			unit[n].tableNum = nextNum;
 
 			//AIの種類をセット
 			for(int j = 0; j < 3; j++)
 			{
-				unit[n].AIAtk[j] = enemyTable->enemyData[num].AIAtk[j];
-				unit[n].AIMove[j] = enemyTable->enemyData[num].AIMove[j];
+				unit[n].AIAtk[j] = enemyTable->enemyData[nextNum].AIAtk[j];
+				unit[n].AIMove[j] = enemyTable->enemyData[nextNum].AIMove[j];
 			}
-			unit[n].AIAppear = enemyTable->enemyData[num].AIappear;
-			unit[n].AILife = enemyTable->enemyData[num].AILife;
+			unit[n].AIAppear = enemyTable->enemyData[nextNum].AIappear;
+			unit[n].AILife = enemyTable->enemyData[nextNum].AILife;
 
 			//敵のステータスをセット
 			for(int j = 0; j < 3; j++)
 			{
-				//unit[n].stsAtkFrame[j] = enemyTable->enemyData[num].stsAtkFrame[j];
-				unit[n].stsWaitToMove[j] = enemyTable->enemyData[num].stsWaitToMove[j];
-				unit[n].stsWaitToAtk[j] = enemyTable->enemyData[num].stsWaitToAtk[j];
+				unit[n].stsWaitToMove[j] = enemyTable->enemyData[nextNum].stsWaitToMove[j];
+				unit[n].stsWaitToAtk[j] = enemyTable->enemyData[nextNum].stsWaitToAtk[j];
 			}
-			unit[n].hitpoint = enemyTable->enemyData[num].hitpoint;
+			unit[n].hitpoint = enemyTable->enemyData[nextNum].hitpoint;
 
 			//弾の管理
 			unit[n].nowShot = 0;
-			unit[n].maxShot = enemyTable->enemyData[num].maxShot;
-			//フレーム
-			unit[n].waitTime = enemyTable->enemyData[num].sleepTime;
+			unit[n].maxShot = enemyTable->enemyData[nextNum].maxShot;
+			//待機時間
+			unit[n].waitTime = enemyTable->enemyData[nextNum].sleepTime;
+			//目標位置の数
+			unit[num].maxTarget = 0;
 		}
 	}
 }
