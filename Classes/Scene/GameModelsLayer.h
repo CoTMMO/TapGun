@@ -203,7 +203,7 @@ namespace TapGun
 		void CheckEnemyAtk(void);//当たり判定処理（エネミーの攻撃）
 
 		/**
-		*	ウェーブ終了のチェック
+		*	ウェーブ終了のチェックと次ウェーブの初期化
 		*
 		*	@author	sasebon
 		*	@param	なし
@@ -212,8 +212,15 @@ namespace TapGun
 		*/
 		int CheckNextWave(void);
 
-
-		void SetEnemy(void);//
+		/**
+		*	ステージごとのエネミーのセット
+		*
+		*	@author	sasebon
+		*	@param	なし
+		*	@return	なし
+		*	@date	1/8 Ver 1.0
+		*/
+		void SetNextWave(void);//
 
 		/**
 		*	画面外の敵の全消去
@@ -341,7 +348,9 @@ namespace TapGun
 
 
 		void SetEnemyAtk(int num);
-		void SetEnemyMove(int num);
+
+		//flag 0はAI_MOVE,flag 1はAI_APPEAR
+		void SetEnemyMove(int num,int flag);
 
 
 		/**

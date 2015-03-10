@@ -32,10 +32,11 @@ namespace TapGun
 #define STS_ENEMY_MAXSHOT 5//敵の連射数
 
 #define STS_ENEMY_RUNSPEED 0.005f//敵の走り速度
-#define STS_ENEMY_WALKSPEED 0.002f//敵の歩き速度
+#define STS_ENEMY_WALKSPEED 0.0015f//敵の歩き速度
+#define STS_ENEMY_BWALKSPEED 0.0012f//敵の後ずさり速度
 #define STS_ENEMY_SWALKSPEED 0.0005f//敵の横歩き速度
-#define STS_ENEMY_SLIDESPEED 0.005f//スライドジャンプ速度
-#define STS_ENEMY_ACROSPEED 0.003f//アクロバティック速度
+#define STS_ENEMY_SJUMPSPEED 0.0012f//敵のスライド移動の基本速度（距離によって変化する）
+#define STS_ENEMY_ACROSPEED 0.00005f//敵のアクロバット移動の基本速度（距離によって変化する）
 #define STS_ENEMY_FJUMPSPEED 0.003f//前ジャンプ速度
 
 #define POS_ENEMY_LPOX -0.3f//敵の左の銃のポイント
@@ -49,6 +50,9 @@ namespace TapGun
 #define STS_EBULLET_VANISH_TIME 3000//敵の弾の速度
 #define STS_SSHOT_START 1000//SShot時の弾の発射開始までの待ち時間
 #define STS_SSHOT_SPAN 68//SShot時の弾の発射開始までの待ち時間
+
+#define ENEMY_STOP_DIST 0.19f//移動中の敵は目標地点との距離がこの数値未満になると停止する
+
 
 #define BATTLE_FEILD_X 0.8//タッチで攻撃可能な画面割合
 
@@ -135,7 +139,7 @@ namespace TapGun
 #define TIME_MAXTIME 180000//ゲーム本編の最大時間（ミリ秒）
 #define TIME_ACTION_UI 1800//ActionのUIを表示する時間（ミリ秒）
 #define TIME_DEAD_UI 3000//死亡時のカメラ表示する時間（ミリ秒）
-#define TIME_OP 6000//ActionのUIを表示する時間（ミリ秒）
+#define TIME_OP 0//OPの時間（ミリ秒）・・・現在はOPがないので0ミリ秒
 
 #define TIME_WROT 300//
 

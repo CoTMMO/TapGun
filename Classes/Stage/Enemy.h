@@ -26,23 +26,24 @@ namespace TapGun
 	//エネミーの出現方法
 	enum _ENEMY_APPEAR_
 	{
-		AI_APPEAR_RUN = 1,//走りながら登場
-		AI_APPEAR_WALK = 2,//歩き
-		AI_APPEAR_SWALK = 3,//横歩き
-		AI_APPEAR_SLIDE = 4,//サイドジャンプ
-		AI_APPEAR_FJUMP = 6,//前ジャンプ
-		AI_APPEAR_ACRO = 5,//アクロバティック
+		AI_APPEAR_NONE,//動かない(使用しない)
+		AI_APPEAR_RUN,//走りながら登場
+		AI_APPEAR_WALK,//歩き
+		AI_APPEAR_SWALK,//横歩き
+		AI_APPEAR_SLIDE,//サイドジャンプ
+		AI_APPEAR_FJUMP,//前ジャンプ
+		AI_APPEAR_ACRO,//アクロバティック
 	};
 
 	//エネミーの移動方法
 	enum _ENEMY_MOVE_
 	{
-		AI_MOVE_NONE = 0,//動かない
-		AI_MOVE_RUN = 1,//走りながら登場
-		AI_MOVE_WALK = 2,//歩き
-		AI_MOVE_SWALK = 3,//横歩き
-		AI_MOVE_SLIDE = 4,//サイドジャンプ
-		AI_MOVE_ACRO = 5,//アクロバティック
+		AI_MOVE_NONE = AI_APPEAR_NONE,//動かない
+		AI_MOVE_RUN = AI_APPEAR_RUN,//走りながら登場
+		AI_MOVE_WALK = AI_APPEAR_WALK,//歩き
+		AI_MOVE_SWALK = AI_APPEAR_SWALK,//横歩き
+		AI_MOVE_SLIDE = AI_APPEAR_SLIDE,//サイドジャンプ
+		AI_MOVE_ACRO = AI_APPEAR_ACRO,//アクロバティック
 	};
 
 	//エネミーのライフサイクル
@@ -80,8 +81,8 @@ namespace TapGun
 		//float atkFrame;//攻撃間隔（秒）
 		//float waitFrame;//出現してから移動し始めるまでの時間
 		float sleepTime;//
-		int stsAtkFrame[3];//攻撃間隔（秒）
-		int stsWaitFrame[3];//出現してから移動し始めるまでの時間
+//		int stsAtkFrame[3];//攻撃間隔（秒）
+//		int stsWaitFrame[3];//出現してから移動し始めるまでの時間
 
 		int stsWaitToAtk[3];//移動後に攻撃するまでの時間
 		int stsWaitToMove[3];//攻撃後に移動するまでの時間

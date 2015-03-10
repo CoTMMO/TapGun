@@ -231,19 +231,18 @@ void GameScene::update(float delta)
 			gUILayer->InitLayer();//
 		}
 
-		GameMasterS->SetGameState(GSTATE_WAIT);
-		GameMasterS->SetPlayerState(PSTATE_RUN);
-
+		GameMasterS->SetGameState(GSTATE_OP);
 		break;
 
 	case GSTATE_OP:
-
 		//シーン切り替え用の変数
 		timeCount += GameMasterS->loopTime;//
 		if (timeCount >= TIME_OP)
 		{
-			//
-
+			GameMasterS->SetGameState(GSTATE_WAIT);
+			GameMasterS->SetPlayerState(PSTATE_RUN);
+			//OP終了したら、最初のウェーブ定義を読み込む
+			gGameLayer->SetNextWave();
 		}
 		else
 		{
@@ -253,9 +252,15 @@ void GameScene::update(float delta)
 
 		break;
 	case GSTATE_WAIT:
+		if(NULL != gGameLayer)//現在は子レイヤーをクリエイトしたかを確認する
+		{
+			//移動方向の指定・プレイヤーとカメラの移動
+			gGameLayer->UpdateWait();
 
-		gGameLayer->UpdateWait();
-
+			//敵はウェイト中に動き始める（演出が出来るように変更）
+			gGameLayer->UpdateEnemy();
+			gGameLayer->UpdateBullets();
+		}
 		if (NULL != gUILayer)//現在は子レイヤーをクリエイトしたかを確認する
 		{
 			gUILayer->UpdateLayer();
@@ -265,15 +270,18 @@ void GameScene::update(float delta)
 		break;
 	case GSTATE_PLAY_SET://ウェイト終了後プレイ前の処理
 
-		//敵の配置を行う
-		gGameLayer->SetEnemy();
 		GameMasterS->SetGameState(GSTATE_PLAY_ACTION);
+		gGameLayer->UpdateEnemy();
+		gGameLayer->UpdateBullets();
+
 		timeCount = 0;
 		break;
 	case GSTATE_PLAY_ACTION:
 
 		//シーン切り替え用の変数
 		timeCount += GameMasterS->loopTime;//
+		gGameLayer->UpdateEnemy();
+		gGameLayer->UpdateBullets();
 
 		if (timeCount >= TIME_ACTION_UI)
 		{
