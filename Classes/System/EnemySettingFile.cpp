@@ -44,7 +44,7 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 			return settingFile;
 		}
 
-		switch( settingFile -> fileLineCount)　// 現在の行番号で処理を分岐
+		switch( settingFile -> fileLineCount)  // 現在の行番号で処理を分岐
 		{
 		case 1:							// 奇数行にはデータが存在しないファイル構成なのでスキップ
 		case 3:
@@ -143,7 +143,7 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 			getline( stream, tmp, ',');
 
 			// 取得した文字列を元に番号を検索し格納
-			data -> aiAppear = getModelNumber( tmp);
+			data -> aiAppear = getAIAppearNumber( tmp);
 
 			// 移動時のモーション名を取得し設定
 			for( int i = 0; i < AI_MOVE_COUNT; i++)
@@ -151,7 +151,7 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 				// 移動時のモーション名を取得
 				getline( stream, tmp, ',');
 				// 取得した文字列を元に番号を検索し格納
-				data -> aiMove[i] = getModelNumber( tmp);
+				data -> aiMove[i] = getAIMoveNumber( tmp);
 			}
 
 			// 攻撃時のモーション名を取得し設定
@@ -160,13 +160,13 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 				// 攻撃時のモーション名を取得
 				getline( stream, tmp, ',');
 				// 取得した文字列を元に番号を検索し格納
-				data -> aiAtk[i] = getModelNumber( tmp);
+				data -> aiAtk[i] = getAIAttackNumber( tmp);
 			}
 
 			// 攻撃時のモーション名を取得
 			getline( stream, tmp, ',');
 			// 取得した文字列を元に番号を検索し格納
-			data -> aiLifeCycle = getModelNumber( tmp);
+			data -> aiLifeCycle = getAILifeCycleNumber( tmp);
 			break;
 
 		default:
@@ -222,7 +222,7 @@ int EnemySettingFile::getAIAppearNumber( const string& dataString)
 	}
 }
 
-int getAIMoveNumber( const string& dataString)
+int EnemySettingFile::getAIMoveNumber( const string& dataString)
 {
 	if( dataString == "none")
 	{
@@ -254,7 +254,7 @@ int getAIMoveNumber( const string& dataString)
 	}
 }
 
-int getAIAttackNumber( const string& dataString)
+int EnemySettingFile::getAIAttackNumber( const string& dataString)
 {
 	if( dataString == "none")
 	{
@@ -282,7 +282,7 @@ int getAIAttackNumber( const string& dataString)
 	}
 }
 
-int getAILifeCycleNumber( const string& dataString)
+int EnemySettingFile::getAILifeCycleNumber( const string& dataString)
 {
 	if( dataString == "once")
 	{
