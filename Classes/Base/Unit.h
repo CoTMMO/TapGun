@@ -43,7 +43,7 @@ namespace TapGun
 
 		ESTATE_NONE,//
 		ESTATE_SLEEP,
-		ESTATE_ATTACK1,
+		ESTATE_ATTACK,
 		ESTATE_DAMAGED,
 		ESTATE_DEAD,//死亡
 		ESTATE_END,//敵の終了処理
@@ -92,7 +92,8 @@ namespace TapGun
 		float speed;//移動速度（移動量）
 		cocos2d::Vec3 speedVec;//移動ベクトル（speedをもとに計算する）
 		cocos2d::Vec3 targetPos[3];//移動時の目標座標
-		int nowTarget;//何番目の目標座標に向けて走るかの設定
+		int nowTarget;//何番目の目標座標に移動するか
+		int nowMove;//目標座標への移動方法（nowTargetと基本的には同じだが、switch移動のときのみ異なる）
 		int maxTarget;//移動先が何箇所あるか（1~3）
 		cocos2d::Vec3 collisionPos;//OBBの辺の長さ（現在は１つのみ定義）
 

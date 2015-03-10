@@ -844,7 +844,7 @@ void GameModelsLayer::UpdateEnemy()
 			case ESTATE_MOVE://移動状態
 				ActionEMove(num);
 				break;
-			case ESTATE_ATTACK1://攻撃
+			case ESTATE_ATTACK://攻撃
 				ActionEAttack(num);
 				break;
 			case ESTATE_DAMAGED://被弾
@@ -875,7 +875,8 @@ void GameModelsLayer::ActionEStandby(int num)
 		}
 	}
 	unit[num].maxTarget--;//配列にあわせるために-1する
-	unit[num].nowTarget = 0;
+	unit[num].nowTarget = 0;//0番目の目標へと移動する
+	unit[num].nowMove = 0;//0番目の目標へと移動する
 	SetEnemyMove(num, 1);
 }
 
@@ -890,26 +891,34 @@ void GameModelsLayer::ActionEIdle(int num)
 		//アイドル時間が消費されたら
 		//エネミーの攻撃または移動をセット
 		//oldStateで場合分け
-		if (ESTATE_ATTACK1 == unit[num].oldState)
+
+		//次の行動は移動
+		if (ESTATE_ATTACK == unit[num].oldState)
 		{
 			if (AI_LIFE_ONCE == unit[num].AILife)
 			{
 				unit[num].nowTarget += 1;
+				unit[num].nowMove = unit[num].nowTarget;
 			}
 			else if (AI_LIFE_SWITCH == unit[num].AILife)
 			{
 				//目標地点をスイッチして再度動かす
 				if (unit[num].maxTarget == unit[num].nowTarget)
 				{
+					//前の目標地点へと戻る
 					unit[num].nowTarget -= 1;
+					unit[num].nowMove = unit[num].nowTarget + 1;//移動方法は現在のnowTargetを基準とする
 				}
 				else if ((unit[num].maxTarget - 1) == unit[num].nowTarget)
 				{
+					//次の目標地点へと進む
 					unit[num].nowTarget += 1;
+					unit[num].nowMove = unit[num].nowTarget;//移動方法は次のnowTargetを基準とする
 				}
 				else
 				{
 					unit[num].nowTarget += 1;//
+					unit[num].nowMove = unit[num].nowTarget;//移動方法は次のnowTargetを基準とする
 				}
 			}
 			else if (AI_LIFE_STOP == unit[num].AILife)
@@ -917,12 +926,13 @@ void GameModelsLayer::ActionEIdle(int num)
 				if (unit[num].maxTarget > unit[num].nowTarget)
 				{
 					unit[num].nowTarget += 1;
+					unit[num].nowMove = unit[num].nowTarget;
 				}
 			}
 
 			//移動に移行
 			//移動しない場合は異なる処理をする
-			if (AI_MOVE_NONE == unit[num].AIMove[unit[num].nowTarget])
+			if(AI_MOVE_NONE == unit[num].AIMove[unit[num].nowMove])
 			{
 				////移動処理に入る代わりに、次回の攻撃動作のためのアイドルに入る
 				//unit[num].oldState = ESTATE_MOVE;
@@ -935,6 +945,7 @@ void GameModelsLayer::ActionEIdle(int num)
 				SetEnemyMove(num, 0);
 			}
 		}
+		//次の行動は攻撃
 		else if (ESTATE_MOVE == unit[num].oldState)
 		{
 			//攻撃に移行
@@ -942,7 +953,7 @@ void GameModelsLayer::ActionEIdle(int num)
 			if (AI_ATK_NONE == unit[num].AIAtk[unit[num].nowTarget])
 			{
 				////攻撃処理に入る代わりに、次回の移動動作のためのアイドルに入る
-				//unit[num].oldState = ESTATE_ATTACK1;
+				//unit[num].oldState = ESTATE_ATTACK;
 				//unit[num].eState = ESTATE_IDLE;//
 				//unit[num].waitTime = unit[num].stsWaitToMove[unit[num].nowTarget];
 				SetEnemyAtk(num);
@@ -992,8 +1003,7 @@ void GameModelsLayer::ActionEMove(int num)
 		}
 		unit[num].sprite3d->setPosition3D(unit[num].targetPos[unit[num].nowTarget]);//敵の座標を補正
 
-		Vec3 tmpPos = GM->stagePoint[GM->sPoint].pPos;//
-		tmpPos = tmpPos - unit[num].sprite3d->getPosition3D();//プレイヤーの位置へのベクトルを計算
+		tmpPos = GM->stagePoint[GM->sPoint].pPos - unit[num].sprite3d->getPosition3D();//プレイヤーの位置へのベクトルを計算
 		tmpPos.normalize();//ベクトルの正規化を行う
 
 		double r = atan2(tmpPos.z, tmpPos.x);
@@ -1140,7 +1150,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 	case AI_ATK_NONE:
 
 		//攻撃しないエネミーはアイドル状態にする
-		unit[num].oldState = ESTATE_ATTACK1;
+		unit[num].oldState = ESTATE_ATTACK;
 		unit[num].eState = ESTATE_IDLE;//アイドル状態に移る
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimationLoop("idle");
@@ -1149,7 +1159,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		break;
 	case AI_ATK_FAKE://威嚇攻撃を行う
 		unit[num].oldState = unit[num].eState;
-		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].eState = ESTATE_ATTACK;//アタック状態に移る
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 
@@ -1158,7 +1168,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 		break;
 	case AI_ATK_SSHOT://立ち撃ちを行う
 		unit[num].oldState = unit[num].eState;
-		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].eState = ESTATE_ATTACK;//アタック状態に移る
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 
@@ -1169,7 +1179,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 
 		//要チェック
 		unit[num].oldState = unit[num].eState;
-		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].eState = ESTATE_ATTACK;//アタック状態に移る
 		//unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		//unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
@@ -1180,7 +1190,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 
 		//要チェック
 		unit[num].oldState = unit[num].eState;
-		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].eState = ESTATE_ATTACK;//アタック状態に移る
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
@@ -1190,7 +1200,7 @@ void GameModelsLayer::SetEnemyAtk(int num)
 
 		//要チェック
 		unit[num].oldState = unit[num].eState;
-		unit[num].eState = ESTATE_ATTACK1;//アタック状態に移る
+		unit[num].eState = ESTATE_ATTACK;//アタック状態に移る
 		unit[num].sprite3d->stopALLAnimation();//現在のモーションを終了し
 		unit[num].sprite3d->startAnimation("shot");
 		//要チェック　アニメーションに合わせた弾の発射タイミング
@@ -1217,7 +1227,7 @@ void GameModelsLayer::SetEnemyMove(int num,int flag)
 	if (0 == flag)
 	{
 		//AI_MOVEの移動
-		flag = unit[num].AIMove[unit[num].nowTarget];
+		flag = unit[num].AIMove[unit[num].nowMove];
 	}
 	else if (1 == flag)
 	{
