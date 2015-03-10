@@ -151,6 +151,9 @@ void Effect::createHitEffect( Sprite3D* sprite3d, Vec3 point, EffectType effectT
 	// 作成した空ノードにビルボードを接続
 	effect -> node -> addChild( effect -> billboard);
 
+	// ゲームシーン内のカメラに映るように設定
+	effect -> node -> setCameraMask( (unsigned short)CameraFlag::USER1);
+
 	// 表示したいモデルにノードを接続
 	sprite3d -> addChild( effect -> node);
 
