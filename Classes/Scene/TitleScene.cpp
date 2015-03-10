@@ -13,14 +13,7 @@
 USING_NS_CC;
 using namespace TapGun;
 
-/**
-*	ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã®ä½œæˆ
-*
-*	@author	minaka
-*	@param	ãªã—
-*	@date	2/19 Ver 1.0
-*/
-Scene* TitleScene::createScene()
+Scene* TitleScene::createScene( void)
 {
 	auto scene = Scene::create();
 	auto layer = TitleScene::create();
@@ -28,25 +21,14 @@ Scene* TitleScene::createScene()
 	return scene;
 }
 
-
-/**
-*	ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã®åˆæœŸåŒ–
-*
-*	@author	minaka
-*	@param	ãªã—
-*	@return åˆæœŸåŒ–æˆåŠŸæ™‚ true å¤±æ•—æ™‚ false
-*	@date	2/19 Ver 1.0
-*/
-bool TitleScene::init()
+bool TitleScene::init( void)
 {
-	if (!Layer::init()) { return false; }
+	if( !Layer::init()) { return false; }
 
-	// æç”»ã‚·ãƒ¼ãƒ³ã®ãƒ•ãƒ©ã‚°ã‚’ãƒãƒ¼ãƒ ãƒ­ã‚´ã«è¨­å®š
+	// •`‰æƒV[ƒ“‚Ìƒtƒ‰ƒO‚ğƒ`[ƒ€ƒƒS‚Éİ’è
 	menuFlag = TeamLogo;
 
-	auto data = EnemySettingFile::create( "EnemyData.csv");
-	
-	// å„ç¨®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–
+	// Šeíƒpƒ‰ƒ[ƒ^‚ğ‰Šú‰»
 	logoWaitCount = 0;
 	teamLogoState = LogoIn;
 	menuActionFlag = false;
@@ -55,13 +37,13 @@ bool TitleScene::init()
 	logoAlphaCount = 0;
 	logoAlphaWaitCount = 0;
 
-	// ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã¨åˆæœŸåŒ–
+	// ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚Æ‰Šú‰»
 	loadPicture();
 	loadSound();
 	setSprite();
 	setMenu();
 
-	// ã‚¿ãƒƒãƒå…¥åŠ›å—ã‘å–ã‚Šã‚¤ãƒ™ãƒ³ãƒˆã‚’ä½œæˆ
+	// ƒ^ƒbƒ`“ü—Íó‚¯æ‚èƒCƒxƒ“ƒg‚ğì¬
 	auto listener = EventListenerTouchOneByOne::create();
 	listener -> setSwallowTouches( _swallowsTouches);
 	listener -> onTouchBegan = CC_CALLBACK_2( TitleScene::onTouchBegan, this);
@@ -69,28 +51,20 @@ bool TitleScene::init()
 	listener -> onTouchEnded = CC_CALLBACK_2( TitleScene::onTouchEnded, this);
 	_eventDispatcher -> addEventListenerWithSceneGraphPriority( listener, this);
 
-	// updateé–¢æ•°ãŒå‘¼ã°ã‚Œã‚‹ã‚ˆã†ã«ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ã‚»ãƒƒãƒˆ
+	// updateŠÖ”‚ªŒÄ‚Î‚ê‚é‚æ‚¤‚ÉƒXƒPƒWƒ…[ƒ‹‚ğƒZƒbƒg
 	scheduleUpdate();
 
 	return true;
 }
 
-/**
-*	ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã®æ›´æ–°
-*
-*	@author	minaka
-*	@param	cocosä¾å­˜ãªã®ã§çœç•¥
-*	@return ãªã—
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::update( float delta)
 {
-	// ã‚µã‚¦ãƒ³ãƒ‰ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
+	// ƒTƒEƒ“ƒhƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
 	auto sound = Sound::getInstance();
 
 	loadModels();
 
-	// ç¾åœ¨ã®æç”»ã‚·ãƒ¼ãƒ³ãƒ•ãƒ©ã‚°ã«å¾“ã£ã¦æç”»å‡¦ç†
+	// Œ»İ‚Ì•`‰æƒV[ƒ“ƒtƒ‰ƒO‚É]‚Á‚Ä•`‰æˆ—
 	switch( menuFlag)
 	{
 	case TeamLogo:
@@ -143,18 +117,6 @@ void TitleScene::update( float delta)
 	}
 }
 
-// ä»¥ä¸‹æœªä½¿ç”¨å…¥åŠ›å—ã‘å–ã‚Šé–¢æ•°
-bool TitleScene::onTouchBegan( Touch *pTouch, Event *pEvent) { return true; }
-void TitleScene::onTouchMoved( Touch *pTouch, Event *pEvent) {}
-
-/**
-*	ã‚¿ãƒƒãƒå…¥åŠ›ã®å—ã‘å–ã‚Š (é›¢ã•ã‚ŒãŸã¨ã)
-*
-*	@author	minaka
-*	@param	cocosä¾å­˜ãªã®ã§çœç•¥
-*	@return ãªã—
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 {
 	auto sound = Sound::getInstance();
@@ -174,14 +136,6 @@ void TitleScene::onTouchEnded( Touch *pTouch, Event *pEvent)
 	}
 }
 
-/**
-*	ãƒãƒ¼ãƒ ãƒ­ã‚´ã®æç”»åˆ¶å¾¡
-*
-*	@author	minaka
-*	@param	ãªã—
-*	@return ãªã—
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::teamLogoAction( void)
 {
 	if( teamLogoState == LogoIn)
@@ -213,22 +167,13 @@ void TitleScene::teamLogoAction( void)
 	}
 }
 
-/**
-*	ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ç”¨ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆä½œæˆ
-*
-*	@author	minaka
-*	@param	ãªã—
-*	@return ãªã—
-*	@date	2/19 Ver 1.0
-*/
 void TitleScene::setSprite( void)
 {
 	auto visibleSize = Director::getInstance() -> getVisibleSize();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	teamLogo = Sprite::create( "ty.png");
-#else
-	teamLogo = Sprite::create( "Graph/Pictures/ty.png");
-#endif
+	// ƒtƒ@ƒCƒ‹ƒpƒX§ŒäƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
+	auto access = FileAccess::getInstance();
+	
+	teamLogo = Sprite::create( access -> getPicturePath( "ty.png"));
 	teamLogo -> setPosition( Vec2( visibleSize.width / 2, visibleSize.height / 2));
 	teamLogo -> setOpacity( 0);
 	addChild( teamLogo);
@@ -248,11 +193,11 @@ void TitleScene::setSprite( void)
 }
 
 /**
-*	ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ç”¨ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
+*	ƒ^ƒCƒgƒ‹ƒV[ƒ“—p‚Ìƒƒjƒ…[‚Ìì¬
 *
 *	@author	minaka
-*	@param	ãªã—
-*	@return ãªã—
+*	@param	‚È‚µ
+*	@return ‚È‚µ
 *	@date	2/19 Ver 1.0
 */
 void TitleScene::setMenu( void)
@@ -279,11 +224,11 @@ void TitleScene::setMenu( void)
 }
 
 /**
-*	ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ç§»å‹•å‡¦ç†
+*	ƒƒjƒ…[‚ÌˆÚ“®ˆ—
 *
 *	@author	minaka
-*	@param	ãªã—
-*	@return ãªã—
+*	@param	‚È‚µ
+*	@return ‚È‚µ
 *	@date	2/19 Ver 1.0
 */
 void TitleScene::menuAction( void)
@@ -300,11 +245,11 @@ void TitleScene::menuAction( void)
 }
 
 /**
-*	GameStartã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+*	GameStart‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
 *
 *	@author	minaka
-*	@param	cocosä¾å­˜ãªã®ã§çœç•¥
-*	@return ãªã—
+*	@param	cocosˆË‘¶‚È‚Ì‚ÅÈ—ª
+*	@return ‚È‚µ
 *	@date	2/19 Ver 1.0
 */
 void TitleScene::menuStartCallback( Ref* pSender)
@@ -321,11 +266,11 @@ void TitleScene::menuStartCallback( Ref* pSender)
 }
 
 /**
-*	GameEndã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+*	GameEnd‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
 *
 *	@author	minaka
-*	@param	cocosä¾å­˜ãªã®ã§çœç•¥
-*	@return ãªã—
+*	@param	cocosˆË‘¶‚È‚Ì‚ÅÈ—ª
+*	@return ‚È‚µ
 *	@date	2/19 Ver 1.0
 */
 void TitleScene::menuEndCallback( Ref* pSender)
@@ -341,11 +286,11 @@ void TitleScene::menuEndCallback( Ref* pSender)
 }
 
 /**
-*	ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+*	ƒNƒŒƒWƒbƒg‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
 *
 *	@author	minaka
-*	@param	cocosä¾å­˜ãªã®ã§çœç•¥
-*	@return ãªã—
+*	@param	cocosˆË‘¶‚È‚Ì‚ÅÈ—ª
+*	@return ‚È‚µ
 *	@date	2/19 Ver 1.0
 */
 void TitleScene::menuCreditCallback( Ref* pSender)
@@ -360,11 +305,11 @@ void TitleScene::menuCreditCallback( Ref* pSender)
 }
 
 /**
-*	å„ç¨®ç”»åƒãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+*	Šeí‰æ‘œƒf[ƒ^‚Ì“Ç‚İ‚İ
 *
 *	@author	minaka
-*	@param	cocosä¾å­˜ãªã®ã§çœç•¥
-*	@return ãªã—
+*	@param	cocosˆË‘¶‚È‚Ì‚ÅÈ—ª
+*	@return ‚È‚µ
 *	@date	2/19 Ver 1.0
 */
 void TitleScene::loadPicture( void)
@@ -373,12 +318,12 @@ void TitleScene::loadPicture( void)
 
 	if( loadFlag) { return; }
 
-	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¢ãƒˆãƒ©ã‚¹ã®èª­ã¿è¾¼ã¿
+	// ƒeƒNƒXƒ`ƒƒƒAƒgƒ‰ƒX‚Ì“Ç‚İ‚İ
 	auto cache = SpriteFrameCache::getInstance();
-	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹åˆ¶å¾¡ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
+	// ƒtƒ@ƒCƒ‹ƒpƒX§ŒäƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
 	auto access = FileAccess::getInstance();
 
-	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚·ãƒ¼ãƒˆã‚’ä¸€æ‹¬èª­ã¿è¾¼ã¿
+	// ƒXƒvƒ‰ƒCƒgƒV[ƒg‚ğˆêŠ‡“Ç‚İ‚İ
 	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/Title.plist"));
 	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/P_Hit.plist"));
 	cache -> addSpriteFramesWithFile( access -> getPicturePath( "SpriteSheet/E_Hit.plist"));
@@ -393,22 +338,22 @@ void TitleScene::loadPicture( void)
 }
 
 /**
-*	å„ç¨®ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+*	Šeíƒ‚ƒfƒ‹ƒf[ƒ^‚Ì“Ç‚İ‚İ
 *
 *	@author	minaka
-*	@param	cocosä¾å­˜ãªã®ã§çœç•¥
-*	@return ãªã—
+*	@param	cocosˆË‘¶‚È‚Ì‚ÅÈ—ª
+*	@return ‚È‚µ
 *	@date	2/19 Ver 1.0
 */
 void TitleScene::loadModels( void)
 {
-	// ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ãƒ•ãƒ¬ãƒ¼ãƒ ã®åˆ¶å¾¡ã‚«ã‚¦ãƒ³ã‚¿
+	// ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹“Ç‚İ‚İƒtƒŒ[ƒ€‚Ì§ŒäƒJƒEƒ“ƒ^
 	static unsigned int frame = 0;
 
-	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹åˆ¶å¾¡ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
+	// ƒtƒ@ƒCƒ‹ƒpƒX§ŒäƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
 	auto access = FileAccess::getInstance();
 
-	// å„ç¨®ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+	// Šeíƒ‚ƒfƒ‹ƒf[ƒ^‚Ì“Ç‚İ‚İ
 	if( frame == ResourceLoader::Map)
 	{
 		ResourceLoader::getInstance() -> loadModel( "Stage/stage");
@@ -429,17 +374,17 @@ void TitleScene::loadModels( void)
 }
 
 /**
-*	å„ç¨®ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+*	ŠeíƒTƒEƒ“ƒhƒf[ƒ^‚Ì“Ç‚İ‚İ
 *
 *	@author	minaka
-*	@param	cocosä¾å­˜ãªã®ã§çœç•¥
-*	@return ãªã—
+*	@param	cocosˆË‘¶‚È‚Ì‚ÅÈ—ª
+*	@return ‚È‚µ
 *	@date	2/19 Ver 1.0
 */
 void TitleScene::loadSound( void)
 {
 	auto sound = Sound::getInstance();
-	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹åˆ¶å¾¡ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
+	// ƒtƒ@ƒCƒ‹ƒpƒX§ŒäƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
 	auto access = FileAccess::getInstance();
 
 	sound -> loadBGM( "Title");
@@ -448,7 +393,7 @@ void TitleScene::loadSound( void)
 	sound -> loadSE( "Gun/Reload");
 }
 
-// ä»¥ä¸‹ãƒ•ãƒ©ã‚°åˆ¶å¾¡é–¢æ•°
+// ˆÈ‰ºƒtƒ‰ƒO§ŒäŠÖ”
 template<class P> bool TitleScene::checkFlag( P* flag, const P number) { return ( ( *flag & number) != 0); }
 template<class P> void TitleScene::setFlag( P* flag, const P number) { *flag |= number; }
 template<class P> void TitleScene::resetFlag( P* flag, const P number) { *flag &= ~number; }

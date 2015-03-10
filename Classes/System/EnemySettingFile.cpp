@@ -12,6 +12,10 @@ USING_NS_CC;
 using namespace std;
 using namespace TapGun;
 
+EnemySettingFile::EnemySettingFile()
+{
+}
+
 EnemySettingFile* EnemySettingFile::create( const string& fileName)
 {
 	// オブジェクト生成
