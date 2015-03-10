@@ -13,244 +13,244 @@ namespace TapGun
 		Sound& operator= ( const Sound &P) = delete;
 
 		/**
-		 *	ã‚µã‚¦ãƒ³ãƒ‰ç®¡ç†ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
+		 *	ƒTƒEƒ“ƒhŠÇ—ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@return	ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@return	ƒCƒ“ƒXƒ^ƒ“ƒX‚Ö‚Ìƒ|ƒCƒ“ƒ^
 		 */
 		static Sound* getInstance( void);
 
 		/**
-		 *	BGMãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
+		 *	BGMƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@return	ãªã—
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@return	‚È‚µ
 		 */
 		void loadBGM( const std::string& fileName);
 
 		/**
-		 *	BGMãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ï¼ˆãƒœãƒªãƒ¥ãƒ¼ãƒ èª¿æ•´ä»˜ãï¼‰
+		 *	BGMƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İiƒ{ƒŠƒ…[ƒ€’²®•t‚«j
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@param	Volume ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ™ãƒ« ( 0.0 ~ 100.0 )
-		 *	@return	ãªã—
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@param	Volume ƒ{ƒŠƒ…[ƒ€ƒŒƒxƒ‹ ( 0.0 ~ 100.0 )
+		 *	@return	‚È‚µ
 		 */
 		void loadBGM( const std::string& fileName, float Volume);
 
 		/**
-		 *	BGMã®å†ç”Ÿ
+		 *	BGM‚ÌÄ¶
 		 *
 		 *	@author	minaka
-		 *	@return	æ­£å¸¸çµ‚äº†:0ã€€å†ç”Ÿå¤±æ•—:-1
+		 *	@return	³íI—¹:0@Ä¶¸”s:-1
 		 */
 		int playBGM( void);
 
 		/**
-		 *	BGMã®å†ç”Ÿï¼ˆãƒœãƒªãƒ¥ãƒ¼ãƒ èª¿æ•´ä»˜ãï¼‰
+		 *	BGM‚ÌÄ¶iƒ{ƒŠƒ…[ƒ€’²®•t‚«j
 		 *
 		 *	@author	minaka
-		 *	@param	Volume ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ™ãƒ« ( 0.0 ~ 100.0 )
-		 *	@return	æ­£å¸¸çµ‚äº†:0ã€€å†ç”Ÿå¤±æ•—:-1
+		 *	@param	Volume ƒ{ƒŠƒ…[ƒ€ƒŒƒxƒ‹ ( 0.0 ~ 100.0 )
+		 *	@return	³íI—¹:0@Ä¶¸”s:-1
 		 */
 		int playBGM( float Volume);
 
 		/**
-		 *	BGMã®ãƒ«ãƒ¼ãƒ—å†ç”Ÿ
+		 *	BGM‚Ìƒ‹[ƒvÄ¶
 		 *
 		 *	@author	minaka
-		 *	@return	æ­£å¸¸çµ‚äº†:0ã€€å†ç”Ÿå¤±æ•—:-1
+		 *	@return	³íI—¹:0@Ä¶¸”s:-1
 		 */
 		int playBGMLoop( void);
 
 		/**
-		 *	BGMã®ãƒ«ãƒ¼ãƒ—å†ç”Ÿï¼ˆãƒœãƒªãƒ¥ãƒ¼ãƒ èª¿æ•´ä»˜ãï¼‰
+		 *	BGM‚Ìƒ‹[ƒvÄ¶iƒ{ƒŠƒ…[ƒ€’²®•t‚«j
 		 *
 		 *	@author	minaka
-		 *	@param	Volume ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ™ãƒ« ( 0.0 ~ 100.0 )
-		 *	@return	æ­£å¸¸çµ‚äº†:0ã€€å†ç”Ÿå¤±æ•—:-1
+		 *	@param	Volume ƒ{ƒŠƒ…[ƒ€ƒŒƒxƒ‹ ( 0.0 ~ 100.0 )
+		 *	@return	³íI—¹:0@Ä¶¸”s:-1
 		 */
 		int playBGMLoop( float Volume);
 
 		/**
-		 *	BGMã®ãƒœãƒªãƒ¥ãƒ¼ãƒ è¨­å®š
+		 *	BGM‚Ìƒ{ƒŠƒ…[ƒ€İ’è
 		 *
 		 *	@author	minaka
-		 *	@param	Volume ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ™ãƒ« ( 0.0 ~ 100.0 )
-		 *	@return	ãªã—
+		 *	@param	Volume ƒ{ƒŠƒ…[ƒ€ƒŒƒxƒ‹ ( 0.0 ~ 100.0 )
+		 *	@return	‚È‚µ
 		 */
 		void setBGMVolume( float Volume);
 
 		/**
-		 *	BGMã®åœæ­¢
+		 *	BGM‚Ì’â~
 		 *
 		 *	@author	minaka
-		 *	@return	ãªã—
+		 *	@return	‚È‚µ
 		 */
 		void stopBGM( void);
 
 		/**
-		 *	BGMã®ä¸€æ™‚åœæ­¢
+		 *	BGM‚Ìˆê’â~
 		 *
 		 *	@author	minaka
-		 *	@return	ãªã—
+		 *	@return	‚È‚µ
 		 */
 		void pauseBGM( void);
 
 		/**
-		 *	BGMã®å†é–‹
+		 *	BGM‚ÌÄŠJ
 		 *
 		 *	@author	minaka
-		 *	@return	ãªã—
+		 *	@return	‚È‚µ
 		 */
 		void resumeBGM( void);
 
 		/**
-		 *	BGMã®ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
+		 *	BGM‚ÌƒŠƒXƒ^[ƒg
 		 *
 		 *	@author	minaka
-		 *	@return	ãªã—
+		 *	@return	‚È‚µ
 		 */
 		void restartBGM( void);
 
 		/**
-		 *	BGMã®å†ç”Ÿä¸­ãƒã‚§ãƒƒã‚¯
+		 *	BGM‚ÌÄ¶’†ƒ`ƒFƒbƒN
 		 *
 		 *	@author	minaka
-		 *	@return	å†ç”Ÿä¸­:1 å†ç”Ÿä¸­ã§ãªã„:0
+		 *	@return	Ä¶’†:1 Ä¶’†‚Å‚È‚¢:0
 		 */
 		int playCheckBGM( void);
 
 		/**
-		 *	SEãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
+		 *	SEƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@return	æ­£å¸¸çµ‚äº†:0 ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚:-1
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@return	³íI—¹:0 ƒGƒ‰[”­¶:-1
 		 */
 		int loadSE( const std::string& fileName);
 
 		/**
-		 *	SEãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ï¼ˆãƒœãƒªãƒ¥ãƒ¼ãƒ èª¿æ•´ä»˜ãï¼‰
+		 *	SEƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İiƒ{ƒŠƒ…[ƒ€’²®•t‚«j
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@param	Volume ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ™ãƒ« ( 0.0 ~ 100.0 )
-		 *	@return	æ­£å¸¸çµ‚äº†:0 ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚:-1
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@param	Volume ƒ{ƒŠƒ…[ƒ€ƒŒƒxƒ‹ ( 0.0 ~ 100.0 )
+		 *	@return	³íI—¹:0 ƒGƒ‰[”­¶:-1
 		 */
 		int loadSE( const std::string& fileName, float Volume);
 
 		/**
-		 *	SEã®å†ç”Ÿ
+		 *	SE‚ÌÄ¶
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@return	æ­£å¸¸çµ‚äº†:0 ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚:-1
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@return	³íI—¹:0 ƒGƒ‰[”­¶:-1
 		 */
 		int playSE( const std::string& fileName);
 
 		/**
-		 *	SEã®å†ç”Ÿï¼ˆãƒœãƒªãƒ¥ãƒ¼ãƒ èª¿æ•´ä»˜ãï¼‰
+		 *	SE‚ÌÄ¶iƒ{ƒŠƒ…[ƒ€’²®•t‚«j
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@param	Volume ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ™ãƒ« ( 0.0 ~ 100.0 )
-		 *	@return	æ­£å¸¸çµ‚äº†:0 ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚:-1
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@param	Volume ƒ{ƒŠƒ…[ƒ€ƒŒƒxƒ‹ ( 0.0 ~ 100.0 )
+		 *	@return	³íI—¹:0 ƒGƒ‰[”­¶:-1
 		 */
 		int playSE( const std::string& fileName, float Volume);
 
 		/**
-		 *	SEå…¨ä½“ã®ãƒœãƒªãƒ¥ãƒ¼ãƒ èª¿æ•´
+		 *	SE‘S‘Ì‚Ìƒ{ƒŠƒ…[ƒ€’²®
 		 *
 		 *	@author	minaka
-		 *	@param	Volume ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ™ãƒ« ( 0.0 ~ 100.0 )
-		 *	@return	ãªã—
+		 *	@param	Volume ƒ{ƒŠƒ…[ƒ€ƒŒƒxƒ‹ ( 0.0 ~ 100.0 )
+		 *	@return	‚È‚µ
 		 */
 		void setSEVolume( float Volume);
 
 		/**
-		 *	SEã®åœæ­¢
+		 *	SE‚Ì’â~
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@return	æ­£å¸¸çµ‚äº†:0 ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚:-1
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@return	³íI—¹:0 ƒGƒ‰[”­¶:-1
 		 */
 		int stopSE( const std::string& fileName);
 
 		/**
-		 *	SEã®å†é–‹
+		 *	SE‚ÌÄŠJ
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@return	æ­£å¸¸çµ‚äº†:0 ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚:-1
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@return	³íI—¹:0 ƒGƒ‰[”­¶:-1
 		 */
 		int pauseSE( const std::string& fileName);
 
 		/**
-		 *	SEã®ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
+		 *	SE‚ÌƒŠƒXƒ^[ƒg
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@return	æ­£å¸¸çµ‚äº†:0 ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚:-1
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@return	³íI—¹:0 ƒGƒ‰[”­¶:-1
 		 */
 		int resumeSE( const std::string& fileName);
 
 		/**
-		 *	å…¨SEã®åœæ­¢
+		 *	‘SSE‚Ì’â~
 		 *
 		 *	@author	minaka
-		 *	@return	ãªã—
+		 *	@return	‚È‚µ
 		 */
 		void stopSEAll( void);
 
 		/**
-		 *	å…¨SEã®å†é–‹
+		 *	‘SSE‚ÌÄŠJ
 		 *
 		 *	@author	minaka
-		 *	@return	ãªã—
+		 *	@return	‚È‚µ
 		 */
 		void pauseSEAll( void);
 
 		/**
-		 *	å…¨SEã®ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
+		 *	‘SSE‚ÌƒŠƒXƒ^[ƒg
 		 *
 		 *	@author	minaka
-		 *	@return	ãªã—
+		 *	@return	‚È‚µ
 		 */
 		void resumeSEAll( void);
 
 		/**
-		 *	SEç”¨ã®ãƒ¡ãƒ¢ãƒªè§£æ”¾
+		 *	SE—p‚Ìƒƒ‚ƒŠ‰ğ•ú
 		 *
 		 *	@author	minaka
-		 *	@param	fileName ãƒ•ã‚¡ã‚¤ãƒ«å
-		 *	@return	æ­£å¸¸çµ‚äº†:0 ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚:-1
+		 *	@param	fileName ƒtƒ@ƒCƒ‹–¼
+		 *	@return	³íI—¹:0 ƒGƒ‰[”­¶:-1
 		 */
 		int releaseSE( const std::string& fileName);
 
 		/**
-		 *	å…¨SEç”¨ã®ãƒ¡ãƒ¢ãƒªè§£æ”¾
+		 *	‘SSE—p‚Ìƒƒ‚ƒŠ‰ğ•ú
 		 *
 		 *	@author	minaka
-		 *	@return	ãªã—
+		 *	@return	‚È‚µ
 		 */
 		void releaseSEAll( void);
 
 	private:
-		struct SoundData			// SEãƒ»Voiceç®¡ç†ç”¨æ§‹é€ ä½“
+		struct SoundData			// SEEVoiceŠÇ——p\‘¢‘Ì
 		{
-			int ID;					// cocos2dâˆ’xã‹ã‚‰æ¸¡ã•ã‚Œã‚‹ID
-			std::string fileName;	// ã‚¢ã‚¯ã‚»ã‚¹ç”¨ãƒ•ã‚¡ã‚¤ãƒ«å
-			std::string filePath;	// èª­ã¿è¾¼ã¿ç”¨ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹
+			int ID;					// cocos2d?x‚©‚ç“n‚³‚ê‚éID
+			std::string fileName;	// ƒAƒNƒZƒX—pƒtƒ@ƒCƒ‹–¼
+			std::string filePath;	// “Ç‚İ‚İ—pƒfƒBƒŒƒNƒgƒŠƒpƒX
 		};
 
 		Sound();
 
-		// ç¾åœ¨èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ã®BGMã®ãƒ•ã‚¡ã‚¤ãƒ«å
+		// Œ»İ“Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚ÌBGM‚Ìƒtƒ@ƒCƒ‹–¼
 		std::string bgmFileName;
-		// èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹SEã®ãƒªã‚¹ãƒˆ
+		// “Ç‚İ‚Ü‚ê‚Ä‚¢‚éSE‚ÌƒŠƒXƒg
 		std::vector<SoundData*> seDataList;
 	};
 }
