@@ -9,7 +9,7 @@ WaveNumber,StartPos,SleepTime,TargetPos0,TargetPos1,TargetPos2,WaitToAttack0,Wai
 EntryFlag,WaitToMove0,WaitToMove1,WaitToMove2,NextEnemys1,NextEnemys2,NextEnemys3,,
 1,2,2,1,3,-999,-999,,
 ,AIAppear,AIMove1,AIMove2,AIAtk0,AIAtk1,AIAtk2,AILifeCycle,
-,walk,run,none,fake,fake,none,stop,
+,walk,run,none,fake,shot,none,stop,
 WaveNumber,StartPos,SleepTime,TargetPos0,TargetPos1,TargetPos2,WaitToAttack0,WaitToAttack1,WaitToAttack2
 2,"(16.665,14.551,0.00)",0,"(11.385, 10.211,0)","(10.613,10.226,0)","(10.24,7.78,0)",1,2,2
 EntryFlag,WaitToMove0,WaitToMove1,WaitToMove2,NextEnemys1,NextEnemys2,NextEnemys3,,
