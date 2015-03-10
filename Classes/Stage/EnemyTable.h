@@ -19,7 +19,7 @@ namespace TapGun
 		cocos2d::Vec3 standbyPos[MAX_STANDBYPOS];//
 		cocos2d::Vec3 targetPos[MAX_TARGETPOS][3];//
 
-		int lastNumber;//“G‚ªÅ‘å‰½‘Ìo‚Ä‚­‚é‚©
+		int lastNumber;//“G‚ª‰½‘ÌoŒ»‚·‚é‚©
 		void InitAll();
 		
 	private:

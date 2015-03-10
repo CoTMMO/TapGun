@@ -138,7 +138,7 @@ EnemySettingFile* EnemySettingFile::create( const string& fileName)
 			for( int i = 0; i < NEXT_ENEMYS_COUNT; i++)
 			{
 				getline( stream, tmp, ',');
-				data -> nextEnemies[i] = TIME_CHANGER( atoi( tmp.c_str()));
+				data -> nextEnemies[i] = atoi( tmp.c_str());
 			}
 			break;
 

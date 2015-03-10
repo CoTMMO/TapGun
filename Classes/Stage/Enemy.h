@@ -81,8 +81,8 @@ namespace TapGun
 		//float atkFrame;//攻撃間隔（秒）
 		//float waitFrame;//出現してから移動し始めるまでの時間
 		float sleepTime;//
-		int stsAtkFrame[3];//攻撃間隔（秒）
-		int stsWaitFrame[3];//出現してから移動し始めるまでの時間
+//		int stsAtkFrame[3];//攻撃間隔（秒）
+//		int stsWaitFrame[3];//出現してから移動し始めるまでの時間
 
 		int stsWaitToAtk[3];//移動後に攻撃するまでの時間
 		int stsWaitToMove[3];//攻撃後に移動するまでの時間

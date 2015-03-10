@@ -270,15 +270,18 @@ void GameScene::update(float delta)
 		break;
 	case GSTATE_PLAY_SET://ウェイト終了後プレイ前の処理
 
-		//敵の配置を行う
-//		gGameLayer->SetEnemy();
 		GameMasterS->SetGameState(GSTATE_PLAY_ACTION);
+		gGameLayer->UpdateEnemy();
+		gGameLayer->UpdateBullets();
+
 		timeCount = 0;
 		break;
 	case GSTATE_PLAY_ACTION:
 
 		//シーン切り替え用の変数
 		timeCount += GameMasterS->loopTime;//
+		gGameLayer->UpdateEnemy();
+		gGameLayer->UpdateBullets();
 
 		if (timeCount >= TIME_ACTION_UI)
 		{

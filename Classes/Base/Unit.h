@@ -76,6 +76,7 @@ namespace TapGun
 		int maxShot;//
 
 		int eState;//敵の状態
+		int oldState;//敵の状態
 
 		//管理フレーム(必要であれば時間をdoubleに変更する)
 		//int atkFrame;//攻撃までのカウント（ミリ秒）
@@ -83,7 +84,7 @@ namespace TapGun
 
 		int stsWaitToMove[3];//移動までの待ち時間定義（ミリ秒）
 		int stsWaitToAtk[3];//攻撃までの待ち時間定義（ミリ秒）
-		int sleepTime;//待機状態の時間
+		//int sleepTime;//待機状態の時間(waitTimeに一本化)
 
 		cocos2d::Vec3 StandbyPos;//待機座標
 		int tableNum;

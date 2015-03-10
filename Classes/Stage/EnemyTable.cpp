@@ -57,8 +57,8 @@ void EnemyTable::InitAll()
 		//
 		for(int j = 0; j < 3; j++)
 		{
-			enemyData[i].stsAtkFrame[j] = 0.0f;//UŒ‚ŠÔŠui•bj
-			enemyData[i].stsWaitToMove[j] = 0.0f;//oŒ»‚µ‚Ä‚©‚çˆÚ“®‚µŽn‚ß‚é‚Ü‚Å‚ÌŽžŠÔ
+			enemyData[i].stsWaitToAtk[j] = 0.0f;//ˆÚ“®‚µ‚Ä‚©‚çUŒ‚‚·‚é‚Ü‚Å‚ÌŽžŠÔ
+			enemyData[i].stsWaitToMove[j] = 0.0f;//ˆÚ“®‚µ‚Ä‚©‚çUŒ‚‚·‚é‚Ü‚Å‚ÌŽžŠÔ
 		}
 		enemyData[i].nowShot = 0;
 		enemyData[i].maxShot = 0;//
